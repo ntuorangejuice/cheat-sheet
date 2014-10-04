@@ -28,7 +28,6 @@ const double PI = acos(-1);
 
 using namespace std;
 
-
 int main() {
     ios::sync_with_stdio(false);
     /*
