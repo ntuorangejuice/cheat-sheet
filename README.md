@@ -6,6 +6,7 @@
 
 ```c++
 #include <iostream>
+#include <string>
 #include <cstring>
 #include <algorithm>
 #include <climits>
@@ -36,3 +37,57 @@ int main() {
     return 0;
 }
 ```
+
+### C++ String
+
+#### Input string
+
+* get one string with no space and new-line.
+
+```c++
+string a;
+cin >> a;
+cout << "[C++] You have input \"" << a << "\", "
+     << ", whose length is " << a.length() << endl;
+```
+
+Input
+```
+hello world
+new line
+```
+
+Output
+```
+[C++] You have input "hello", , whose length is 5
+```
+
+### C String (Character Array)
+
+#### Input C String
+
+* gets
+
+Reads characters from the standard input (stdin) and stores them as a C string into str until a newline character or the end-of-file is reached.
+
+```c++
+char b[10];
+gets(b);
+cout << "[C++] You have input \"" << b << "\", "
+     << ", whose length is " << strlen(b) << endl;
+```
+
+Input
+```
+ world
+new line
+```
+
+Output
+```
+[C] You have input " world", , whose length is 6
+```
+
+Note: There is a space in front of "world", which will be part of the string.
+
+However, using gets() is "unsafe".
