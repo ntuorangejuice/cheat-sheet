@@ -90,4 +90,4 @@ Output
 
 Note: There is a space in front of "world", which will be part of the string.
 
-However, using gets() is "unsafe".
+However, using gets() is "unsafe", but we are not to discuss the details here.
