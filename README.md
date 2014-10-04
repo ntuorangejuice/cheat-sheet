@@ -62,6 +62,15 @@ Output
 [C++] You have input "hello", , whose length is 5
 ```
 
+#### Convert to char array
+
+```c++
+string cppstr = "this is a string";
+char target[1024];
+strcpy(target, cppstr.c_str());
+```
+
+
 ### C String (Character Array)
 
 #### Input C String
@@ -91,3 +100,7 @@ Output
 Note: There is a space in front of "world", which will be part of the string.
 
 However, using gets() is "unsafe", but we are not to discuss the details here.
+
+#### Convert to C++ string
+char arrstr[] = "this is a string";
+string target = string(arr);
