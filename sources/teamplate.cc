@@ -8,8 +8,10 @@
 #include <set>
 #include <map>
 
-// n: number
-// i: LSB starting from 1
+/*
+ * n: number
+ * i: LSB starting from 1
+ */
 #define SET_BIT(n, i) ((n) | (1 << ((i)-1)))
 #define CLR_BIT(n, i) ((n) & ~(1 << ((i)-1)))
 #define GET_BIT(n, i) (((n) & (1 << ((i)-1))) >> ((i)-1))
@@ -18,7 +20,6 @@ const double E = 1e-8;
 const double PI = acos(-1);
 
 using namespace std;
-
 
 
 int main() {
