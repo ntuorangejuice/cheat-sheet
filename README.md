@@ -4,7 +4,8 @@
 
 ### C++ Solution Template
 
-````c++#include <iostream>
+```c++
+#include <iostream>
 #include <cstring>
 #include <algorithm>
 #include <climits>
@@ -35,4 +36,4 @@ int main() {
      */
     return 0;
 }
-````
+```
