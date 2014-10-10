@@ -104,3 +104,27 @@ However, using gets() is "unsafe", but we are not to discuss the details here.
 #### Convert to C++ string
 char arrstr[] = "this is a string";
 string target = string(arr);
+
+
+
+## Standard Template Library ##
+
+#### include <algorithm> ####
+
+next_permutation
+
+#### include <map> ####
+
+#### include <priority_queue> ####
+
+#### include <queue> ####
+
+#### include <stack> ####
+
+#### string ####
+
+#### T::iterator ####
+
+#### include <vector> ####
+
+#### pair<, > ####
