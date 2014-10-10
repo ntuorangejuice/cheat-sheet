@@ -40,7 +40,7 @@ int main() {
 
 ### C++ String
 
-##### Input string
+#### Input string
 
 * get one string with no space and new-line.
 
@@ -62,7 +62,7 @@ Output
 [C++] You have input "hello", , whose length is 5
 ```
 
-##### Convert to char array
+#### Convert to char array
 
 ```c++
 string cppstr = "this is a string";
@@ -73,7 +73,7 @@ strcpy(target, cppstr.c_str());
 
 ### C String (Character Array)
 
-##### Input C String
+#### Input C String
 
 * gets
 
@@ -101,7 +101,7 @@ Note: There is a space in front of "world", which will be part of the string.
 
 However, using gets() is "unsafe", but we are not to discuss the details here.
 
-##### Convert to C++ string
+#### Convert to C++ string
 char arrstr[] = "this is a string";
 string target = string(arr);
 
@@ -109,37 +109,32 @@ string target = string(arr);
 
 ## Standard Template Library ##
 
-##### ``include <algorithm>`` #####
+#### ``include <algorithm>`` ####
 
-next_permutation
-adjacent_find / binary_search / copy / copy_backward / count
-/ count_if / equal / equal_range / fill / fill_n / find /
-find_end / find_first_of / find_if / for_each / generate /
-generate_n / includes / inplace_merge / iter_swap /
-lexicographical_compare / lower_bound / make_heap / max /
-max_element / merge / min / min_element / mismatch /
-next_permutation / nth_element / partial_sort /
-partial_sort_copy / partition / pop_heap / prev_permutation
-/ push_heap / random_shuffle / remove / remove_copy /
-remove_copy_if / remove_if / replace / replace_copy /
-replace_copy_if / replace_if / reverse / reverse_copy /
-rotate / rotate_copy / search / search_n / set_difference /
-set_intersection / set_symmetric_difference / set_union /
-sort / sort_heap / stable_partition / stable_sort / swap /
-swap_ranges / transform / unique / unique_copy / upper_bound
+###### ``next_permutation / pre_permutation`` ######
 
-##### ``include <map>`` #####
+###### ``binary_search`` ######
 
-##### ``include <priority_queue>`` #####
+###### ``swap / iter_swap`` ######
 
-##### ``include <queue>`` #####
+###### ``make_heap / pop heap / push heap / sort_heap`` ######
 
-##### ``include <stack>`` #####
+###### ``sort / stable_sort`` ######
 
-##### string #####
 
-##### T::iterator #####
 
-##### ``include <vector>`` #####
+#### ``include <map>`` ####
 
-##### pair\<, \> #####
+#### ``include <priority_queue>`` ####
+
+#### ``include <queue>`` ####
+
+#### ``include <stack>`` ####
+
+#### ``string`` ####
+
+#### ``T::iterator`` ####
+
+#### ``include <vector>`` ####
+
+#### ``pair<, >`` ####
