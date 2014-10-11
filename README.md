@@ -62,6 +62,27 @@ Output
 [C++] You have input "hello", , whose length is 5
 ```
 
+#### read one line
+
+* get one line
+
+```c++
+string a;
+getline(cin, a);
+cout << a << endl;
+```
+
+Input
+```
+Hello World!!!
+```
+
+Output
+```
+Hello World!!!
+```
+
+
 #### Convert to char array
 
 ```c++
