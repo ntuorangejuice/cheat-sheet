@@ -23,7 +23,11 @@
 #define SET_BIT(n, i) ((n) | (1 << ((i)-1)))
 #define CLR_BIT(n, i) ((n) & ~(1 << ((i)-1)))
 #define GET_BIT(n, i) (((n) & (1 << ((i)-1))) >> ((i)-1))
-#define SHOW(x) {cout << #x << " = " << x << endl;}
+#define SHOW_A(x) {cout << #x << " = " << x << endl;}
+#define SHOWSHOW_B(x, y) {cout << #x << " = " << x << ", " << #y << " = " << y << endl;}
+#define SHOWSHOWSHOW_C(x, y, z) {cout << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;}
+#define REACH_HERE {cout << "REACH_HERE!" << endl;}
+
 const double E = 1e-8;
 const double PI = acos(-1);
 
