@@ -128,34 +128,127 @@ string target = string(arr);
 
 
 
-## Standard Template Library ##
+### Standard Template Library
 
-#### ``include <algorithm>`` ####
+##### ``include <algorithm>``
 
-###### ``next_permutation / pre_permutation`` ######
+###### ``next_permutation / pre_permutation``
 
-###### ``binary_search`` ######
+###### ``binary_search``
 
-###### ``swap / iter_swap`` ######
+###### ``swap / iter_swap``
 
-###### ``make_heap / pop heap / push heap / sort_heap`` ######
+###### ``make_heap / pop heap / push heap / sort_heap``
 
-###### ``sort / stable_sort`` ######
+###### ``sort / stable_sort``
 
 
 
-#### ``include <map>`` ####
+##### ``include <map>``
 
-#### ``include <priority_queue>`` ####
+##### ``include <priority_queue>``
 
-#### ``include <queue>`` ####
+##### ``include <queue>``
 
-#### ``include <stack>`` ####
+##### ``include <stack>``
 
-#### ``string`` ####
+##### ``string``
 
-#### ``T::iterator`` ####
+##### ``T::iterator``
 
-#### ``include <vector>`` ####
+##### ``include <vector>``
 
-#### ``pair<, >`` ####
+##### ``pair<, >``
+
+
+
+### Java BigInteger & BigDecimal
+
+
+
+
+### String Related
+
+#### KMP
+
+
+
+
+### Tree Related
+
+#### Tree Traversal
+
+#### Trie
+
+#### Segment Tree
+
+#### Union-find Set 冰茶鸡
+
+#### 。。。
+
+
+
+
+### Graph Theory
+
+#### Minimium Spanning Tree
+
+##### Prime
+
+##### Kruskal
+
+
+#### Shortest Path
+
+##### 任意两点
+
+##### SPFA
+
+##### Dijkstra
+
+
+#### 二分图
+
+#### 最大流
+ 
+#### 最小费用最大流 ?
+
+#### 强连通分量 图的 割点, 桥, 双连通分支
+
+#### 拓扑排序
+
+#### Euler Cycle/Path, Hamilton Cycle/Path
+
+#### 。。。
+
+
+
+
+### Math
+
+#### 。。。
+
+
+
+
+### 计算几何
+
+#### 向量点乘 叉乘
+
+#### 直线公式
+
+#### Convex Hull
+
+
+
+### Tricks / 分析方法
+
+#### Dynamic Programming
+
+#### Divide and Conquer
+
+#### 双向 BFS
+
+#### Brute Force
+
+##### 子集生成
