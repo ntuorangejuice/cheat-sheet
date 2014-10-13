@@ -175,7 +175,9 @@ string target = string(arr);
 
 ##### KMP
 
+##### Longest palindromic substring (Manacher's algorithm)
 
+##### 后缀数组
 
 
 ### Tree Related
