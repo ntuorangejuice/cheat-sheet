@@ -1,4 +1,4 @@
-# The Orange Juice ACM-ICPC Cheat Sheet
+# Orange Juice - ACM-ICPC Cheat Sheet
 
 ## Basic
 
@@ -210,6 +210,71 @@ string target = string(arr);
 ##### 二分图
 
 ##### 最大流
+
+####### Dinic
+``` C++
+int graph[250][250];
+int level[250];
+int n_node, n_edge;
+
+int mark_level() {
+    memset(level, -1, sizeof(level));
+    queue<int> to_visit;
+    
+    level[1] = 0;
+    to_visit.push(1);
+    while (!to_visit.empty()) {
+        int cur = to_visit.front();
+        to_visit.pop();
+        for (int i = 1; i <= n_node; ++i) {
+            if (graph[cur][i] != 0 && level[i] == -1) {
+                level[i] = level[cur] + 1;
+                to_visit.push(i);
+            }
+        }
+    }
+
+    if (level[n_node] == -1)
+        return 0; // cannot reach the sink
+    return 1; // can reach the sink
+}
+
+int augment_recursive(int cur, int min_flow) {
+    if (cur == n_node)
+        return min_flow;
+
+    int augmented_flow = 0;
+    for (int i = 1; i <= n_node; ++i) {
+        if (level[i] == level[cur] + 1 && graph[cur][i] > 0 && (augmented_flow = augment_recursive(i, min(graph[cur][i], min_flow)))) {
+            graph[cur][i] -= augmented_flow;
+            graph[i][cur] += augmented_flow;
+            return augmented_flow;
+        }
+    }
+    return 0;
+}
+
+int dinic() {
+    int ans = 0;
+    int temp = 0;
+    while (mark_level())
+        while (temp = augment_recursive(1, INT_MAX))
+            ans += temp;
+    return ans;
+}
+
+int main() {
+    cin >> n_edge >> n_node)
+    memset(graph, 0, sizeof(graph));
+    
+    int start_node, end_node, flow;
+    for (int i = 0; i < n_edge; ++i) {
+        cin >> start_node >> end_node >> flow;
+        graph[start_node][end_node] += flow; // use "+" to combine
+    }
+    cout << dinic() << endl;
+}
+```
  
 ##### 最小费用最大流 ?
 
@@ -226,6 +291,33 @@ string target = string(arr);
 
 ### Math
 
+##### 欧拉函数 ?
+
+##### 欧几里得的算法
+```C++
+int gcd();
+```
+
+##### 中国剩余定理
+
+##### 最大公约数
+
+##### 最小公倍数
+
+##### 分解质因数
+
+##### 因数个数
+
+##### 素数判定
+
+##### 进制转换
+
+##### 。。。
+
+
+
+### 博弈论
+
 ##### 。。。
 
 
@@ -239,16 +331,51 @@ string target = string(arr);
 
 ##### Convex Hull
 
+####### Gift Wrapping
+
+####### QuickHull
+
+####### Graham scan
+```C++
+```
+
 
 
 ### Tricks / 分析方法
 
 ##### Dynamic Programming
 
+####### 树上的
+
 ##### Divide and Conquer
+
+####### Fast Exponention
+
 
 ##### 双向 BFS
 
 ##### Brute Force
 
 ####### 子集生成
+
+
+
+### Userful Code Snippets
+
+##### Fast Exponention
+```C++
+// NEED VERIFY
+int power_modulo(int n, int p, int M) {  
+    int result = 1;
+    while (p > 0) {
+        if (p % 2 == 1)
+            result = (result*n) % M;
+        p /= 2;
+        n = (n*n) % M;
+    }
+    return result;
+
+}
+```
+
+##### 刷质数表
