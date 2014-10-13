@@ -132,15 +132,15 @@ string target = string(arr);
 
 ##### ``include <algorithm>``
 
-###### ``next_permutation / pre_permutation``
+####### ``next_permutation / pre_permutation``
 
-###### ``binary_search``
+####### ``binary_search``
 
-###### ``swap / iter_swap``
+####### ``swap / iter_swap``
 
-###### ``make_heap / pop heap / push heap / sort_heap``
+####### ``make_heap / pop heap / push heap / sort_heap``
 
-###### ``sort / stable_sort``
+####### ``sort / stable_sort``
 
 
 
@@ -169,86 +169,86 @@ string target = string(arr);
 
 ### String Related
 
-#### KMP
+##### KMP
 
 
 
 
 ### Tree Related
 
-#### Tree Traversal
+##### Tree Traversal
 
-#### Trie
+##### Trie
 
-#### Segment Tree
+##### Segment Tree
 
-#### Union-find Set 冰茶鸡
+##### Union-find Set 冰茶鸡
 
-#### 。。。
+##### 。。。
 
 
 
 
 ### Graph Theory
 
-#### Minimium Spanning Tree
+##### Minimium Spanning Tree
 
-##### Prime
+####### Prime
 
-##### Kruskal
-
-
-#### Shortest Path
-
-##### 任意两点
-
-##### SPFA
-
-##### Dijkstra
+####### Kruskal
 
 
-#### 二分图
+##### Shortest Path
 
-#### 最大流
+####### 任意两点
+
+####### SPFA
+
+####### Dijkstra
+
+
+##### 二分图
+
+##### 最大流
  
-#### 最小费用最大流 ?
+##### 最小费用最大流 ?
 
-#### 强连通分量 图的 割点, 桥, 双连通分支
+##### 强连通分量 图的 割点, 桥, 双连通分支
 
-#### 拓扑排序
+##### 拓扑排序
 
-#### Euler Cycle/Path, Hamilton Cycle/Path
+##### Euler Cycle/Path, Hamilton Cycle/Path
 
-#### 。。。
+##### 。。。
 
 
 
 
 ### Math
 
-#### 。。。
+##### 。。。
 
 
 
 
 ### 计算几何
 
-#### 向量点乘 叉乘
+##### 向量点乘 叉乘
 
-#### 直线公式
+##### 直线公式
 
-#### Convex Hull
+##### Convex Hull
 
 
 
 ### Tricks / 分析方法
 
-#### Dynamic Programming
+##### Dynamic Programming
 
-#### Divide and Conquer
+##### Divide and Conquer
 
-#### 双向 BFS
+##### 双向 BFS
 
-#### Brute Force
+##### Brute Force
 
-##### 子集生成
+####### 子集生成
