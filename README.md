@@ -428,6 +428,12 @@ void stack::pop();
 
 ####### 任意两点
 
+```
+for ()
+    for ()
+        for ()
+```
+
 ####### SPFA
 
 ####### Dijkstra
@@ -532,9 +538,35 @@ int gcd();
 
 ##### 分解质因数
 
+```C++
+long long x;
+cin >> x;
+for (long long factor = 2; x != 1; factor++) {
+    if (x % factor == 0)
+        cout << factor << " is a prime factor" << endl;
+    while (x % factor == 0)
+        x = x / factor;
+}
+```
+
 ##### 因数个数
 
 ##### 素数判定
+
+```
+// 大于 3 的质数可以被表示为 6n - 1 或 6n + 1
+```
+```
+bool is_prime(int n) {
+    if (n == 1 || n % 2 == 0)
+        return false;  
+    int t = sqrt(n);
+    for (int i = 3; i <= t; i += 2)
+        if (n % i == 0)
+            return false;
+    return true;
+}
+```
 
 ##### 进制转换
 
@@ -557,6 +589,9 @@ int gcd();
 ```
 
 ##### 向量点乘 叉乘
+
+> 点乘意义 点乘公式
+> 叉乘意义 叉乘公式
 
 ##### 直线公式
 
@@ -672,8 +707,6 @@ int main(int argc, char const *argv[]) {
 
 ##### Divide and Conquer
 
-####### Fast Exponention
-
 ##### 迭代加深搜索 (+ binary increase/decrease)
 
 ##### 双向 BFS
@@ -685,6 +718,63 @@ int main(int argc, char const *argv[]) {
 
 
 ### Userful Code Snippets
+
+##### ``cantor_expansion / reverse_cantor_expansion``
+
+```C++
+long long factorial(int n) {
+    if (n == 0)
+        return 1;
+
+    long long ans = n;
+    for (int i = 1; i < n; i++)
+        ans = ans * i;
+    return ans;
+}
+
+long long cantor_expansion(int permutation[], int n) {
+    // input: (m-th permutation of n numbers, n)
+    // return: m
+    int used[n + 1];
+    memset(used, n, sizeof(used));
+
+    long long ans = 0;
+    for (int i = 0; i < n; i++) {
+        int temp = 0;
+        used[permutation[i]] = 1;
+        for (int j = 1; j < permutation[i]; j++)
+            if (used[j] != 1)
+                temp += 1;
+        ans += factorial(n - 1 - i) * temp;
+    }
+
+    return ans + 1;
+}
+
+void reverse_cantor_expansion(int n, long long m) {
+    // m-th permutation of n numbers
+    int ans[n + 1], used[n + 1];
+    memset(ans, -1, sizeof (ans));
+    memset(used, 0, sizeof (used));
+
+    m = m - 1;
+    for (int i = n - 1; i >= 0; i--) {
+        long long fac = factorial(i);
+        int temp = m / fac + 1;
+        m = m - (temp - 1) * fac;
+        for (int j = 1; j <= temp; j++)
+            if (used[j] == 1)
+                temp++;
+
+        ans[n - i] = temp;
+        used[temp] = 1;
+    }
+
+    for (int i = 1; i < n + 1; i++)
+        cout << ans[i] << " ";
+    cout << "\n";
+}
+```
 
 ##### Fast Exponention
 ```C++
