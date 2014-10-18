@@ -651,11 +651,15 @@ int main(int argc, char const *argv[]) {
 
 ####### 求解模的逆元
 
-(a * x) % n = 1, x = ?
-if gcd(a, n) != 1, then NO answer
-else:
-same as: a * x + n * y = 1
-can get only one answer x
+> (a * x) % n = 1, x = ?
+
+> if gcd(a, n) != 1, then NO answer
+
+> else:
+
+> same as: a * x + n * y = 1
+
+> can get only one answer x
 
 ```C++
 // after get ansx, ansy, ansd
