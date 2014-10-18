@@ -525,12 +525,115 @@ int main() {
 
 ##### 欧拉函数 ?
 
-##### 欧几里得的算法
+##### 欧几里得算法
+
 ```C++
 int gcd();
 ```
 
+##### 扩展欧几里得算法 ``http://www.cnblogs.com/frog112111/archive/2012/08/19/2646012.html``
+> 对于不完全为 0 的非负整数 a, b, 必然存在整数对 (x, y), 使得 gcd(a, b) = ax + by
+
+suppose: a > b, we want to get (x1, y1)
+(i) if b == 0, then gcd(a, b) = a = ax + 0, then x1 = 1, y1 = 0
+(ii) if b != 0:
+
+    (1): a * x1 + b * y1 = gcd(a, b)
+    (2): b * x2 + (a % b) * y2 = gcd(b, a % b)
+    (1) == (2)
+
+    so: a * x1 + b * y1 = b * x2 + (a % b) * y2
+    so: a * x1 + b * y1 = b * x2 + (a - (int)(a / b) * b) * y2
+    so: a * x1 + b * y1 = a * y2 + b * (x2 - (int)(a / b) * y2)
+    so: x1 = y2, y1 = x2 - (int)(a / b) * y2, can get (x1, y1) from (x2, y2)
+
+    next:
+        (1): b * x2 + (a % b) * y2 = gcd(b, a % b)
+        (2): (a % b) * x3 + b % (a % b) * y3 = gcd(a % b, b % (a % b))
+        so: can get (x2, y2) from (x3, y3)
+        next: ... until in gcd(a, b), b == 0, then xi = 1, yi = 0, go back ...
+
+```C++
+long long ansx, ansy, ansd;
+
+void euclidean(long long a, long long b) {
+    if (b == 0) {
+        ansx = 1;
+        ansy = 0;
+        ansd = a;
+    } else {
+        euclidean(b, a % b);
+        long long temp = ansx;
+        ansx = ansy;
+        ansy = temp - a / b * ansy;
+    }
+}
+
+int main(int argc, char const *argv[]) {
+    long long a, b, c;
+    cin >> a >> b >> c;
+
+    ansx = 0;
+    ansy = 0;
+    ansd = 0;
+    euclidean(a, b);
+
+    // now (ansx, ansy) is the answer (x, y) for a * x1 + b * y1 = gcd(a, b)
+    // ansd is the a when b == 0, which is just gcd(a, b)
+}
+
+
+####### 求解不定方程
+
+for: p * a + q * b = c
+if c % gcd(a, b) == 0, then 有整数解 (p, q), else NO
+
+if we get (p0, q0) for p0 * a + q0 * b = gcd(a, b)
+then: for p * a + q * b = gcd(a, b) (k is any integer)
+p = p0 + b / gcd(a, b) * k
+q = q0 - a / gcd(a, b) * k
+
+then: for p * a + q * b = c = c / gcd(a, b) * gcd(a, b) (k is any integer)
+p = (p0 + b / gcd(a, b) * k) * c / gcd(a, b)
+q = (q0 - a / gcd(a, b) * k) * c / gcd(a, b)
+
+```C++
+// after get ansx, ansy, ansd
+// test if c % ansd == 0
+// ansx = (ansx + b / gcd(a, b) * k) * c / gcd(a, b)
+// ansy = (ansy - a / gcd(a, b) * k) * c / gcd(a, b)
+// smallest: ansx % (b / gcd(a, b) + b / gcd(a, b)) % (b / gcd(a, b))
+```
+
+####### 求解模线性方程（线性同余方程）
+
+(a * x) % n = b % n, x = ?
+same as: a * x + n * y= b
+so: one answer for a * x + n * y= b is: x * b / gcd(a, n)
+so: one answer for (a * x) % n = b % n is: x0 = (x * b / gcd(a, n)) % n
+other answer xi = (x0 + i * (n / gcd(a, n))) % n, i = 0...gcd(a, n)-1
+smallest answer is x0 % (n / gcd(a, n) + gcd(a, n)) % gcd(a, n)
+
+```C++
+```
+
+####### 求解模的逆元
+
+(a * x) % n = 1, x = ?
+if gcd(a, n) != 1, then NO answer
+else:
+same as: a * x + n * y = 1
+can get only one answer x
+
+```C++
+// after get ansx, ansy, ansd
+// if ansd != 1, then NO answer
+// smallest ansx = (ansx % (n / gcd(a, n)) + (n / gcd(a, n))) % (n / gcd(a, n))
+```
+
 ##### 中国剩余定理
+
+
 
 ##### 最大公约数
 
@@ -586,6 +689,7 @@ bool is_prime(int n) {
 ##### template class for Point?
 
 ```C++
+
 ```
 
 ##### 向量点乘 叉乘
@@ -711,6 +815,8 @@ int main(int argc, char const *argv[]) {
 
 ##### 双向 BFS
 
+##### 从终点开始搜
+
 ##### Brute Force
 
 ####### 子集生成
@@ -777,6 +883,7 @@ void reverse_cantor_expansion(int n, long long m) {
 ```
 
 ##### Fast Exponention
+
 ```C++
 // NEED VERIFY
 int power_modulo(int n, int p, int M) {  
@@ -792,4 +899,17 @@ int power_modulo(int n, int p, int M) {
 }
 ```
 
-##### 刷质数表
+##### 质数表
+
+```C++
+int is_prime[UP_LIMIT + 1];
+for (int i = 1; i <= UP_LIMIT; i++) // init to 1
+    is_prime[i] = 1;
+for (int i = 4; i <= UP_LIMIT; i += 2) // even number is not
+    is_prime[i] = 0;
+for (int k = 3; k*k <= UP_LIMIT; k++) // start from 9, end at sqrt
+    if (is_prime[k])
+        for(int i = k*k; i <= UP_LIMIT; i += 2*k) // every two is not 
+            is_prime[i] = 0;
+```
+
