@@ -539,26 +539,38 @@ int gcd();
 ```
 
 ##### 扩展欧几里得算法 ``http://www.cnblogs.com/frog112111/archive/2012/08/19/2646012.html``
+
 > 对于不完全为 0 的非负整数 a, b, 必然存在整数对 (x, y), 使得 gcd(a, b) = ax + by
 
-suppose: a > b, we want to get (x1, y1)
-(i) if b == 0, then gcd(a, b) = a = ax + 0, then x1 = 1, y1 = 0
-(ii) if b != 0:
+> suppose: a > b, we want to get (x1, y1)
 
-    (1): a * x1 + b * y1 = gcd(a, b)
-    (2): b * x2 + (a % b) * y2 = gcd(b, a % b)
-    (1) == (2)
+> (i) if b == 0, then gcd(a, b) = a = ax + 0, then x1 = 1, y1 = 0
 
-    so: a * x1 + b * y1 = b * x2 + (a % b) * y2
-    so: a * x1 + b * y1 = b * x2 + (a - (int)(a / b) * b) * y2
-    so: a * x1 + b * y1 = a * y2 + b * (x2 - (int)(a / b) * y2)
-    so: x1 = y2, y1 = x2 - (int)(a / b) * y2, can get (x1, y1) from (x2, y2)
+> (ii) if b != 0:
 
-    next:
-        (1): b * x2 + (a % b) * y2 = gcd(b, a % b)
-        (2): (a % b) * x3 + b % (a % b) * y3 = gcd(a % b, b % (a % b))
-        so: can get (x2, y2) from (x3, y3)
-        next: ... until in gcd(a, b), b == 0, then xi = 1, yi = 0, go back ...
+>   (1): a * x1 + b * y1 = gcd(a, b)
+
+>   (2): b * x2 + (a % b) * y2 = gcd(b, a % b)
+    
+>   (1) == (2)
+
+>   so: a * x1 + b * y1 = b * x2 + (a % b) * y2
+    
+>   so: a * x1 + b * y1 = b * x2 + (a - (int)(a / b) * b) * y2
+    
+>   so: a * x1 + b * y1 = a * y2 + b * (x2 - (int)(a / b) * y2)
+    
+>   so: x1 = y2, y1 = x2 - (int)(a / b) * y2, can get (x1, y1) from (x2, y2)
+
+>   next:
+
+>       (1): b * x2 + (a % b) * y2 = gcd(b, a % b)
+        
+>       (2): (a % b) * x3 + b % (a % b) * y3 = gcd(a % b, b % (a % b))
+        
+>       so: can get (x2, y2) from (x3, y3)
+        
+>       next: ... until in gcd(a, b), b == 0, then xi = 1, yi = 0, go back ...
 
 ```C++
 long long ansx, ansy, ansd;
@@ -588,11 +600,11 @@ int main(int argc, char const *argv[]) {
     // now (ansx, ansy) is the answer (x, y) for a * x1 + b * y1 = gcd(a, b)
     // ansd is the a when b == 0, which is just gcd(a, b)
 }
-
+```
 
 ####### 求解不定方程
 
->for: p * a + q * b = c
+> for: p * a + q * b = c
 
 > if c % gcd(a, b) == 0, then 有整数解 (p, q), else NO
 
@@ -715,6 +727,7 @@ bool is_prime(int n) {
 ##### 向量点乘 叉乘
 
 > 点乘意义 点乘公式
+
 > 叉乘意义 叉乘公式
 
 ##### 直线公式
