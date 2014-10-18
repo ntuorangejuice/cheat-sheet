@@ -249,10 +249,12 @@ cout << "return false: (go back)" << endl;
 
 ####### ``binary_search``
 
-``// first...last should be sorted using operator< or comp
-``bool binary_search (ForwardIterator first, ForwardIterator last, const T& val);``
-``// return true if found, false if not
-``bool binary_search (ForwardIterator first, ForwardIterator last, const T& val, Compare comp);``
+```C++
+// first...last should be sorted using operator< or comp
+bool binary_search (ForwardIterator first, ForwardIterator last, const T& val);
+// return true if found, false if not
+bool binary_search (ForwardIterator first, ForwardIterator last, const T& val, Compare comp);
+```
 
 ####### ``swap / iter_swap``
 
@@ -549,6 +551,11 @@ int gcd();
 
 ### 计算几何
 
+##### template class for Point?
+
+```C++
+```
+
 ##### 向量点乘 叉乘
 
 ##### 直线公式
@@ -561,6 +568,98 @@ int gcd();
 
 ####### Graham scan
 ```C++
+struct Point {
+    long x;
+    long y;
+
+    bool at_right_of(Point& that, Point& base) {
+        Point vec_self = {this->x - base.x, this->y - base.y};
+        Point vec_that = {that.x - base.x, that.y - base.y};
+
+        long product = vec_self * vec_that;
+        if (product > 0)
+            return true; // "this" is at right of "that"
+        if (product == 0 && vec_self.length() > vec_that.length())
+            return true; // "this" is at right of "that"
+        return false; // "this" is NOT at right of "that"
+    };
+    long operator* (Point& that) {
+        return this->x * that.y - this->y * that.x;
+    };
+    double distance_to(Point& that) {
+        long x_diff = this->x - that.x;
+        long y_diff = this->y - that.y;
+        return sqrt(x_diff * x_diff + y_diff * y_diff);
+    };
+    double length() {
+        return sqrt(this->x * this->x + this->y * this->y);
+    }
+};
+
+Point p[1005];
+int my_stack[1005];
+int n, l, my_stack_top = -1;
+
+bool compare(Point p1, Point p2) {
+    return p1.at_right_of(p2, p[0]);
+}
+
+void push(int index) {
+    my_stack[++my_stack_top] = index;
+}
+int pop() {
+    int temp = my_stack[my_stack_top--];
+    return temp;
+}
+
+void graham_scan() {
+    push(0);
+    push(1);
+
+    int pre;
+    int prepre;
+    for (int i = 2; i < n; i++) {
+        pre = my_stack_top;
+        prepre = my_stack_top - 1;
+        while (p[i].at_right_of(p[my_stack[pre]], p[my_stack[prepre]])) {
+            pop();
+            if (my_stack_top == 0)
+                break;
+            pre = my_stack_top;
+            prepre = my_stack_top - 1;
+        }
+        push(i);
+    }
+
+    int last = my_stack_top;
+    if (p[0].at_right_of(p[my_stack[last]], p[my_stack[pre]]))
+        pop();
+}
+
+int main(int argc, char const *argv[]) {
+    cin >> n >> l;
+    
+    int minimun = 0;
+    for (int i = 0; i < n; ++i) {
+        int temp_x, temp_y;
+        cin >> temp_x >> temp_y;
+        p[i] = {temp_x, temp_y};
+
+        if ((p[i].y < p[minimun].y) || (p[i].y == p[minimun].y && p[i].x < p[minimun].x))
+            minimun = i;
+    }
+
+    Point temp = {p[minimun].x, p[minimun].y}; // swap lowest and most left point to p[0]
+    p[minimun] = p[0];
+    p[0] = temp;
+
+    sort(p + 1, p + n, compare); // use p[0] as base, sort according to polar angle
+    graham_scan();
+    // now all points in the stack is on Convex Hull // size of stack = 1 + stack_top
+
+    for (int i = 0; i <= my_stack_top; i++)
+        cout << "point " << my_stack[i] << " is on Convex Hull" << endl;
+}
 ```
 
 
@@ -575,6 +674,7 @@ int gcd();
 
 ####### Fast Exponention
 
+##### 迭代加深搜索 (+ binary increase/decrease)
 
 ##### 双向 BFS
 
