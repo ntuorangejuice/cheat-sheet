@@ -132,6 +132,89 @@ char arrstr[] = "this is a string";
 string target = string(arr);
 
 
+### Algorithm
+
+```
+include <algorithm>
+```
+
+#### Permutation
+
+next_permutation
+
+```
+// next_permutation example
+#include <iostream>     // std::cout
+#include <algorithm>    // std::next_permutation, std::sort
+
+int main () {
+  int myints[] = {1,2,3};
+
+  std::sort (myints,myints+3);
+
+  std::cout << "The 3! possible permutations with 3 elements:\n";
+  do {
+    std::cout << myints[0] << ' ' << myints[1] << ' ' << myints[2] << '\n';
+  } while ( std::next_permutation(myints,myints+3) );
+
+  std::cout << "After loop: " << myints[0] << ' ' << myints[1] << ' ' << myints[2] << '\n';
+
+  return 0;
+}
+```
+
+Output
+
+```
+The 3! possible permutations with 3 elements:
+1 2 3
+1 3 2
+2 1 3
+2 3 1
+3 1 2
+3 2 1
+After loop: 1 2 3
+```
+
+#### Binary Search
+
+```
+bool binary_search (ForwardIterator first, ForwardIterator last,
+                      const T& val);
+bool binary_search (ForwardIterator first, ForwardIterator last,
+                      const T& val, Compare comp);
+```
+
+
+```
+// binary_search example
+#include <iostream>     // std::cout
+#include <algorithm>    // std::binary_search, std::sort
+#include <vector>       // std::vector
+
+bool myfunction (int i,int j) { return (i<j); }
+
+int main () {
+  int myints[] = {1,2,3,4,5,4,3,2,1};
+  std::vector<int> v(myints,myints+9);                         // 1 2 3 4 5 4 3 2 1
+
+  // using default comparison:
+  std::sort (v.begin(), v.end());
+
+  std::cout << "looking for a 3... ";
+  if (std::binary_search (v.begin(), v.end(), 3))
+    std::cout << "found!\n"; else std::cout << "not found.\n";
+
+  // using myfunction as comp:
+  std::sort (v.begin(), v.end(), myfunction);
+
+  std::cout << "looking for a 6... ";
+  if (std::binary_search (v.begin(), v.end(), 6, myfunction))
+    std::cout << "found!\n"; else std::cout << "not found.\n";
+
+  return 0;
+}
+```
 
 ### Standard Template Library
 
