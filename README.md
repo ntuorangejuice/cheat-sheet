@@ -215,6 +215,13 @@ int main () {
 }
 ```
 
+Output
+
+```
+looking for a 3... found!
+looking for a 6... not found.
+```
+
 ### Standard Template Library
 
 ##### ``include <algorithm>``
