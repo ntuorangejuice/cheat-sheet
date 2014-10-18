@@ -592,17 +592,25 @@ int main(int argc, char const *argv[]) {
 
 ####### 求解不定方程
 
-for: p * a + q * b = c
-if c % gcd(a, b) == 0, then 有整数解 (p, q), else NO
+>for: p * a + q * b = c
 
-if we get (p0, q0) for p0 * a + q0 * b = gcd(a, b)
-then: for p * a + q * b = gcd(a, b) (k is any integer)
-p = p0 + b / gcd(a, b) * k
-q = q0 - a / gcd(a, b) * k
+> if c % gcd(a, b) == 0, then 有整数解 (p, q), else NO
 
-then: for p * a + q * b = c = c / gcd(a, b) * gcd(a, b) (k is any integer)
-p = (p0 + b / gcd(a, b) * k) * c / gcd(a, b)
-q = (q0 - a / gcd(a, b) * k) * c / gcd(a, b)
+
+> if we get (p0, q0) for p0 * a + q0 * b = gcd(a, b)
+
+> then: for p * a + q * b = gcd(a, b) (k is any integer)
+
+> p = p0 + b / gcd(a, b) * k
+
+> q = q0 - a / gcd(a, b) * k
+
+
+> then: for p * a + q * b = c = c / gcd(a, b) * gcd(a, b) (k is any integer)
+
+> p = (p0 + b / gcd(a, b) * k) * c / gcd(a, b)
+
+> q = (q0 - a / gcd(a, b) * k) * c / gcd(a, b)
 
 ```C++
 // after get ansx, ansy, ansd
@@ -615,10 +623,15 @@ q = (q0 - a / gcd(a, b) * k) * c / gcd(a, b)
 ####### 求解模线性方程（线性同余方程）
 
 > (a * x) % n = b % n, x = ?
+
 > same as: a * x + n * y= b
+
 > so: one answer for a * x + n * y= b is: x * b / gcd(a, n)
+
 > so: one answer for (a * x) % n = b % n is: x0 = (x * b / gcd(a, n)) % n
+
 > other answer xi = (x0 + i * (n / gcd(a, n))) % n, i = 0...gcd(a, n)-1
+
 > smallest answer is x0 % (n / gcd(a, n) + gcd(a, n)) % gcd(a, n)
 
 ```C++
