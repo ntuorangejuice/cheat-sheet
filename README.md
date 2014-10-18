@@ -614,12 +614,12 @@ q = (q0 - a / gcd(a, b) * k) * c / gcd(a, b)
 
 ####### 求解模线性方程（线性同余方程）
 
-(a * x) % n = b % n, x = ?
-same as: a * x + n * y= b
-so: one answer for a * x + n * y= b is: x * b / gcd(a, n)
-so: one answer for (a * x) % n = b % n is: x0 = (x * b / gcd(a, n)) % n
-other answer xi = (x0 + i * (n / gcd(a, n))) % n, i = 0...gcd(a, n)-1
-smallest answer is x0 % (n / gcd(a, n) + gcd(a, n)) % gcd(a, n)
+> (a * x) % n = b % n, x = ?
+> same as: a * x + n * y= b
+> so: one answer for a * x + n * y= b is: x * b / gcd(a, n)
+> so: one answer for (a * x) % n = b % n is: x0 = (x * b / gcd(a, n)) % n
+> other answer xi = (x0 + i * (n / gcd(a, n))) % n, i = 0...gcd(a, n)-1
+> smallest answer is x0 % (n / gcd(a, n) + gcd(a, n)) % gcd(a, n)
 
 ```C++
 ```
