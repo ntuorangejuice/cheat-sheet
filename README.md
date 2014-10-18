@@ -6,8 +6,8 @@
 
 ```c++
 #include <iostream>
-#include <string>
 #include <cstring>
+#include <cmath>
 #include <algorithm>
 #include <climits>
 #include <stack>
@@ -15,17 +15,18 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <list>
 
 /*
  * n: number
  * i: LSB starting from 1
  */
+#define GET_BIT(n, i) (((n) & (1 << ((i)-1))) >> ((i)-1))
 #define SET_BIT(n, i) ((n) | (1 << ((i)-1)))
 #define CLR_BIT(n, i) ((n) & ~(1 << ((i)-1)))
-#define GET_BIT(n, i) (((n) & (1 << ((i)-1))) >> ((i)-1))
 #define SHOW_A(x) {cout << #x << " = " << x << endl;}
-#define SHOWSHOW_B(x, y) {cout << #x << " = " << x << ", " << #y << " = " << y << endl;}
-#define SHOWSHOWSHOW_C(x, y, z) {cout << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;}
+#define SHOW_B(x, y) {cout << #x << " = " << x << ", " << #y << " = " << y << endl;}
+#define SHOW_C(x, y, z) {cout << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;}
 #define REACH_HERE {cout << "REACH_HERE!" << endl;}
 
 const double E = 1e-8;
@@ -228,11 +229,48 @@ looking for a 6... not found.
 
 ####### ``next_permutation / pre_permutation``
 
+```C++
+bool next_permutation (BidirectionalIterator first, BidirectionalIterator last); // use operator<
+// return true if now is larger than previous, false if now is initial permutation
+bool next_permutation (BidirectionalIterator first, BidirectionalIterator last, Compare comp);
+```
+
+```C++
+int n = 3; int a[3] = {1,2,3};
+// cout ...
+while (next_permutation(a, a + n))
+    // cout ...
+cout << "return false: (go back)" << endl;
+// cout ...
+
+// output:
+// 1 2 3
+// 1 3 2
+// 2 1 3
+// 2 3 1
+// 3 1 2
+// 3 2 1
+// return false: (go back)
+// 1 2 3
+```
+
 ####### ``binary_search``
+
+```C++
+// first...last should be sorted using operator< or comp
+bool binary_search (ForwardIterator first, ForwardIterator last, const T& val);
+// return true if found, false if not
+bool binary_search (ForwardIterator first, ForwardIterator last, const T& val, Compare comp);
+```
 
 ####### ``swap / iter_swap``
 
+
+
 ####### ``make_heap / pop heap / push heap / sort_heap``
+```C++
+// use priority_queue
+```
 
 ####### ``sort / stable_sort``
 
@@ -240,11 +278,110 @@ looking for a 6... not found.
 
 ##### ``include <map>``
 
-##### ``include <priority_queue>``
+##### ``include <list>`` double linked list
+
+```C++
+
+```
+
+
+##### ``include <dequeue>``
 
 ##### ``include <queue>``
 
+####### ``queue``
+
+```C++
+// constructor
+queue<int> my_queue;
+queue<int, list<int> > my_queue (my_list); // use list<int> as container, copy my_list into my_queue
+
+void queue::push(const value_type& val);
+void queue::pop();
+bool queue::empty() const;
+size_type queue::size() const;
+const_reference& queue::front() const;
+```
+
+####### ``priority_queue``
+
+```C++
+// constructor
+priority_queue<int> my_priority_queue;
+priority_queue<int, vector<int>, greater<int> > two_priority_queue; // if use greater<int>, must have vector<int>
+priority_queue<My_type, vector<My_type>, Comparator_class> my_priority_queue (my_data.begin(), my_data.end()); // use Comparator_class as comparator, use vector<My_type> as container, copy my_data into my_priority_queue
+
+bool priority_queue::empty() const; // return true if empty, false if not
+size_type priority_queue::size() const; // return size of queue
+const_reference priority_queue::top() const; // returns a constant reference to the top element
+void priority_queue::push(const value_type& val); // inserts a new element, initialize to val
+void priority_queue::pop(); // removes the element on top
+```
+```C++
+struct My_type {
+    int weight;
+    int other;
+};
+
+struct My_class_for_compare {
+    public:
+        bool operator() (My_type a, My_type b) {
+            return a.weight < b.weight;
+        }
+};
+
+vector<My_type> my_vector = {(My_type){2, 789}, (My_type){1, 127}, (My_type){3, 456}};
+
+priority_queue<My_type, vector<My_type>, My_class_for_compare> one_priority_queue (my_vector.begin(), my_vector.end());
+one_priority_queue.push((My_type){4, 483});
+while (one_priority_queue.size() != 0) {
+    My_type temp = one_priority_queue.top();
+    one_priority_queue.pop();
+    SHOW_B(temp.weight, temp.other);
+}
+
+vector<int> my_int = {2, 3, 1};
+
+priority_queue<int, vector<int>, greater<int> > two_priority_queue (my_int.begin(), my_int.end());
+while (two_priority_queue.size() != 0) {
+    SHOW_A(two_priority_queue.top());
+    two_priority_queue.pop();
+}
+
+priority_queue<int> three_priority_queue (my_int.begin(), my_int.end());
+while (three_priority_queue.size() != 0) {
+    SHOW_A(three_priority_queue.top());
+    three_priority_queue.pop();
+}
+
+
+// output
+// temp.weight = 4, temp.other = 483
+// temp.weight = 3, temp.other = 456
+// temp.weight = 2, temp.other = 789
+// temp.weight = 1, temp.other = 127
+// two_priority_queue.top() = 1
+// two_priority_queue.top() = 2
+// two_priority_queue.top() = 3
+// three_priority_queue.top() = 3
+// three_priority_queue.top() = 2
+// three_priority_queue.top() = 1
+```
+
+
+
 ##### ``include <stack>``
+
+```C++
+// constructor, use vector<int> as container, copy my_data into my_stack
+stack<int, vector<int> > my_stack (my_data);
+
+bool stack::empty() const;
+size_type stack::size() const;
+const_reference& stack::top() const;
+void stack::push (const value_type& val);
+void stack::pop();
+```
 
 ##### ``string``
 
@@ -374,7 +511,7 @@ int main() {
  
 ##### 最小费用最大流 ?
 
-##### 强连通分量 图的 割点, 桥, 双连通分支
+##### 强连通分量 图的 割点, 桥, 双连通分支 ``https://www.byvoid.com/blog/biconnect``
 
 ##### 拓扑排序
 
@@ -421,6 +558,11 @@ int gcd();
 
 ### 计算几何
 
+##### template class for Point?
+
+```C++
+```
+
 ##### 向量点乘 叉乘
 
 ##### 直线公式
@@ -433,6 +575,98 @@ int gcd();
 
 ####### Graham scan
 ```C++
+struct Point {
+    long x;
+    long y;
+
+    bool at_right_of(Point& that, Point& base) {
+        Point vec_self = {this->x - base.x, this->y - base.y};
+        Point vec_that = {that.x - base.x, that.y - base.y};
+
+        long product = vec_self * vec_that;
+        if (product > 0)
+            return true; // "this" is at right of "that"
+        if (product == 0 && vec_self.length() > vec_that.length())
+            return true; // "this" is at right of "that"
+        return false; // "this" is NOT at right of "that"
+    };
+    long operator* (Point& that) {
+        return this->x * that.y - this->y * that.x;
+    };
+    double distance_to(Point& that) {
+        long x_diff = this->x - that.x;
+        long y_diff = this->y - that.y;
+        return sqrt(x_diff * x_diff + y_diff * y_diff);
+    };
+    double length() {
+        return sqrt(this->x * this->x + this->y * this->y);
+    }
+};
+
+Point p[1005];
+int my_stack[1005];
+int n, l, my_stack_top = -1;
+
+bool compare(Point p1, Point p2) {
+    return p1.at_right_of(p2, p[0]);
+}
+
+void push(int index) {
+    my_stack[++my_stack_top] = index;
+}
+int pop() {
+    int temp = my_stack[my_stack_top--];
+    return temp;
+}
+
+void graham_scan() {
+    push(0);
+    push(1);
+
+    int pre;
+    int prepre;
+    for (int i = 2; i < n; i++) {
+        pre = my_stack_top;
+        prepre = my_stack_top - 1;
+        while (p[i].at_right_of(p[my_stack[pre]], p[my_stack[prepre]])) {
+            pop();
+            if (my_stack_top == 0)
+                break;
+            pre = my_stack_top;
+            prepre = my_stack_top - 1;
+        }
+        push(i);
+    }
+
+    int last = my_stack_top;
+    if (p[0].at_right_of(p[my_stack[last]], p[my_stack[pre]]))
+        pop();
+}
+
+int main(int argc, char const *argv[]) {
+    cin >> n >> l;
+    
+    int minimun = 0;
+    for (int i = 0; i < n; ++i) {
+        int temp_x, temp_y;
+        cin >> temp_x >> temp_y;
+        p[i] = {temp_x, temp_y};
+
+        if ((p[i].y < p[minimun].y) || (p[i].y == p[minimun].y && p[i].x < p[minimun].x))
+            minimun = i;
+    }
+
+    Point temp = {p[minimun].x, p[minimun].y}; // swap lowest and most left point to p[0]
+    p[minimun] = p[0];
+    p[0] = temp;
+
+    sort(p + 1, p + n, compare); // use p[0] as base, sort according to polar angle
+    graham_scan();
+    // now all points in the stack is on Convex Hull // size of stack = 1 + stack_top
+
+    for (int i = 0; i <= my_stack_top; i++)
+        cout << "point " << my_stack[i] << " is on Convex Hull" << endl;
+}
 ```
 
 
@@ -447,6 +681,7 @@ int gcd();
 
 ####### Fast Exponention
 
+##### 迭代加深搜索 (+ binary increase/decrease)
 
 ##### 双向 BFS
 
