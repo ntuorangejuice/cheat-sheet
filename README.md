@@ -6,8 +6,8 @@
 
 ```c++
 #include <iostream>
-#include <string>
 #include <cstring>
+#include <cmath>
 #include <algorithm>
 #include <climits>
 #include <stack>
@@ -15,17 +15,18 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <list>
 
 /*
  * n: number
  * i: LSB starting from 1
  */
+#define GET_BIT(n, i) (((n) & (1 << ((i)-1))) >> ((i)-1))
 #define SET_BIT(n, i) ((n) | (1 << ((i)-1)))
 #define CLR_BIT(n, i) ((n) & ~(1 << ((i)-1)))
-#define GET_BIT(n, i) (((n) & (1 << ((i)-1))) >> ((i)-1))
 #define SHOW_A(x) {cout << #x << " = " << x << endl;}
-#define SHOWSHOW_B(x, y) {cout << #x << " = " << x << ", " << #y << " = " << y << endl;}
-#define SHOWSHOWSHOW_C(x, y, z) {cout << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;}
+#define SHOW_B(x, y) {cout << #x << " = " << x << ", " << #y << " = " << y << endl;}
+#define SHOW_C(x, y, z) {cout << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;}
 #define REACH_HERE {cout << "REACH_HERE!" << endl;}
 
 const double E = 1e-8;
@@ -138,11 +139,46 @@ string target = string(arr);
 
 ####### ``next_permutation / pre_permutation``
 
+```C++
+bool next_permutation (BidirectionalIterator first, BidirectionalIterator last); // use operator<
+// return true if now is larger than previous, false if now is initial permutation
+bool next_permutation (BidirectionalIterator first, BidirectionalIterator last, Compare comp);
+```
+
+```C++
+int n = 3; int a[3] = {1,2,3};
+// cout ...
+while (next_permutation(a, a + n))
+    // cout ...
+cout << "return false: (go back)" << endl;
+// cout ...
+
+// output:
+// 1 2 3
+// 1 3 2
+// 2 1 3
+// 2 3 1
+// 3 1 2
+// 3 2 1
+// return false: (go back)
+// 1 2 3
+```
+
 ####### ``binary_search``
+
+``// first...last should be sorted using operator< or comp
+``bool binary_search (ForwardIterator first, ForwardIterator last, const T& val);``
+``// return true if found, false if not
+``bool binary_search (ForwardIterator first, ForwardIterator last, const T& val, Compare comp);``
 
 ####### ``swap / iter_swap``
 
+
+
 ####### ``make_heap / pop heap / push heap / sort_heap``
+```C++
+// use priority_queue
+```
 
 ####### ``sort / stable_sort``
 
@@ -150,11 +186,110 @@ string target = string(arr);
 
 ##### ``include <map>``
 
-##### ``include <priority_queue>``
+##### ``include <list>`` double linked list
+
+```C++
+
+```
+
+
+##### ``include <dequeue>``
 
 ##### ``include <queue>``
 
+####### ``queue``
+
+```C++
+// constructor
+queue<int> my_queue;
+queue<int, list<int> > my_queue (my_list); // use list<int> as container, copy my_list into my_queue
+
+void queue::push(const value_type& val);
+void queue::pop();
+bool queue::empty() const;
+size_type queue::size() const;
+const_reference& queue::front() const;
+```
+
+####### ``priority_queue``
+
+```C++
+// constructor
+priority_queue<int> my_priority_queue;
+priority_queue<int, vector<int>, greater<int> > two_priority_queue; // if use greater<int>, must have vector<int>
+priority_queue<My_type, vector<My_type>, Comparator_class> my_priority_queue (my_data.begin(), my_data.end()); // use Comparator_class as comparator, use vector<My_type> as container, copy my_data into my_priority_queue
+
+bool priority_queue::empty() const; // return true if empty, false if not
+size_type priority_queue::size() const; // return size of queue
+const_reference priority_queue::top() const; // returns a constant reference to the top element
+void priority_queue::push(const value_type& val); // inserts a new element, initialize to val
+void priority_queue::pop(); // removes the element on top
+```
+```C++
+struct My_type {
+    int weight;
+    int other;
+};
+
+struct My_class_for_compare {
+    public:
+        bool operator() (My_type a, My_type b) {
+            return a.weight < b.weight;
+        }
+};
+
+vector<My_type> my_vector = {(My_type){2, 789}, (My_type){1, 127}, (My_type){3, 456}};
+
+priority_queue<My_type, vector<My_type>, My_class_for_compare> one_priority_queue (my_vector.begin(), my_vector.end());
+one_priority_queue.push((My_type){4, 483});
+while (one_priority_queue.size() != 0) {
+    My_type temp = one_priority_queue.top();
+    one_priority_queue.pop();
+    SHOW_B(temp.weight, temp.other);
+}
+
+vector<int> my_int = {2, 3, 1};
+
+priority_queue<int, vector<int>, greater<int> > two_priority_queue (my_int.begin(), my_int.end());
+while (two_priority_queue.size() != 0) {
+    SHOW_A(two_priority_queue.top());
+    two_priority_queue.pop();
+}
+
+priority_queue<int> three_priority_queue (my_int.begin(), my_int.end());
+while (three_priority_queue.size() != 0) {
+    SHOW_A(three_priority_queue.top());
+    three_priority_queue.pop();
+}
+
+
+// output
+// temp.weight = 4, temp.other = 483
+// temp.weight = 3, temp.other = 456
+// temp.weight = 2, temp.other = 789
+// temp.weight = 1, temp.other = 127
+// two_priority_queue.top() = 1
+// two_priority_queue.top() = 2
+// two_priority_queue.top() = 3
+// three_priority_queue.top() = 3
+// three_priority_queue.top() = 2
+// three_priority_queue.top() = 1
+```
+
+
+
 ##### ``include <stack>``
+
+```C++
+// constructor, use vector<int> as container, copy my_data into my_stack
+stack<int, vector<int> > my_stack (my_data);
+
+bool stack::empty() const;
+size_type stack::size() const;
+const_reference& stack::top() const;
+void stack::push (const value_type& val);
+void stack::pop();
+```
 
 ##### ``string``
 
