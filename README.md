@@ -1,5 +1,8 @@
 # Orange Juice - ACM-ICPC Cheat Sheet
 
+:balloon::balloon::balloon:
+:fried_shrimp::sushi::fish_cake::rice_ball::rice_cracker::ramen:
+
 ## Basic
 
 ### C++ Solution Template
@@ -276,7 +279,9 @@ bool binary_search (ForwardIterator first, ForwardIterator last, const T& val, C
 
 
 
-##### ``include <map>``
+##### ``include <map> // red black tree``
+
+##### ``include <unordered_map> // hash map``
 
 ##### ``include <list>`` double linked list
 
@@ -460,6 +465,8 @@ long    longValue() // converts this BigInteger to a long.
 ##### Trie
 
 ##### Segment Tree
+
+##### Range Minimum Query RMQ
 
 ##### Union-find Set 冰茶鸡
 
@@ -765,7 +772,22 @@ bool is_prime(int n) {
 ##### 进制转换
 
 ```C++
+void convert_dec_to_base(int n, const int base) {
+    if (n == 0)
+        cout << 0 << endl;
+    while (n != 0) {
+        int e = n % base;
+        cout << e << " "; // printing in reverse order
+        n /= base;
+    } cout << endl;
+}
 
+int convert_base_to_dec(const int s[], const int len, const int base) {
+    int result = 0;
+    for (int i = 0; i < len; i++)
+        result = result * base + s[i];
+    return result;
+}
 ```
 
 ##### 。。。
@@ -1024,3 +1046,7 @@ for (int k = 3; k*k <= UP_LIMIT; k++) // start from 9, end at sqrt
             is_prime[i] = 0;
 ```
 
+
+
+/play unix
+/play yeah
