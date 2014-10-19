@@ -75,7 +75,7 @@ Output
 
 * get one line
 
-```c++
+```C++
 string a;
 getline(cin, a);
 cout << a << endl;
@@ -94,7 +94,7 @@ Hello World!!!
 
 #### Convert to char array
 
-```c++
+```C++
 string cppstr = "this is a string";
 char target[1024];
 strcpy(target, cppstr.c_str());
@@ -138,15 +138,15 @@ string target = string(arr);
 
 ### Algorithm
 
-```
-include <algorithm>
+```C++
+#include <algorithm>
 ```
 
 #### Permutation
 
 next_permutation
 
-```
+```C++
 // next_permutation example
 #include <iostream>     // std::cout
 #include <algorithm>    // std::next_permutation, std::sort
@@ -182,7 +182,7 @@ After loop: 1 2 3
 
 #### Binary Search
 
-```
+```C++
 bool binary_search (ForwardIterator first, ForwardIterator last,
                       const T& val);
 bool binary_search (ForwardIterator first, ForwardIterator last,
@@ -190,7 +190,7 @@ bool binary_search (ForwardIterator first, ForwardIterator last,
 ```
 
 
-```
+```C++
 // binary_search example
 #include <iostream>     // std::cout
 #include <algorithm>    // std::binary_search, std::sort
@@ -755,10 +755,10 @@ total = (x1 + 1) * (x2 + 1) * ... * (xn + 1)
 
 ##### 素数判定
 
-```
+```C++
 // 大于 3 的质数可以被表示为 6n - 1 或 6n + 1
 ```
-```
+```C++
 bool is_prime(int n) {
     if (n == 1 || n % 2 == 0)
         return false;  
