@@ -1,7 +1,8 @@
 # Orange Juice - ACM-ICPC Cheat Sheet
 
 :balloon::balloon::balloon:
-:fried_shrimp::sushi::fish_cake::rice_ball::rice_cracker::ramen:
+
+:fried_shrimp::sushi::fish_cake::rice_ball::rice_cracker:
 
 ## Basic
 
@@ -1049,4 +1050,5 @@ for (int k = 3; k*k <= UP_LIMIT; k++) // start from 9, end at sqrt
 
 
 /play unix
+
 /play yeah
