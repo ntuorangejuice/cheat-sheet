@@ -395,6 +395,52 @@ void stack::pop();
 
 ### Java BigInteger & BigDecimal
 
+##### BigInteger
+
+```java
+import java. math. BigInteger;
+```
+```java
+//Constructor and Description
+BigInteger(String val) // translates the decimal String representation of a BigInteger into a BigInteger.
+BigInteger(String val, int radix) // translates the String representation of a BigInteger in the specified radix into a BigInteger.
+
+//Modifier and Type   Method and Description
+BigInteger  abs() // returns a BigInteger whose value is the absolute value of this BigInteger.
+
+BigInteger  add(BigInteger val) // returns a BigInteger whose value is (this + val).
+BigInteger  subtract(BigInteger val)
+BigInteger  multiply(BigInteger val)
+BigInteger  divide(BigInteger val)
+BigInteger  pow(int exponent) // returns a BigInteger whose value is (thisexponent).
+
+BigInteger  and(BigInteger val) // returns a BigInteger whose value is (this & val).
+BigInteger  or(BigInteger val)
+BigInteger  not()
+
+BigInteger  shiftLeft(int n) // returns a BigInteger whose value is (this << n).
+BigInteger  shiftRight(int n)
+
+BigInteger  mod(BigInteger m) // returns a BigInteger whose value is (this mod m).
+BigInteger  remainder(BigInteger val) // returns a BigInteger whose value is (this % val).
+BigInteger  gcd(BigInteger val) // returns a BigInteger whose value is the greatest common divisor of abs(this) and abs(val).
+
+BigInteger  max(BigInteger val) // returns the maximum of this BigInteger and val.
+BigInteger  min(BigInteger val)
+
+int compareTo(BigInteger val) // compares this BigInteger with the specified BigInteger.
+String  toString(int radix) // returns the String representation of this BigInteger in the given radix.
+static BigInteger   valueOf(long val) // returns a BigInteger whose value is equal to that of the specified long.
+long    longValue() // converts this BigInteger to a long.
+```
+
+
+##### BigDecimal
+
+```java
+
+```
+
 
 
 
@@ -718,6 +764,10 @@ bool is_prime(int n) {
 
 ##### 进制转换
 
+```C++
+
+```
+
 ##### 。。。
 
 
@@ -851,6 +901,22 @@ int main(int argc, char const *argv[]) {
 
 ### Tricks / 分析方法
 
+##### recursive
+
+####### Hanoi
+
+```C++
+void hanoi(int n, char x, char y, char z) { // 将 x 上编号 1 至 n 的圆盘移到 z, y 作辅助塔
+    if (n == 1)
+        printf("%d from %c to %c\n", n, x, z); // 将编号为 n 的圆盘从 x 移到 z
+    else {
+        hanoi(n-1, x, z, y); // 将 x 上编号 1 至 n-1 的圆盘移到 y, z 作辅助塔
+        printf("%d from %c to %c\n", n, x, z); // 将编号为 n 的圆盘从 x 移到 z
+        hanoi(n-1, y, x, z); // 将 y 上编号 1 至 n-1 的圆盘移到 z, x 作辅助塔
+    }
+}
+```
+
 ##### Dynamic Programming
 
 ####### 树上的
@@ -932,7 +998,7 @@ void reverse_cantor_expansion(int n, long long m) {
 
 ```C++
 // NEED VERIFY
-int power_modulo(int n, int p, int M) {  
+int power_modulo(int n, int p, int M) { // n ^ p % M
     int result = 1;
     while (p > 0) {
         if (p % 2 == 1)
@@ -941,7 +1007,6 @@ int power_modulo(int n, int p, int M) {
         n = (n*n) % M;
     }
     return result;
-
 }
 ```
 
