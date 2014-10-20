@@ -238,6 +238,30 @@ looking for a 3... found!
 looking for a 6... not found.
 ```
 
+#### Lower Bound
+
+Returns an iterator pointing to the first element in the range [first,last) which does not compare less than val.
+
+Usage
+
+```c++
+ForwardIterator lower_bound (ForwardIterator first, ForwardIterator last,
+                             const T& val);
+ForwardIterator lower_bound (ForwardIterator first, ForwardIterator last,
+                             const T& val, Compare comp);
+```
+
+`binary_search` is defined by:
+
+```c++
+template <class ForwardIterator, class T>
+  bool binary_search (ForwardIterator first, ForwardIterator last, const T& val)
+{
+  first = std::lower_bound(first,last,val);
+  return (first!=last && !(val<*first));
+}
+```
+
 #### Swap
 
 Usage
