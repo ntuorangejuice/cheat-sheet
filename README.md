@@ -231,16 +231,9 @@ void swap (T& a, T& b);
 void iter_swap (ForwardIterator1 a, ForwardIterator2 b);
 ```
 
-# do we need example? (easily understand from interface)
+`iter_swap` example
 
-Example
 ```C++
-int x=10, y=20;                              // x:10 y:20
-std::swap(x,y);                              // x:20 y:10
-
-std::vector<int> foo (4,x), bar (6,y);       // foo:4x20 bar:6x10
-std::swap(foo,bar);                          // foo:6x10 bar:4x20
-
 int myints[]={10,20,30,40,50 };              //   myints:  10  20  30  40  50
 std::vector<int> myvector (4,99);            // myvector:  99  99  99  99
 
@@ -253,8 +246,9 @@ std::iter_swap(myints+3,myvector.begin()+2); //   myints:  99  20  30 [99] 50
 
 #### Heap
 
-# not completed
-# TODO add method and example to maintain the size of vector
+// not completed
+
+// TODO add method and example to maintain the size of vector
 
 * make_heap: Rearranges the elements in the range [first,last) in such a way that they form a heap. The element with the highest value is always pointed by first.
 * pop_heap: Rearranges the elements in the heap range [first,last) in such a way that the part considered a heap is shortened by one: The element with the highest value is moved to (last-1).
@@ -290,9 +284,9 @@ void stable_sort ( RandomAccessIterator first, RandomAccessIterator last,
 
 ##### Compare function
 
-# some support function pointer, some support both, we keeping using one?
-
 Binary function that accepts two elements in the range as arguments, and returns a value convertible to bool. It should returns true if the first element is considered to be "smaller" than the second one.
+
+Using by `sort`, `make_heap` and etc.
 
 ```c++
 bool myfunction (int i,int j) { return (i<j); }
@@ -313,8 +307,6 @@ struct Edge
 
 ##### Define operator()()
 
-# some support function pointer, some support both, we keeping using one?
-
 You can use comparison function for STL containers by passing them as the first argument of the constructor, and specifying the function type as the additional template argument. For example:
 
 ```c++
@@ -334,9 +326,11 @@ set<int, cmp> s;
 priority_queue<int, vector<int>, cmp> pq;
 ```
 
+Using by `priority_queue `.
+
 ### Map
 
-# TODO add interface
+// TODO add interface
 
 Maps are associative containers that store elements formed by a combination of a key value and a mapped value, following a specific order.
 
@@ -358,7 +352,7 @@ template < class Key,                                     // map::key_type
 
 #### Unordered Map
 
-# TODO add interface
+// TODO add interface
 
 Unordered maps are associative containers that store elements formed by the combination of a key value and a mapped value, and which allows for fast retrieval of individual elements based on their keys.
 
@@ -374,19 +368,7 @@ template < class Key,                                    // unordered_map::key_t
 
 #### Red-black Tree
 
-A red–black tree is a data structure which is a type of self-balancing binary search tree.
-
-In addition to the requirements imposed on a binary search tree the following must be satisfied by a red–black tree:
-
-1. A node is either red or black.
-2. The root is black. (This rule is sometimes omitted. Since the root can always be changed from red to black, but not necessarily vice-versa, this rule has little effect on analysis.)
-3. All leaves (NIL) are black. (All leaves are same color as the root.)
-4. Every red node must have two black child nodes.
-5. Every path from a given node to any of its descendant leaves contains the same number of black nodes.
-
-Note: 这个要不要删掉 >.<
-
-# 好 (very hard to code, very hard to understand, limited performance improve)
+Red–black tree is not described here because it is very hard to code, very hard to understand, with limited performance improve.
 
 ### Standard Template Library
 
