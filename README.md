@@ -144,7 +144,15 @@ string target = string(arr);
 
 #### Permutation
 
-next_permutation
+Usage
+```c++
+bool next_permutation (BidirectionalIterator first,
+                         BidirectionalIterator last);
+bool next_permutation (BidirectionalIterator first,
+                         BidirectionalIterator last, Compare comp);
+```
+
+Example
 
 ```C++
 // next_permutation example
@@ -182,6 +190,8 @@ After loop: 1 2 3
 
 #### Binary Search
 
+Usage
+
 ```C++
 bool binary_search (ForwardIterator first, ForwardIterator last,
                       const T& val);
@@ -189,6 +199,7 @@ bool binary_search (ForwardIterator first, ForwardIterator last,
                       const T& val, Compare comp);
 ```
 
+Example
 
 ```C++
 // binary_search example
@@ -225,6 +236,15 @@ Output
 ```
 looking for a 3... found!
 looking for a 6... not found.
+```
+
+#### Swap
+
+Usage
+
+```c++
+void swap (T& a, T& b);
+void iter_swap (ForwardIterator1 a, ForwardIterator2 b);
 ```
 
 ### Standard Template Library
