@@ -149,10 +149,8 @@ string target = string(arr);
 
 Usage
 ```c++
-bool next_permutation (BidirectionalIterator first,
-                         BidirectionalIterator last);
-bool next_permutation (BidirectionalIterator first,
-                         BidirectionalIterator last, Compare comp);
+bool next_permutation (BidirectionalIterator first, BidirectionalIterator last);
+bool next_permutation (BidirectionalIterator first, BidirectionalIterator last, Compare comp);
 ```
 
 Example
@@ -196,11 +194,12 @@ After loop: 1 2 3
 Usage
 
 ```C++
-bool binary_search (ForwardIterator first, ForwardIterator last,
-                      const T& val);
-bool binary_search (ForwardIterator first, ForwardIterator last,
-                      const T& val, Compare comp);
+bool binary_search (ForwardIterator first, ForwardIterator last, const T& val, Compare comp);
+// return true if found, false if not
 ```
+
+# do we need example? (easily understand)
+# add ``// return true if found, false if not``
 
 Example
 
@@ -240,6 +239,8 @@ Output
 looking for a 3... found!
 looking for a 6... not found.
 ```
+
+# is it necessary? (not useful, easy to code)
 
 #### Lower Bound
 
@@ -302,18 +303,10 @@ std::iter_swap(myints+3,myvector.begin()+2); //   myints:  99  20  30 [99] 50
 Usage
 
 ```c++
-void make_heap (RandomAccessIterator first, RandomAccessIterator last);
-void make_heap (RandomAccessIterator first, RandomAccessIterator last,
-                Compare comp );
-void pop_heap (RandomAccessIterator first, RandomAccessIterator last);
-void pop_heap (RandomAccessIterator first, RandomAccessIterator last,
-               Compare comp);
-void push_heap (RandomAccessIterator first, RandomAccessIterator last);
-void push_heap (RandomAccessIterator first, RandomAccessIterator last,
-                Compare comp);
-void sort_heap (RandomAccessIterator first, RandomAccessIterator last);
-void sort_heap (RandomAccessIterator first, RandomAccessIterator last,
-                Compare comp);
+void make_heap (RandomAccessIterator first, RandomAccessIterator last, Compare comp);
+void pop_heap (RandomAccessIterator first, RandomAccessIterator last, Compare comp);
+void push_heap (RandomAccessIterator first, RandomAccessIterator last, Compare comp);
+void sort_heap (RandomAccessIterator first, RandomAccessIterator last); Compare comp);
 ```
 
 Note: Priority queue is more recoomeneded.
@@ -367,10 +360,8 @@ A functor, or a function object, is an object that can behave like a function. T
 
 ```c++
 vector<int> occurrences;
-struct cmp
-{
-    bool operator()(int a, int b)
-    {
+struct cmp {
+    bool operator()(int a, int b) {
         return occurrences[a] < occurrences[b];
     }
 };
