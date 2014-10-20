@@ -73,7 +73,7 @@ Output
 
 #### read one line
 
-* get one line
+* getline()
 
 ```C++
 string a;
@@ -105,7 +105,7 @@ strcpy(target, cppstr.c_str());
 
 #### Input C String
 
-* gets
+* gets()
 
 Reads characters from the standard input (stdin) and stores them as a C string into str until a newline character or the end-of-file is reached.
 
@@ -132,8 +132,11 @@ Note: There is a space in front of "world", which will be part of the string.
 However, using gets() is "unsafe", but we are not to discuss the details here.
 
 #### Convert to C++ string
+
+```c++
 char arrstr[] = "this is a string";
 string target = string(arr);
+```
 
 
 ### Algorithm
@@ -375,11 +378,55 @@ set<int, cmp> s;
 priority_queue<int, vector<int>, cmp> pq;
 ```
 
+### Map
+
+Maps are associative containers that store elements formed by a combination of a key value and a mapped value, following a specific order.
+
+```c++
+#include <map>
+```
+
+#### Define a Map
+
+```c++
+template < class Key,                                     // map::key_type
+           class T,                                       // map::mapped_type
+           class Compare = less<Key>,                     // map::key_compare
+           class Alloc = allocator<pair<const Key,T> >    // map::allocator_type
+           > class map;
+```
+
+#### Commonly used method
+
+#### Unordered Map
+
+Unordered maps are associative containers that store elements formed by the combination of a key value and a mapped value, and which allows for fast retrieval of individual elements based on their keys.
+
+```c++
+template < class Key,                                    // unordered_map::key_type
+           class T,                                      // unordered_map::mapped_type
+           class Hash = hash<Key>,                       // unordered_map::hasher
+           class Pred = equal_to<Key>,                   // unordered_map::key_equal
+           class Alloc = allocator< pair<const Key,T> >  // unordered_map::allocator_type
+           > class unordered_map;
+
+```
+
+#### Red-black Tree
+
+A red–black tree is a data structure which is a type of self-balancing binary search tree.
+
+In addition to the requirements imposed on a binary search tree the following must be satisfied by a red–black tree:
+
+1. A node is either red or black.
+2. The root is black. (This rule is sometimes omitted. Since the root can always be changed from red to black, but not necessarily vice-versa, this rule has little effect on analysis.)
+3. All leaves (NIL) are black. (All leaves are same color as the root.)
+4. Every red node must have two black child nodes.
+5. Every path from a given node to any of its descendant leaves contains the same number of black nodes.
+
+Note: 这个要不要删掉 >.<
 
 ### Standard Template Library
-
-####### ``sort / stable_sort``
-
 
 ##### ``include <map> // red black tree``
 
