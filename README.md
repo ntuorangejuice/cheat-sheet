@@ -370,16 +370,35 @@ template < class Key,                                    // unordered_map::key_t
 
 ### Vector
 
+#### Constructor
+```c++
+std::vector<int> second (4,100);  // four ints with value 100
+```
+
+#### Methods
+
+* begin(), end()
+* front(), back()
+* clear()
+* size()
+* push_back(const value_type& val)
+* pop_back()
+
 ### List
 
-* begin()
-* back()
-* end()c* clear()
+List containers are implemented as doubly-linked lists.
+
+#### Methods
+
+* begin(), end()
+* front(), back()
+* clear()
 * push_front(const value_type& val)
 * push_back(const value_type& val)
 * pop_front(): remove the first element.
 * pop_back(): remove the last element.
 * remove(const value_type& val): remove all elements of value val.
+* insert(iterator position, const value_type& val)
 * size()
 * reverse()
 * sort(), sort (Compare comp)
