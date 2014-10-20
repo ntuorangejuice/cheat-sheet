@@ -289,15 +289,72 @@ void sort_heap (RandomAccessIterator first, RandomAccessIterator last,
                 Compare comp);
 ```
 
-### Standard Template Library
+Note: Priority queue is more recoomeneded.
 
-####### ``make_heap / pop heap / push heap / sort_heap``
-```C++
-// use priority_queue
+#### Sort
+
+Sorts the elements in the range [first,last) into ascending order.
+`stable_sort` preserves the relative order of the elements with equivalent values.
+
+Usage
+```c++
+void sort (RandomAccessIterator first, RandomAccessIterator last);
+void sort (RandomAccessIterator first, RandomAccessIterator last, Compare comp);
+void stable_sort ( RandomAccessIterator first, RandomAccessIterator last );
+void stable_sort ( RandomAccessIterator first, RandomAccessIterator last,
+                   Compare comp );
 ```
 
-####### ``sort / stable_sort``
+#### Compare
 
+##### Compare function
+
+Binary function that accepts two elements in the range as arguments, and returns a value convertible to bool. It should returns true if the first element is considered to be "smaller" than the second one.
+
+```c++
+bool myfunction (int i,int j) { return (i<j); }
+```
+
+##### Define operator <()
+
+```c++
+struct Edge
+{
+    int from, to, weight;
+    friend bool operator<(Edge a, Edge b)
+    {
+        return a.weight > b.weight;
+    }
+};
+```
+
+##### Define operator()()
+
+You can use comparison function for STL containers by passing them as the first argument of the constructor, and specifying the function type as the additional template argument. For example:
+
+```c++
+set<int, bool (*)(int, int)> s(cmp);
+```
+
+A functor, or a function object, is an object that can behave like a function. This is done by defining operator()() of the class. In this case, implement operator()() as a comparison function:
+
+```c++
+vector<int> occurrences;
+struct cmp
+{
+    bool operator()(int a, int b)
+    {
+        return occurrences[a] < occurrences[b];
+    }
+};
+set<int, cmp> s;
+priority_queue<int, vector<int>, cmp> pq;
+```
+
+
+### Standard Template Library
+
+####### ``sort / stable_sort``
 
 
 ##### ``include <map> // red black tree``
