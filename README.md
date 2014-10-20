@@ -275,6 +275,8 @@ void swap (T& a, T& b);
 void iter_swap (ForwardIterator1 a, ForwardIterator2 b);
 ```
 
+# do we need example? (easily understand from interface)
+
 Example
 ```C++
 int x=10, y=20;                              // x:10 y:20
@@ -294,6 +296,9 @@ std::iter_swap(myints+3,myvector.begin()+2); //   myints:  99  20  30 [99] 50
 ```
 
 #### Heap
+
+# not completed
+# TODO add method and example to maintain the size of vector
 
 * make_heap: Rearranges the elements in the range [first,last) in such a way that they form a heap. The element with the highest value is always pointed by first.
 * pop_heap: Rearranges the elements in the heap range [first,last) in such a way that the part considered a heap is shortened by one: The element with the highest value is moved to (last-1).
@@ -329,6 +334,8 @@ void stable_sort ( RandomAccessIterator first, RandomAccessIterator last,
 
 ##### Compare function
 
+# some support function pointer, some support both, we keeping using one?
+
 Binary function that accepts two elements in the range as arguments, and returns a value convertible to bool. It should returns true if the first element is considered to be "smaller" than the second one.
 
 ```c++
@@ -349,6 +356,8 @@ struct Edge
 ```
 
 ##### Define operator()()
+
+# some support function pointer, some support both, we keeping using one?
 
 You can use comparison function for STL containers by passing them as the first argument of the constructor, and specifying the function type as the additional template argument. For example:
 
@@ -371,6 +380,8 @@ priority_queue<int, vector<int>, cmp> pq;
 
 ### Map
 
+# TODO add interface
+
 Maps are associative containers that store elements formed by a combination of a key value and a mapped value, following a specific order.
 
 ```c++
@@ -390,6 +401,8 @@ template < class Key,                                     // map::key_type
 #### Commonly used method
 
 #### Unordered Map
+
+# TODO add interface
 
 Unordered maps are associative containers that store elements formed by the combination of a key value and a mapped value, and which allows for fast retrieval of individual elements based on their keys.
 
@@ -416,6 +429,8 @@ In addition to the requirements imposed on a binary search tree the following mu
 5. Every path from a given node to any of its descendant leaves contains the same number of black nodes.
 
 Note: 这个要不要删掉 >.<
+
+# 好 (very hard to code, very hard to understand, limited performance improve)
 
 ### Standard Template Library
 
