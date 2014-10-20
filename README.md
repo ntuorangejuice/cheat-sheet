@@ -623,7 +623,7 @@ long    longValue() // converts this BigInteger to a long.
 #### Kruskal
 
 
-#### Shortest Path
+### Shortest Path
 
 #### 任意两点
 
@@ -637,14 +637,17 @@ for ()
 
 #### Dijkstra
 
+### Augmenting Path Algorithm (增广路)
 
-### 二分图
+### Bipartite Graph (二分图)
 
 1. A graph is bipartite if and only if it does not contain an odd cycle.
 2. A graph is bipartite if and only if it is 2-colorable, (i.e. its chromatic number is less than or equal to 2).
 3. The spectrum of a graph is symmetric if and only if it's a bipartite graph.
 
-### 最大流
+### Maximum Flow Problem (最大流)
+
+### Minimum-Cost Maximum-Flow Problem (最小费用最大流问题)
 
 #### Dinic
 ``` C++
