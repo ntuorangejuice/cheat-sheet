@@ -366,6 +366,20 @@ template < class Key,                                    // unordered_map::key_t
 
 ```
 
+### Pair
+
+### List
+
+### Queue
+
+#### Double-ended Queue
+
+### Stack
+
+### Vector
+
+### Iterator
+
 #### Red-black Tree
 
 Red–black tree is not described here because it is very hard to code, very hard to understand, with limited performance improve.
