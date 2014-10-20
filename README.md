@@ -265,49 +265,31 @@ std::iter_swap(myints+3,myvector.begin()+2); //   myints:  99  20  30 [99] 50
                                              // myvector:  10  99 [40] 99
 ```
 
+#### Heap
+
+* make_heap: Rearranges the elements in the range [first,last) in such a way that they form a heap. The element with the highest value is always pointed by first.
+* pop_heap: Rearranges the elements in the heap range [first,last) in such a way that the part considered a heap is shortened by one: The element with the highest value is moved to (last-1).
+* push_heap: Given a heap in the range [first,last-1), this function extends the range considered a heap to [first,last) by placing the value in (last-1) into its corresponding location within it.
+* sort_heap: Sorts the elements in the heap range [first,last) into ascending order.
+
+Usage
+
+```c++
+void make_heap (RandomAccessIterator first, RandomAccessIterator last);
+void make_heap (RandomAccessIterator first, RandomAccessIterator last,
+                Compare comp );
+void pop_heap (RandomAccessIterator first, RandomAccessIterator last);
+void pop_heap (RandomAccessIterator first, RandomAccessIterator last,
+               Compare comp);
+void push_heap (RandomAccessIterator first, RandomAccessIterator last);
+void push_heap (RandomAccessIterator first, RandomAccessIterator last,
+                Compare comp);
+void sort_heap (RandomAccessIterator first, RandomAccessIterator last);
+void sort_heap (RandomAccessIterator first, RandomAccessIterator last,
+                Compare comp);
+```
+
 ### Standard Template Library
-
-##### ``include <algorithm>``
-
-####### ``next_permutation / pre_permutation``
-
-```C++
-bool next_permutation (BidirectionalIterator first, BidirectionalIterator last); // use operator<
-// return true if now is larger than previous, false if now is initial permutation
-bool next_permutation (BidirectionalIterator first, BidirectionalIterator last, Compare comp);
-```
-
-```C++
-int n = 3; int a[3] = {1,2,3};
-// cout ...
-while (next_permutation(a, a + n))
-    // cout ...
-cout << "return false: (go back)" << endl;
-// cout ...
-
-// output:
-// 1 2 3
-// 1 3 2
-// 2 1 3
-// 2 3 1
-// 3 1 2
-// 3 2 1
-// return false: (go back)
-// 1 2 3
-```
-
-####### ``binary_search``
-
-```C++
-// first...last should be sorted using operator< or comp
-bool binary_search (ForwardIterator first, ForwardIterator last, const T& val);
-// return true if found, false if not
-bool binary_search (ForwardIterator first, ForwardIterator last, const T& val, Compare comp);
-```
-
-####### ``swap / iter_swap``
-
-
 
 ####### ``make_heap / pop heap / push heap / sort_heap``
 ```C++
