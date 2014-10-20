@@ -211,8 +211,8 @@ bool myfunction (int i,int j) { return (i<j); }
 
 int main () {
   int myints[] = {1,2,3,4,5,4,3,2,1};
-  std::vector<int> v(myints,myints+9);                         // 1 2 3 4 5 4 3 2 1
-
+  std::vector<int> v(myints,myints+9);
+  
   // using default comparison:
   std::sort (v.begin(), v.end());
 
@@ -245,6 +245,24 @@ Usage
 ```c++
 void swap (T& a, T& b);
 void iter_swap (ForwardIterator1 a, ForwardIterator2 b);
+```
+
+Example
+```C++
+int x=10, y=20;                              // x:10 y:20
+std::swap(x,y);                              // x:20 y:10
+
+std::vector<int> foo (4,x), bar (6,y);       // foo:4x20 bar:6x10
+std::swap(foo,bar);                          // foo:6x10 bar:4x20
+
+int myints[]={10,20,30,40,50 };              //   myints:  10  20  30  40  50
+std::vector<int> myvector (4,99);            // myvector:  99  99  99  99
+
+std::iter_swap(myints,myvector.begin());     //   myints: [99] 20  30  40  50
+                                             // myvector: [10] 99  99  99
+
+std::iter_swap(myints+3,myvector.begin()+2); //   myints:  99  20  30 [99] 50
+                                             // myvector:  10  99 [40] 99
 ```
 
 ### Standard Template Library
