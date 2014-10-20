@@ -368,15 +368,27 @@ template < class Key,                                    // unordered_map::key_t
 
 ### Pair
 
+### Vector
+
 ### List
+
+* begin()
+* back()
+* end()c* clear()
+* push_front(const value_type& val)
+* push_back(const value_type& val)
+* pop_front(): remove the first element.
+* pop_back(): remove the last element.
+* remove(const value_type& val): remove all elements of value val.
+* size()
+* reverse()
+* sort(), sort (Compare comp)
 
 ### Queue
 
 #### Double-ended Queue
 
 ### Stack
-
-### Vector
 
 ### Iterator
 
@@ -582,18 +594,19 @@ long    longValue() // converts this BigInteger to a long.
 
 
 
-### Graph Theory
-
-##### Minimium Spanning Tree
-
-####### Prime
-
-####### Kruskal
+## Graph Theory
 
 
-##### Shortest Path
+### Minimium Spanning Tree
 
-####### 任意两点
+#### Prime
+
+#### Kruskal
+
+
+#### Shortest Path
+
+#### 任意两点
 
 ```
 for ()
@@ -601,16 +614,20 @@ for ()
         for ()
 ```
 
-####### SPFA
+#### SPFA
 
-####### Dijkstra
+#### Dijkstra
 
 
-##### 二分图
+### 二分图
 
-##### 最大流
+1. A graph is bipartite if and only if it does not contain an odd cycle.
+2. A graph is bipartite if and only if it is 2-colorable, (i.e. its chromatic number is less than or equal to 2).
+3. The spectrum of a graph is symmetric if and only if it's a bipartite graph.
 
-####### Dinic
+### 最大流
+
+#### Dinic
 ``` C++
 int graph[250][250];
 int level[250];
