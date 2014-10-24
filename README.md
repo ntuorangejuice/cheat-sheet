@@ -635,7 +635,11 @@ for ()
 
 #### SPFA
 
+Bellman–Ford algorithm is O(VE).
+
 #### Dijkstra
+
+O(V^2)
 
 ### Augmenting Path Algorithm (增广路)
 
