@@ -733,6 +733,13 @@ int main() {
 
 ### Math
 
+##### class/struct Matrix
+
+```C++
+operator+
+operator*
+```
+
 ##### 欧拉函数 ?
 
 ##### 欧几里得算法 / gcd
