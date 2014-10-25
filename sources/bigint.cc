@@ -128,14 +128,30 @@ struct bigint {
         ret.clean();
         return ret;
     }
+
+    bool operator == (bigint b) {
+        if (len != b.len) return false;
+        for (int i = 0; i < len; i++) 
+            if (s[i]!=b.s[i]) return false;
+        return true;
+    }
 };
+
+
+int test = 0, pass = 0;
+
+void assert(string desc, bool result) {
+    test++; pass+=result;
+    cout << (result ? "PASS: " : "FAIL: ")
+         << desc << endl;
+}
 
 
 int main() {
     bigint a = 2;
     bigint b = 9999;
-    cout << a.str() << endl;
-    cout << b.str() << endl;
-    bigint c = b+a;
-    cout << c.str() << endl;
+    assert("2+9999", (a+b).str()=="10001");
+    assert("2+9999", (a+b)==bigint(10001));
+    cout << "Total test: " << test << endl;
+    cout << "Passed: " << 100.0*pass/test << "%%" << endl;
 }
