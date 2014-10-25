@@ -366,6 +366,18 @@ template < class Key,                                    // unordered_map::key_t
 
 ```
 
+#### Red-black Tree
+
+A red–black tree is a data structure which is a type of self-balancing binary search tree.
+
+In addition to the requirements imposed on a binary search tree the following must be satisfied by a red–black tree:
+
+1. A node is either red or black.
+2. The root is black. (This rule is sometimes omitted. Since the root can always be changed from red to black, but not necessarily vice-versa, this rule has little effect on analysis.)
+3. All leaves (NIL) are black. (All leaves are same color as the root.)
+4. Every red node must have two black child nodes.
+5. Every path from a given node to any of its descendant leaves contains the same number of black nodes.
+
 ### Pair
 
 ### Vector
@@ -633,11 +645,17 @@ for ()
         for ()
 ```
 
-#### SPFA
+#### Bellman–Ford
 
 Bellman–Ford algorithm is O(VE).
 
+Can be applied to situations when there is a maximun number of vertices in shortest path.
+
+#### SPFA
+
 #### Dijkstra
+
+Dijkstra is good for graphs non-negative edges.
 
 O(V^2)
 
