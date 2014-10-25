@@ -619,6 +619,8 @@ long    longValue() // converts this BigInteger to a long.
 
 ### 后缀数组
 
+### Binary Indexed Tree
+
 ### Segment Tree
 
 ### Range Minimum Query RMQ
@@ -761,6 +763,66 @@ int main() {
 ```C++
 operator+
 operator*
+```
+
+Square matrix
+
+```C++
+
+struct Matrix {
+    // int height;
+    // int width;
+
+    long long value[32][32];
+
+    Matrix operator* (const Matrix& that);
+    Matrix operator+ (const Matrix& that);
+    Matrix mirror();
+    void show() {
+        cout << endl;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++)
+                cout << this->value[i][j] << " ";
+            cout << endl;
+        }
+    }
+};
+
+void mod_it(Matrix& temp) {
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            temp.value[i][j] %= m;
+}
+
+Matrix Matrix::operator* (const Matrix& that) {
+    Matrix temp;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            temp.value[i][j] = 0;
+            for (int k = 0; k < n; k++)
+                temp.value[i][j] += this->value[i][k] * that.value[k][j];
+        }
+    }
+    mod_it(temp);
+    return temp;
+}
+
+Matrix Matrix::operator+ (const Matrix& that) {
+    Matrix temp;
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            temp.value[i][j] = this->value[i][j] + that.value[i][j];
+    mod_it(temp);
+    return temp;
+}
+
+Matrix Matrix::mirror() {
+    Matrix temp;
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            temp.value[i][j] = this->value[i][j];
+    return temp;
+}
 ```
 
 ### 欧拉函数 ?
