@@ -429,11 +429,7 @@ List containers are implemented as doubly-linked lists.
 
 ### Iterator
 
-#### Red-black Tree
-
-Red–black tree is not described here because it is very hard to code, very hard to understand, with limited performance improve.
-
-### Standard Template Library
+## Standard Template Library
 
 ##### ``include <map> // red black tree``
 
@@ -554,7 +550,11 @@ void stack::pop();
 
 
 
-### Java BigInteger & BigDecimal
+## BigInteger & BigDecimal
+
+### C++ Big Integer
+
+### The Java Approach 
 
 ##### BigInteger
 
@@ -605,33 +605,32 @@ long    longValue() // converts this BigInteger to a long.
 
 
 
-### String Related
+## String Related
 
-##### KMP
+### KMP
 
-##### Longest palindromic substring (Manacher's algorithm)
+### Longest palindromic substring (Manacher's algorithm)
 
-##### 后缀数组
+## Tree
 
+### Tree Traversal
 
-### Tree Related
+### Trie
 
-##### Tree Traversal
+### 后缀数组
 
-##### Trie
+### Segment Tree
 
-##### Segment Tree
+### Range Minimum Query RMQ
 
-##### Range Minimum Query RMQ
+### Union-find Set 冰茶鸡
 
-##### Union-find Set 冰茶鸡
-
-##### 。。。
-
+### 。。。
 
 
 
-## Graph Theory
+
+## Graph
 
 
 ### Minimium Spanning Tree
@@ -755,24 +754,24 @@ int main() {
 
 
 
-### Math
+## Mathematics
 
-##### class/struct Matrix
+### class/struct Matrix
 
 ```C++
 operator+
 operator*
 ```
 
-##### 欧拉函数 ?
+### 欧拉函数 ?
 
-##### 欧几里得算法 / gcd
+### 欧几里得算法 / gcd
 
 ```C++
 int gcd();
 ```
 
-##### 扩展欧几里得算法 ``http://www.cnblogs.com/frog112111/archive/2012/08/19/2646012.html``
+### 扩展欧几里得算法 ``http://www.cnblogs.com/frog112111/archive/2012/08/19/2646012.html``
 
 > 对于不完全为 0 的非负整数 a, b, 必然存在整数对 (x, y), 使得 gcd(a, b) = ax + by
 
@@ -836,7 +835,7 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
-####### 求解不定方程
+### 求解不定方程
 
 > for: p * a + q * b = c
 
@@ -866,7 +865,7 @@ int main(int argc, char const *argv[]) {
 // smallest: ansx % (b / gcd(a, b) + b / gcd(a, b)) % (b / gcd(a, b))
 ```
 
-####### 求解模线性方程（线性同余方程）
+### 求解模线性方程（线性同余方程）
 
 > (a * x) % n = b % n, x = ?
 
@@ -883,7 +882,7 @@ int main(int argc, char const *argv[]) {
 ```C++
 ```
 
-####### 求解模的逆元
+### 求解模的逆元
 
 > (a * x) % n = 1, x = ?
 
@@ -901,19 +900,19 @@ int main(int argc, char const *argv[]) {
 // smallest ansx = (ansx % (n / gcd(a, n)) + (n / gcd(a, n))) % (n / gcd(a, n))
 ```
 
-##### 中国剩余定理
+### 中国剩余定理
 
 
 
 
-##### 最小公倍数
+### 最小公倍数
 
 ```
 a * b / gcd(a, b)
 ```
 
 
-##### 分解质因数
+### 分解质因数
 
 ```C++
 long long x;
@@ -926,14 +925,14 @@ for (long long factor = 2; x != 1; factor++) {
 }
 ```
 
-##### 因数个数
+### 因数个数
 
 ```
 n = p1 ^ x1 * p2 ^ x2 * ... * pn ^ xn
 total = (x1 + 1) * (x2 + 1) * ... * (xn + 1)
 ```
 
-##### 素数判定
+### 素数判定
 
 ```C++
 // 大于 3 的质数可以被表示为 6n - 1 或 6n + 1
@@ -950,7 +949,7 @@ bool is_prime(int n) {
 }
 ```
 
-##### 进制转换
+### 进制转换
 
 ```C++
 void convert_dec_to_base(int n, const int base) {
@@ -982,9 +981,11 @@ int convert_base_to_dec(const int s[], const int len, const int base) {
 
 
 
-### 计算几何
+## Geometry
 
-##### template class for Point?
+计算几何
+
+### template class for Point?
 
 ```C++
 
@@ -1102,7 +1103,9 @@ int main(int argc, char const *argv[]) {
 
 
 
-### Tricks / 分析方法
+## Tricks
+
+分析方法
 
 ##### recursive
 
@@ -1197,7 +1200,7 @@ void reverse_cantor_expansion(int n, long long m) {
 }
 ```
 
-##### Fast Exponention
+### Fast Exponention
 
 ```C++
 // NEED VERIFY
@@ -1213,7 +1216,7 @@ int power_modulo(int n, int p, int M) { // n ^ p % M
 }
 ```
 
-##### 质数表
+### 质数表
 
 ```C++
 int is_prime[UP_LIMIT + 1];
