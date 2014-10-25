@@ -350,9 +350,26 @@ template < class Key,                                     // map::key_type
 
 #### Commonly used method
 
-#### Unordered Map
+#### Red-black Tree
+
+C++ map is implemented as a red-black tree.
+
+A red–black tree is a data structure which is a type of self-balancing binary search tree.
+
+In addition to the requirements imposed on a binary search tree the following must be satisfied by a red–black tree:
+
+1. A node is either red or black.
+2. The root is black. (This rule is sometimes omitted. Since the root can always be changed from red to black, but not necessarily vice-versa, this rule has little effect on analysis.)
+3. All leaves (NIL) are black. (All leaves are same color as the root.)
+4. Every red node must have two black child nodes.
+5. Every path from a given node to any of its descendant leaves contains the same number of black nodes.
+
+
+### Unordered Map
 
 // TODO add interface
+
+Unordered map is implemented as a hash table.
 
 Unordered maps are associative containers that store elements formed by the combination of a key value and a mapped value, and which allows for fast retrieval of individual elements based on their keys.
 
@@ -366,17 +383,6 @@ template < class Key,                                    // unordered_map::key_t
 
 ```
 
-#### Red-black Tree
-
-A red–black tree is a data structure which is a type of self-balancing binary search tree.
-
-In addition to the requirements imposed on a binary search tree the following must be satisfied by a red–black tree:
-
-1. A node is either red or black.
-2. The root is black. (This rule is sometimes omitted. Since the root can always be changed from red to black, but not necessarily vice-versa, this rule has little effect on analysis.)
-3. All leaves (NIL) are black. (All leaves are same color as the root.)
-4. Every red node must have two black child nodes.
-5. Every path from a given node to any of its descendant leaves contains the same number of black nodes.
 
 ### Pair
 
