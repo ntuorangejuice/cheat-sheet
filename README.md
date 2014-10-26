@@ -745,7 +745,7 @@ long    longValue() // converts this BigInteger to a long.
 
 
 
-## String Related
+## String
 
 ### KMP
 
@@ -973,7 +973,9 @@ Matrix Matrix::mirror() {
 int gcd();
 ```
 
-### 扩展欧几里得算法 ``http://www.cnblogs.com/frog112111/archive/2012/08/19/2646012.html``
+### 扩展欧几里得算法 
+
+``http://www.cnblogs.com/frog112111/archive/2012/08/19/2646012.html``
 
 > 对于不完全为 0 的非负整数 a, b, 必然存在整数对 (x, y), 使得 gcd(a, b) = ax + by
 
@@ -1404,9 +1406,10 @@ void reverse_cantor_expansion(int n, long long m) {
 
 ### Fast Exponention
 
+To calculate n ^ p % M
+
 ```C++
-// NEED VERIFY
-int power_modulo(int n, int p, int M) { // n ^ p % M
+int power_modulo(int n, int p, int M) {
     int result = 1;
     while (p > 0) {
         if (p % 2 == 1)
