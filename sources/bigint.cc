@@ -50,8 +50,7 @@ struct bigint {
         len = 1;  
     }
 
-    bigint(int num) {
-        if (num<0) throw "negative bigint is not supported";
+    bigint(unsigned long long num) {
         len = 0;
         while (num >= BASE) {
             s[len] = num % BASE;
