@@ -9,17 +9,7 @@
 ### C++ Solution Template
 
 ```c++
-#include <iostream>
-#include <cstring>
-#include <cmath>
-#include <algorithm>
-#include <climits>
-#include <stack>
-#include <queue>
-#include <vector>
-#include <set>
-#include <map>
-#include <list>
+#include <bits/stdc++.h> 
 
 /*
  * n: number
@@ -60,6 +50,22 @@ int main() {
 
     return 0;
 }
+```
+
+Optional include list
+
+```c++
+#include <iostream>
+#include <cstring>
+#include <cmath>
+#include <algorithm>
+#include <climits>
+#include <stack>
+#include <queue>
+#include <vector>
+#include <set>
+#include <map>
+#include <list>
 ```
 
 ### C++ String

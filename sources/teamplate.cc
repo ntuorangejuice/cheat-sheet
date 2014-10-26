@@ -1,15 +1,4 @@
-#include <iostream>
-#include <cstring>
-#include <cmath>
-#include <algorithm>
-#include <climits>
-#include <stack>
-#include <queue>
-#include <vector>
-#include <set>
-#include <map>
-#include <list>
-
+#include <bits/stdc++.h>
 /*
  * n: number
  * i: LSB starting from 1
