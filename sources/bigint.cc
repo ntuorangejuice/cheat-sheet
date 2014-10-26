@@ -93,8 +93,8 @@ struct bigint {
         return ret;
     }
 
-    long long ll() const {
-        long long ret = 0;
+    unsigned long long ll() const {
+        unsigned long long ret = 0;
         for(int i = len-1; i >= 0; i--) {
             ret *= BASE;
             ret += s[i];
