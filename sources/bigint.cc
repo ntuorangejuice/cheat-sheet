@@ -93,7 +93,7 @@ struct bigint {
         return ret;
     }
 
-    bigint operator + (const bigint& b) {
+    bigint operator + (const bigint& b) const {
         bigint ret = b;
         while (ret.len < len) ret.s[ret.len++] = 0;
         ret.s[ret.len++] = 0;
@@ -107,11 +107,11 @@ struct bigint {
         return ret;
     }
 
-    bigint operator + (const int b) {
+    bigint operator + (const int b) const {
         return operator + (bigint(b));
     }
 
-    bigint operator * (const bigint& b) {  
+    bigint operator * (const bigint& b) const {  
         bigint c;
         c.len = len + b.len;  
         for(int i = 0; i < len; i++)  
@@ -125,11 +125,11 @@ struct bigint {
         return c;  
     }
 
-    bigint operator * (const int b) {
+    bigint operator * (const int b) const {
         return operator * (bigint(b));
     }
 
-    bigint operator / (const int b) {
+    bigint operator / (const int b) const {
         bigint ret;
         int down = 0;
         for (int i = len - 1; i >= 0; i--) {
@@ -141,7 +141,7 @@ struct bigint {
         return ret;
     }
 
-    bool operator < (const bigint& b) {
+    bool operator < (const bigint& b) const {
         if (len < b.len) return true;
         else if (len > b.len) return false;
         for (int i = 0; i < len; i++)
@@ -150,11 +150,11 @@ struct bigint {
         return false;
     }
 
-    bool operator == (const bigint& b) {
-        return !(*this < b);
+    bool operator == (const bigint& b) const {
+        return !(*this<b) && !(b<(*this));
     }
 
-    bool operator == (const int b) {
+    bool operator == (const int b) const {
         return operator == (bigint(b));
     }
 };
@@ -176,11 +176,13 @@ int main() {
     bigint a = 2;
     bigint b = 9999;
     bigint c = "12345";
-    ASSERT((a+b).str()=="10001");
-    ASSERT((a+b)==bigint(10001));
-    ASSERT((b/2)==4999);
-    ASSERT(c == 12345);
-    ASSERT(c.str() == "12345");
+    ASSERT((a+b).str()=="10001")
+    ASSERT((a+b)==bigint(10001))
+    ASSERT((b/2)==4999)
+    ASSERT(c == 12345)
+    ASSERT(!(c == 12346))
+    ASSERT(!(c == 12344))
+    ASSERT(c.str() == "12345")
     cout << "Total test: " << test << endl;
     cout << "Passed: " << pass << "(" << 100.0*pass/test << "%%)" << endl;
 }
