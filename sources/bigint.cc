@@ -18,15 +18,19 @@
 #define CLR_BIT(n, i) ((n) & ~(1 << ((i)-1)))
 #define GET_BIT(n, i) (((n) & (1 << ((i)-1))) >> ((i)-1))
 #define SHOW(x) {cout << #x << " = " << x << endl;}
+#define ASSERT(x) { assert(x); cout << #x << endl; }
 const double E = 1e-8;
 const double PI = acos(-1);
 
 using namespace std;
 
+/*
+ * Big Int begin
+ */
+
 const int BASE_LENGTH = 2;
 const int BASE = (int) pow(10, BASE_LENGTH);
 const int MAX_LENGTH = 500;
-
 
 string int_to_string(int i, int width, bool zero) {
     string res = "";
@@ -39,7 +43,8 @@ string int_to_string(int i, int width, bool zero) {
 }
 
 struct bigint {
-    int len, s[MAX_LENGTH];  
+    int len, s[MAX_LENGTH];
+
     bigint() {  
         memset(s, 0, sizeof(s));  
         len = 1;  
@@ -94,14 +99,17 @@ struct bigint {
         ret.s[ret.len++] = 0;
         bool r = false;
         for (int i = 0; i < len || r; i++) {
-            if (i<len) ret.s[i] += s[i] + r;
-            else ret.s[i] += r;
+            ret.s[i] += (i<len)*s[i] + r;
             r = ret.s[i] >= BASE;
             if (r) ret.s[i] %= BASE;
         }
         ret.clean();
         return ret;
-    } 
+    }
+
+    bigint operator + (const int b) {
+        return operator + (bigint(b));
+    }
 
     bigint operator * (const bigint& b) {  
         bigint c;
@@ -117,6 +125,10 @@ struct bigint {
         return c;  
     }
 
+    bigint operator * (const int b) {
+        return operator * (bigint(b));
+    }
+
     bigint operator / (const int b) {
         bigint ret;
         int down = 0;
@@ -129,29 +141,46 @@ struct bigint {
         return ret;
     }
 
-    bool operator == (bigint b) {
-        if (len != b.len) return false;
-        for (int i = 0; i < len; i++) 
-            if (s[i]!=b.s[i]) return false;
-        return true;
+    bool operator < (const bigint& b) {
+        if (len < b.len) return true;
+        else if (len > b.len) return false;
+        for (int i = 0; i < len; i++)
+            if (s[i] < b.s[i]) return true;
+            else if (s[i] > b.s[i]) return false;
+        return false;
+    }
+
+    bool operator == (const bigint& b) {
+        return !(*this < b);
+    }
+
+    bool operator == (const int b) {
+        return operator == (bigint(b));
     }
 };
+
+/*
+ * Big Int end.
+ */
 
 
 int test = 0, pass = 0;
 
-void assert(string desc, bool result) {
+void assert(bool result) {
     test++; pass+=result;
-    cout << (result ? "PASS: " : "FAIL: ")
-         << desc << endl;
+    cout << (result ? "PASS: " : "FAIL: ");
 }
 
 
 int main() {
     bigint a = 2;
     bigint b = 9999;
-    assert("2+9999", (a+b).str()=="10001");
-    assert("2+9999", (a+b)==bigint(10001));
+    bigint c = "12345";
+    ASSERT((a+b).str()=="10001");
+    ASSERT((a+b)==bigint(10001));
+    ASSERT((b/2)==4999);
+    ASSERT(c == 12345);
+    ASSERT(c.str() == "12345");
     cout << "Total test: " << test << endl;
-    cout << "Passed: " << 100.0*pass/test << "%%" << endl;
+    cout << "Passed: " << pass << "(" << 100.0*pass/test << "%%)" << endl;
 }
