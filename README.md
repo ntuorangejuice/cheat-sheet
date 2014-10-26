@@ -403,7 +403,9 @@ In addition to the requirements imposed on a binary search tree the following mu
 5. Every path from a given node to any of its descendant leaves contains the same number of black nodes.
 
 
-### Unordered Map
+### Hash Map
+
+#### Unordered Map
 
 // TODO add interface
 
@@ -419,6 +421,15 @@ template < class Key,                                    // unordered_map::key_t
            class Alloc = allocator< pair<const Key,T> >  // unordered_map::allocator_type
            > class unordered_map;
 
+```
+
+#### Deprecated Hash Map
+
+```c++
+#include <ext/hash_map>
+__gnu_cxx::hash_map<string, int> months;
+months["january"] = 31;
+months["february"] = 28;
 ```
 
 
