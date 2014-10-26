@@ -51,6 +51,7 @@ struct bigint {
     }
 
     bigint(int num) {
+        if (num<0) throw "negative bigint is not supported";
         len = 0;
         while (num >= BASE) {
             s[len] = num % BASE;
@@ -93,22 +94,40 @@ struct bigint {
         return ret;
     }
 
-    bigint operator + (const bigint& b) const {
-        bigint ret = b;
-        while (ret.len < len) ret.s[ret.len++] = 0;
-        ret.s[ret.len++] = 0;
-        bool r = false;
-        for (int i = 0; i < len || r; i++) {
-            ret.s[i] += (i<len)*s[i] + r;
-            r = ret.s[i] >= BASE;
-            if (r) ret.s[i] %= BASE;
+    long long ll() const {
+        long long ret = 0;
+        for(int i = len-1; i >= 0; i--) {
+            ret *= BASE;
+            ret += s[i];
         }
-        ret.clean();
         return ret;
     }
 
-    bigint operator + (const int b) const {
-        return operator + (bigint(b));
+    bigint operator + (const bigint& b) const {
+        bigint c = b;
+        while (c.len < len) c.s[c.len++] = 0;
+        c.s[c.len++] = 0;
+        bool r = 0;
+        for (int i = 0; i < len || r; i++) {
+            c.s[i] += (i<len)*s[i] + r;
+            r = c.s[i] >= BASE;
+            if (r) c.s[i] -= BASE;
+        }
+        c.clean();
+        return c;
+    }
+
+    bigint operator - (const bigint& b) const {
+        if (operator < (b)) throw "cannot do subtract";
+        bigint c = *this;
+        bool r = 0;
+        for (int i = 0; i < b.len || r; i++) {
+            c.s[i] -= b.s[i];
+            r = c.s[i] < 0;
+            if (r) c.s[i] += BASE;
+        }
+        c.clean();
+        return c;
     }
 
     bigint operator * (const bigint& b) const {  
@@ -123,10 +142,6 @@ struct bigint {
         }  
         c.clean();  
         return c;  
-    }
-
-    bigint operator * (const int b) const {
-        return operator * (bigint(b));
     }
 
     bigint operator / (const int b) const {
@@ -154,8 +169,8 @@ struct bigint {
         return !(*this<b) && !(b<(*this));
     }
 
-    bool operator == (const int b) const {
-        return operator == (bigint(b));
+    bool operator > (const bigint& b) const {
+        return b < *this;
     }
 };
 
@@ -180,9 +195,16 @@ int main() {
     ASSERT((a+b)==bigint(10001))
     ASSERT((b/2)==4999)
     ASSERT(c == 12345)
+    ASSERT(c < 123456)
+    ASSERT(c > 123)
+    ASSERT(!(c > 123456))
+    ASSERT(!(c < 123))
     ASSERT(!(c == 12346))
     ASSERT(!(c == 12344))
     ASSERT(c.str() == "12345")
+    ASSERT((b-1)==9998)
+    ASSERT(a.ll() == 2)
+    ASSERT(b.ll() == 9999)
     cout << "Total test: " << test << endl;
-    cout << "Passed: " << pass << "(" << 100.0*pass/test << "%%)" << endl;
+    cout << "Passed: " << pass << " (" << 100.0*pass/test << "%%)" << endl;
 }
