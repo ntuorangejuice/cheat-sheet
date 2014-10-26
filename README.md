@@ -309,12 +309,35 @@ bool myfunction (int i,int j) { return (i<j); }
 
 ##### Define operator <()
 
+Member function
+
 ```c++
-struct Edge
-{
+struct Edge {
+   int from, to, weight;
+	bool operator<(Edge that) {
+        return weight > that.weight;
+    }
+};
+```
+
+verbal version
+
+```c++
+struct Edge {
+   int from, to, weight;
+	bool operator<(const Edge& that) const {
+        return this->weight > that.weight;
+    }
+};
+```
+
+
+Non-member function
+
+```c++
+struct Edge {
     int from, to, weight;
-    friend bool operator<(Edge a, Edge b)
-    {
+    friend bool operator<(Edge a, Edge b) {
         return a.weight > b.weight;
     }
 };
