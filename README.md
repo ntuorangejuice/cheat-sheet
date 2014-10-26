@@ -423,30 +423,7 @@ List containers are implemented as doubly-linked lists.
 
 ### Queue
 
-#### Double-ended Queue
-
-### Stack
-
-### Iterator
-
-## Standard Template Library
-
-##### ``include <map> // red black tree``
-
-##### ``include <unordered_map> // hash map``
-
-##### ``include <list>`` double linked list
-
-```C++
-
-```
-
-
-##### ``include <dequeue>``
-
-##### ``include <queue>``
-
-####### ``queue``
+``include <queue>``
 
 ```C++
 // constructor
@@ -460,7 +437,27 @@ size_type queue::size() const;
 const_reference& queue::front() const;
 ```
 
-####### ``priority_queue``
+#### Double-ended Queue
+
+``include <dequeue>``
+
+
+### Stack
+
+```C++
+// constructor, use vector<int> as container, copy my_data into my_stack
+stack<int, vector<int> > my_stack (my_data);
+
+bool stack::empty() const;
+size_type stack::size() const;
+const_reference& stack::top() const;
+void stack::push (const value_type& val);
+void stack::pop();
+```
+
+### Iterator
+
+### Priority Queue
 
 ```C++
 // constructor
@@ -524,30 +521,6 @@ while (three_priority_queue.size() != 0) {
 // three_priority_queue.top() = 2
 // three_priority_queue.top() = 1
 ```
-
-
-
-##### ``include <stack>``
-
-```C++
-// constructor, use vector<int> as container, copy my_data into my_stack
-stack<int, vector<int> > my_stack (my_data);
-
-bool stack::empty() const;
-size_type stack::size() const;
-const_reference& stack::top() const;
-void stack::push (const value_type& val);
-void stack::pop();
-```
-
-##### ``string``
-
-##### ``T::iterator``
-
-##### ``include <vector>``
-
-##### ``pair<, >``
-
 
 
 ## BigInteger & BigDecimal
