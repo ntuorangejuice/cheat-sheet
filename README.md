@@ -21,7 +21,7 @@
 #define SHOW_A(x) {cout << #x << " = " << x << endl;}
 #define SHOW_B(x, y) {cout << #x << " = " << x << ", " << #y << " = " << y << endl;}
 #define SHOW_C(x, y, z) {cout << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;}
-#define REACH_HERE {cout << "REACH_HERE!" << endl;}
+#define REACH_HERE {cout << "REACH_HERE! line: " << __LINE__ << endl;}
 #define ASSERT(x) { assert(x); cout << #x << endl; }
 
 const double E = 1e-8;
