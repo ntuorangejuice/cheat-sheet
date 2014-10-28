@@ -138,20 +138,11 @@ int main() {
         cin >> op;
         if (op == 'C') {
             cin >> a >> b >> c;
-            if (a > b) {
-                a ^= b;
-                b ^= a;
-                a ^= b;
-            }
-            // cout << "UPDATE " << a << " " << b << endl;
+            if (a > b) swap(a, b);
             update(a, b, 1<<(c-1), 1);
         } else {
             cin >> a >> b;
-            if (a > b) {
-                a ^= b;
-                b ^= a;
-                a ^= b;
-            }
+            if (a > b) swap(a, b);
             int sum = 0;
             query(a, b, sum, 1);
             cout << bit_count(sum) << endl;
