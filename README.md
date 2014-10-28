@@ -1087,6 +1087,59 @@ int main() {
 
 #### Prime
 
+```C++
+struct Edge {
+    int from;
+    int to;
+    int length;
+};
+
+struct compare {
+public:
+    bool operator() (Edge a, Edge b) {
+        return a.length > b.length;
+    }
+};
+
+void mst() {
+    int n_node;
+    int n_edge;
+    ////////////////////////////////////////////
+    // cin >> n_node >> n_edge;
+    ////////////////////////////////////////////
+    vector<Edge> graph[n_node];
+    ////////////////////////////////////////////
+    // read graph
+    // if many edge, graphp[][] would be faster
+    ////////////////////////////////////////////
+
+    priority_queue<Edge, vector<Edge>, compare> discovered;
+    int added[n_node];
+    memset(added, 0, sizeof(added));
+
+    int to_add = n_node;
+    Edge temp = {0, 0, 0};
+    discovered.push(temp); // 0 is first node
+    while (to_add--) {
+        Edge cur = discovered.top();
+        discovered.pop();
+        while (added[cur.to] == 1) {
+            cur = discovered.top();
+            discovered.pop();
+        }
+        // cur is the edge to add
+
+        added[cur.to] = 1;
+        for (int i = 0; i < graph[cur.to].size(); i++) {
+            Edge& next = graph[cur.to][i];
+            if (to != next.to && added[next.to] == 0) {
+                discovered.push(next);
+            }
+        }
+    }
+}
+```
+
 #### Kruskal
 
 
