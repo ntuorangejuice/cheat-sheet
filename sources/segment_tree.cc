@@ -54,11 +54,11 @@ using namespace std;
 
 const int MAX = 100000;
 
-typedef struct _node {
+struct node {
     int left, right;
     int color;
     bool cover;
-} node;
+};
 
 node nodes[3*MAX];
 
