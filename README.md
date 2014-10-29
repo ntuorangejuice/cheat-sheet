@@ -17,7 +17,7 @@
 #define SHOW_A(x) {cout << #x << " = " << x << endl;}
 #define SHOW_B(x, y) {cout << #x << " = " << x << ", " << #y << " = " << y << endl;}
 #define SHOW_C(x, y, z) {cout << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;}
-#define REACH_HERE {cout << "REACH_HERE!" << endl;}
+#define REACH_HERE {cout << "REACH_HERE! line: " << __LINE__ << endl;}
 #define ASSERT(x) { _assert(x); cout << #x << endl; }
 
 const double E = 1e-8;
@@ -790,9 +790,162 @@ long    longValue() // converts this BigInteger to a long.
 ##### BigDecimal
 
 ```java
-
+// constructor
+BigDecimal(BigInteger val)
+Translates a BigInteger into a BigDecimal.
+BigDecimal(BigInteger unscaledVal, int scale)
+Translates a BigInteger unscaled value and an int scale into a BigDecimal.
+BigDecimal(BigInteger unscaledVal, int scale, MathContext mc)
+Translates a BigInteger unscaled value and an int scale into a BigDecimal, with rounding according to the context settings.
+BigDecimal(BigInteger val, MathContext mc)
+Translates a BigInteger into a BigDecimal rounding according to the context settings.
+BigDecimal(char[] in)
+Translates a character array representation of a BigDecimal into a BigDecimal, accepting the same sequence of characters as the BigDecimal(String) constructor.
+BigDecimal(char[] in, int offset, int len)
+Translates a character array representation of a BigDecimal into a BigDecimal, accepting the same sequence of characters as the BigDecimal(String) constructor, while allowing a sub-array to be specified.
+BigDecimal(char[] in, int offset, int len, MathContext mc)
+Translates a character array representation of a BigDecimal into a BigDecimal, accepting the same sequence of characters as the BigDecimal(String) constructor, while allowing a sub-array to be specified and with rounding according to the context settings.
+BigDecimal(char[] in, MathContext mc)
+Translates a character array representation of a BigDecimal into a BigDecimal, accepting the same sequence of characters as the BigDecimal(String) constructor and with rounding according to the context settings.
+BigDecimal(double val)
+Translates a double into a BigDecimal which is the exact decimal representation of the double's binary floating-point value.
+BigDecimal(double val, MathContext mc)
+Translates a double into a BigDecimal, with rounding according to the context settings.
+BigDecimal(int val)
+Translates an int into a BigDecimal.
+BigDecimal(int val, MathContext mc)
+Translates an int into a BigDecimal, with rounding according to the context settings.
+BigDecimal(long val)
+Translates a long into a BigDecimal.
+BigDecimal(long val, MathContext mc)
+Translates a long into a BigDecimal, with rounding according to the context settings.
+BigDecimal(String val)
+Translates the string representation of a BigDecimal into a BigDecimal.
+BigDecimal(String val, MathContext mc)
+Translates the string representation of a BigDecimal into a BigDecimal, accepting the same strings as the BigDecimal(String) constructor, with rounding according to the context settings.
 ```
-
+```java
+BigDecimal  abs()
+Returns a BigDecimal whose value is the absolute value of this BigDecimal, and whose scale is this.scale().
+BigDecimal  abs(MathContext mc)
+Returns a BigDecimal whose value is the absolute value of this BigDecimal, with rounding according to the context settings.
+BigDecimal  add(BigDecimal augend)
+Returns a BigDecimal whose value is (this + augend), and whose scale is max(this.scale(), augend.scale()).
+BigDecimal  add(BigDecimal augend, MathContext mc)
+Returns a BigDecimal whose value is (this + augend), with rounding according to the context settings.
+byte    byteValueExact()
+Converts this BigDecimal to a byte, checking for lost information.
+int compareTo(BigDecimal val)
+Compares this BigDecimal with the specified BigDecimal.
+BigDecimal  divide(BigDecimal divisor)
+Returns a BigDecimal whose value is (this / divisor), and whose preferred scale is (this.scale() - divisor.scale()); if the exact quotient cannot be represented (because it has a non-terminating decimal expansion) an ArithmeticException is thrown.
+BigDecimal  divide(BigDecimal divisor, int roundingMode)
+Returns a BigDecimal whose value is (this / divisor), and whose scale is this.scale().
+BigDecimal  divide(BigDecimal divisor, int scale, int roundingMode)
+Returns a BigDecimal whose value is (this / divisor), and whose scale is as specified.
+BigDecimal  divide(BigDecimal divisor, int scale, RoundingMode roundingMode)
+Returns a BigDecimal whose value is (this / divisor), and whose scale is as specified.
+BigDecimal  divide(BigDecimal divisor, MathContext mc)
+Returns a BigDecimal whose value is (this / divisor), with rounding according to the context settings.
+BigDecimal  divide(BigDecimal divisor, RoundingMode roundingMode)
+Returns a BigDecimal whose value is (this / divisor), and whose scale is this.scale().
+BigDecimal[]    divideAndRemainder(BigDecimal divisor)
+Returns a two-element BigDecimal array containing the result of divideToIntegralValue followed by the result of remainder on the two operands.
+BigDecimal[]    divideAndRemainder(BigDecimal divisor, MathContext mc)
+Returns a two-element BigDecimal array containing the result of divideToIntegralValue followed by the result of remainder on the two operands calculated with rounding according to the context settings.
+BigDecimal  divideToIntegralValue(BigDecimal divisor)
+Returns a BigDecimal whose value is the integer part of the quotient (this / divisor) rounded down.
+BigDecimal  divideToIntegralValue(BigDecimal divisor, MathContext mc)
+Returns a BigDecimal whose value is the integer part of (this / divisor).
+double  doubleValue()
+Converts this BigDecimal to a double.
+boolean equals(Object x)
+Compares this BigDecimal with the specified Object for equality.
+float   floatValue()
+Converts this BigDecimal to a float.
+int hashCode()
+Returns the hash code for this BigDecimal.
+int intValue()
+Converts this BigDecimal to an int.
+int intValueExact()
+Converts this BigDecimal to an int, checking for lost information.
+long    longValue()
+Converts this BigDecimal to a long.
+long    longValueExact()
+Converts this BigDecimal to a long, checking for lost information.
+BigDecimal  max(BigDecimal val)
+Returns the maximum of this BigDecimal and val.
+BigDecimal  min(BigDecimal val)
+Returns the minimum of this BigDecimal and val.
+BigDecimal  movePointLeft(int n)
+Returns a BigDecimal which is equivalent to this one with the decimal point moved n places to the left.
+BigDecimal  movePointRight(int n)
+Returns a BigDecimal which is equivalent to this one with the decimal point moved n places to the right.
+BigDecimal  multiply(BigDecimal multiplicand)
+Returns a BigDecimal whose value is (this × multiplicand), and whose scale is (this.scale() + multiplicand.scale()).
+BigDecimal  multiply(BigDecimal multiplicand, MathContext mc)
+Returns a BigDecimal whose value is (this × multiplicand), with rounding according to the context settings.
+BigDecimal  negate()
+Returns a BigDecimal whose value is (-this), and whose scale is this.scale().
+BigDecimal  negate(MathContext mc)
+Returns a BigDecimal whose value is (-this), with rounding according to the context settings.
+BigDecimal  plus()
+Returns a BigDecimal whose value is (+this), and whose scale is this.scale().
+BigDecimal  plus(MathContext mc)
+Returns a BigDecimal whose value is (+this), with rounding according to the context settings.
+BigDecimal  pow(int n)
+Returns a BigDecimal whose value is (thisn), The power is computed exactly, to unlimited precision.
+BigDecimal  pow(int n, MathContext mc)
+Returns a BigDecimal whose value is (thisn).
+int precision()
+Returns the precision of this BigDecimal.
+BigDecimal  remainder(BigDecimal divisor)
+Returns a BigDecimal whose value is (this % divisor).
+BigDecimal  remainder(BigDecimal divisor, MathContext mc)
+Returns a BigDecimal whose value is (this % divisor), with rounding according to the context settings.
+BigDecimal  round(MathContext mc)
+Returns a BigDecimal rounded according to the MathContext settings.
+int scale()
+Returns the scale of this BigDecimal.
+BigDecimal  scaleByPowerOfTen(int n)
+Returns a BigDecimal whose numerical value is equal to (this * 10n).
+BigDecimal  setScale(int newScale)
+Returns a BigDecimal whose scale is the specified value, and whose value is numerically equal to this BigDecimal's.
+BigDecimal  setScale(int newScale, int roundingMode)
+Returns a BigDecimal whose scale is the specified value, and whose unscaled value is determined by multiplying or dividing this BigDecimal's unscaled value by the appropriate power of ten to maintain its overall value.
+BigDecimal  setScale(int newScale, RoundingMode roundingMode)
+Returns a BigDecimal whose scale is the specified value, and whose unscaled value is determined by multiplying or dividing this BigDecimal's unscaled value by the appropriate power of ten to maintain its overall value.
+short   shortValueExact()
+Converts this BigDecimal to a short, checking for lost information.
+int signum()
+Returns the signum function of this BigDecimal.
+BigDecimal  stripTrailingZeros()
+Returns a BigDecimal which is numerically equal to this one but with any trailing zeros removed from the representation.
+BigDecimal  subtract(BigDecimal subtrahend)
+Returns a BigDecimal whose value is (this - subtrahend), and whose scale is max(this.scale(), subtrahend.scale()).
+BigDecimal  subtract(BigDecimal subtrahend, MathContext mc)
+Returns a BigDecimal whose value is (this - subtrahend), with rounding according to the context settings.
+BigInteger  toBigInteger()
+Converts this BigDecimal to a BigInteger.
+BigInteger  toBigIntegerExact()
+Converts this BigDecimal to a BigInteger, checking for lost information.
+String  toEngineeringString()
+Returns a string representation of this BigDecimal, using engineering notation if an exponent is needed.
+String  toPlainString()
+Returns a string representation of this BigDecimal without an exponent field.
+String  toString()
+Returns the string representation of this BigDecimal, using scientific notation if an exponent is needed.
+BigDecimal  ulp()
+Returns the size of an ulp, a unit in the last place, of this BigDecimal.
+BigInteger  unscaledValue()
+Returns a BigInteger whose value is the unscaled value of this BigDecimal.
+static BigDecimal   valueOf(double val)
+Translates a double into a BigDecimal, using the double's canonical string representation provided by the Double.toString(double) method.
+static BigDecimal   valueOf(long val)
+Translates a long value into a BigDecimal with a scale of zero.
+static BigDecimal   valueOf(long unscaledVal, int scale)
+Translates a long unscaled value and an int scale into a BigDecimal.
+```
 
 
 
@@ -929,6 +1082,59 @@ int main() {
 ### Minimium Spanning Tree
 
 #### Prime
+
+```C++
+struct Edge {
+    int from;
+    int to;
+    int length;
+};
+
+struct compare {
+public:
+    bool operator() (Edge a, Edge b) {
+        return a.length > b.length;
+    }
+};
+
+void mst() {
+    int n_node;
+    int n_edge;
+    ////////////////////////////////////////////
+    // cin >> n_node >> n_edge;
+    ////////////////////////////////////////////
+    vector<Edge> graph[n_node];
+    ////////////////////////////////////////////
+    // read graph
+    // if many edge, graphp[][] would be faster
+    ////////////////////////////////////////////
+
+    priority_queue<Edge, vector<Edge>, compare> discovered;
+    int added[n_node];
+    memset(added, 0, sizeof(added));
+
+    int to_add = n_node;
+    Edge temp = {0, 0, 0};
+    discovered.push(temp); // 0 is first node
+    while (to_add--) {
+        Edge cur = discovered.top();
+        discovered.pop();
+        while (added[cur.to] == 1) {
+            cur = discovered.top();
+            discovered.pop();
+        }
+        // cur is the edge to add
+
+        added[cur.to] = 1;
+        for (int i = 0; i < graph[cur.to].size(); i++) {
+            Edge& next = graph[cur.to][i];
+            if (to != next.to && added[next.to] == 0) {
+                discovered.push(next);
+            }
+        }
+    }
+}
+```
 
 #### Kruskal
 
