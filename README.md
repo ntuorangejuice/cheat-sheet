@@ -1190,14 +1190,6 @@ struct Edge {
     }
 };
 
-int combine(int father[], int new_come, int cur) {
-    if (father[new_come] != new_come)
-        father[new_come] = combine(father, father[new_come], cur);
-    if (father[cur] != cur)
-        father[cur] = combine(father, new_come, father[cur]);
-    return father[new_come] = father[cur];
-}
-
 int get_father(int father[], int a) {
     if (father[a] != a)
         return father[a] = get_father(father, father[a]);
@@ -1220,8 +1212,10 @@ void solve() {
 
     int to_add = n_node - 1;
     for (int cur = 0; to_add; cur++) {
-        if (get_father(father, e[cur].from) != get_father(father, e[cur].to)) {
-            combine(father, e[cur].from, e[cur].to);
+        int fromSfather = get_father(father, e[cur].from);
+        int toSfather = get_father(father, e[cur].to);
+        if (fromSfather != toSfather) {
+            father[fromSfather] = toSfather;
             to_add--;
             // add edge e[cur]
         }
