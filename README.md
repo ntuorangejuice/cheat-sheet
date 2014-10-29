@@ -1262,6 +1262,7 @@ O(V^2)
 
 #### Dinic
 ``` C++
+// node index: 0 <= i <= n_node - 1
 int graph[250][250];
 int level[250];
 int n_node, n_edge;
@@ -1270,12 +1271,12 @@ int mark_level() {
     memset(level, -1, sizeof(level));
     queue<int> to_visit;
     
-    level[1] = 0;
-    to_visit.push(1);
+    level[0] = 0;
+    to_visit.push(0);
     while (!to_visit.empty()) {
         int cur = to_visit.front();
         to_visit.pop();
-        for (int i = 1; i <= n_node; ++i) {
+        for (int i = 0; i < n_node; ++i) {
             if (graph[cur][i] != 0 && level[i] == -1) {
                 level[i] = level[cur] + 1;
                 to_visit.push(i);
@@ -1283,18 +1284,18 @@ int mark_level() {
         }
     }
 
-    if (level[n_node] == -1)
+    if (level[n_node - 1] == -1)
         return 0; // cannot reach the sink
     return 1; // can reach the sink
 }
 
-int augment_recursive(int cur, int min_flow) {
-    if (cur == n_node)
+int augment(int cur, int min_flow) {
+    if (cur == n_node - 1)
         return min_flow;
 
     int augmented_flow = 0;
-    for (int i = 1; i <= n_node; ++i) {
-        if (level[i] == level[cur] + 1 && graph[cur][i] > 0 && (augmented_flow = augment_recursive(i, min(graph[cur][i], min_flow)))) {
+    for (int i = 0; i < n_node; ++i) {
+        if (level[i] == level[cur] + 1 && graph[cur][i] > 0 && (augmented_flow = augment(i, min(graph[cur][i], min_flow)))) {
             graph[cur][i] -= augmented_flow;
             graph[i][cur] += augmented_flow;
             return augmented_flow;
@@ -1307,21 +1308,9 @@ int dinic() {
     int ans = 0;
     int temp = 0;
     while (mark_level())
-        while (temp = augment_recursive(1, INT_MAX))
+        while (temp = augment(0, INT_MAX))
             ans += temp;
     return ans;
-}
-
-int main() {
-    cin >> n_edge >> n_node)
-    memset(graph, 0, sizeof(graph));
-    
-    int start_node, end_node, flow;
-    for (int i = 0; i < n_edge; ++i) {
-        cin >> start_node >> end_node >> flow;
-        graph[start_node][end_node] += flow; // use "+" to combine
-    }
-    cout << dinic() << endl;
 }
 ```
  
