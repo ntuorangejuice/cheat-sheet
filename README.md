@@ -1085,8 +1085,45 @@ int main() {
 
 ### Minimium Spanning Tree
 
-#### Prime
+#### Prim
+```C++
+//graph[][], time complexity: O(V^2)
+```
+```C++
+void mst_prim() {
+    int n_node, n_edge;
+    ////////////////////////////////////////
+    // read data
+    ////////////////////////////////////////
+    int graph[n_node][n_node];
+    int min_dis[n_node];
+    for (int i = 0; i < n_node; i++)
+        min_dis[i] = INT_MAX; // initialize
+    ////////////////////////////////////////
+    // read graph[][]
+    ////////////////////////////////////////
 
+    int cur = 0; // the node just added
+    for (int i = 1; i < n_node; i++) { // total need pick n-1 edges
+        min_dis[cur] = -1; // add cur
+        for (int j = 0; j < n_node; j++) // for all node
+            if (graph[cur][j] < min_dis[j]) // if can reach from new node and nearer
+                min_dis[j] = graph[cur][j]; // update the distance
+        int next = -1; // the node to add
+        int cur_min_dis = INT_MAX; // current distance of nearest node
+        for (int j = 0; j < n_node; j++) // check all node
+            if (min_dis[j] >= 0 && min_dis[j] < cur_min_dis) { // if j node is nearer
+                next = j; // record
+                cur_min_dis = min_dis[j];
+            }
+        // add edge: cur->next
+        cur = next; // next node to add
+    }
+}
+```
+```C++
+// vector<int> graph[], time complexity: (V + E)log(V)
+```
 ```C++
 struct Edge {
     int from;
@@ -1101,7 +1138,7 @@ public:
     }
 };
 
-void mst() {
+void mst_prim() {
     int n_node;
     int n_edge;
     ////////////////////////////////////////////
@@ -1110,7 +1147,6 @@ void mst() {
     vector<Edge> graph[n_node];
     ////////////////////////////////////////////
     // read graph
-    // if many edge, graphp[][] would be faster
     ////////////////////////////////////////////
 
     priority_queue<Edge, vector<Edge>, compare> discovered;
@@ -1137,6 +1173,8 @@ void mst() {
             }
         }
     }
+    // should directly maintain the min distance for each node to current tree
+    // use heapfy...
 }
 ```
 
@@ -1534,6 +1572,10 @@ int convert_base_to_dec(const int s[], const int len, const int base) {
     return result;
 }
 ```
+
+### A / C
+C(n, k) = C(n-1, k) + C(n-1, k-1)
+C(n, k) = C(n, n-k)
 
 ##### 。。。
 
