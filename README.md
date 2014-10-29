@@ -1081,7 +1081,7 @@ int main() {
 
 ### Minimium Spanning Tree
 
-#### Prime
+#### Prim's
 
 ```C++
 struct Edge {
