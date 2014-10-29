@@ -312,11 +312,13 @@ bool myfunction (int i,int j) { return (i<j); }
 ##### Define operator <()
 
 Member function
-
+```c++
+// recommended // can use for priority_queue, sort, <ADD MORE HERE>
+```
 ```c++
 struct Edge {
    int from, to, weight;
-	bool operator<(Edge that) {
+	bool operator<(Edge that) const {
         return weight > that.weight;
     }
 };
@@ -1175,6 +1177,57 @@ void mst_prim() {
 ```
 
 #### Kruskal
+
+####### TO-DO check union find set
+```C++
+struct Edge {
+    int from;
+    int to;
+    int length;
+
+    bool operator< (Edge b) const {
+        return this->length < b.length;
+    }
+};
+
+int combine(int father[], int new_come, int cur) {
+    if (father[new_come] != new_come)
+        father[new_come] = combine(father, father[new_come], cur);
+    if (father[cur] != cur)
+        father[cur] = combine(father, new_come, father[cur]);
+    return father[new_come] = father[cur];
+}
+
+int get_father(int father[], int a) {
+    if (father[a] != a)
+        return father[a] = get_father(father, father[a]);
+    return a;
+}
+
+void solve() {
+    int n_node, n_edge;
+    /////////////////////////////////////////////////////
+    // initialize n_edge
+    /////////////////////////////////////////////////////
+    Edge e[n_edge];
+    /////////////////////////////////////////////////////
+    // initialize edge e
+    /////////////////////////////////////////////////////
+    int father[n_node];
+    for (int i = 0; i < n_node; i++)
+        father[i] = i; // initialize
+    sort(e, e + n_edge);
+
+    int to_add = n_node - 1;
+    for (int cur = 0; to_add; cur++) {
+        if (get_father(father, e[cur].from) != get_father(father, e[cur].to)) {
+            combine(father, e[cur].from, e[cur].to);
+            to_add--;
+            // add edge e[cur]
+        }
+    }
+}
+```
 
 
 ### Shortest Path
