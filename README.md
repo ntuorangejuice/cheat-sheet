@@ -1083,6 +1083,7 @@ void init() {
     for (int i = 0; i < n; i++) 
         father[i] = i;
 }
+```
 
 ## Graph
 
