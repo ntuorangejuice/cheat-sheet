@@ -1071,12 +1071,18 @@ int main() {
 
 ### Range Minimum Query RMQ
 
-### Union-find Set 冰茶鸡
-
-### 。。。
-
-
-
+### Union-find Set
+```C++
+int father[n];
+int get_father(int a) {
+    if (father[a] != a)
+        return father[a] = get_father(father[a]);
+    return a;
+}
+void init() {
+    for (int i = 0; i < n; i++) 
+        father[i] = i;
+}
 
 ## Graph
 
@@ -1262,6 +1268,59 @@ O(V^2)
 ### Maximum Flow Problem (最大流)
 
 ### Minimum-Cost Maximum-Flow Problem (最小费用最大流问题)
+
+#####
+```C++
+// have not tested
+int n_node;
+int n_edge;
+
+int cost[405][405]; // cost[i][j] = -cost[j][i]
+int residual[405][405];
+
+bool bellman_ford(int& flow_sum, int&cost_sum) { // 0: start, n_node - 1: end
+    int min_cost[405]; for (int i = 0; i < n_node; i++) min_cost[i] = INT_MAX; min_cost[0] = 0;
+    int pre_node[405]; pre_node[0] = 0;
+    int max_flow[405];
+    int in_queue[405]; memset(in_queue, 0, sizeof(in_queue));
+
+    queue<int> q;
+    q.push(0);
+    while (q.size()) {
+        int cur = q.front(); q.pop();
+        in_queue[cur] = 0;
+
+        for (int i = 0; i < n_node; i++) {
+            if (residual[cur][i] > 0 && min_cost[i] > min_cost[cur] + cost[cur][i]) {
+                min_cost[i] = min_cost[cur] + cost[cur][i];
+                pre_node[i] = cur;
+                max_flow[i] = min(max_flow[cur], residual[cur][i]);
+
+                if (in_queue[i] == 0) {
+                    in_queue[i] = 1;
+                    q.push(i);
+                }
+            }
+        }
+    }
+    if (min_cost[n_node - 1] == INT_MAX)
+        return false;
+    flow_sum += max_flow[n_node - 1];
+    cost_sum += max_flow[n_node - 1] * min_cost[n_node - 1];
+    for (int cur = n_node - 1; cur != 0; cur = pre_node[cur]) {
+        residual[pre_node[cur]][cur] -= max_flow[n_node - 1];
+        residual[cur][pre_node[cur]] += max_flow[n_node - 1];
+    }
+    return true;
+}
+
+void min_cost_max_flow() {
+    int flow_sum = 0;
+    int cost_sum = 0;
+    while (bellman_ford(flow_sum, cost_sum));
+    cout << flow_sum << " " << cost_sum << endl;
+}
+```
 
 #### Dinic
 ``` C++
@@ -1808,6 +1867,27 @@ void hanoi(int n, char x, char y, char z) { // 将 x 上编号 1 至 n 的圆盘
 ##### Divide and Conquer
 
 ##### 迭代加深搜索 (+ binary increase/decrease)
+
+```C++
+int up_limit = ;
+int down_limit = ;
+int cur, pre;
+
+while (true) {
+    cur = (down_limit + up_limit) / 2;
+
+    bool ok = search();
+
+    if (ok)
+        up_limit = cur;
+    else
+        down_limit = cur;
+    pre = cur;
+    cur = (down_limit + up_limit) / 2;
+    if (pre == cur)
+        return up_limit;
+}
+```
 
 ##### 双向 BFS
 
