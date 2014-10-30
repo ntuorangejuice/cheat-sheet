@@ -1267,6 +1267,41 @@ O(V^2)
 2. A graph is bipartite if and only if it is 2-colorable, (i.e. its chromatic number is less than or equal to 2).
 3. The spectrum of a graph is symmetric if and only if it's a bipartite graph.
 
+##### Hungarian algorithm 匈牙利算法
+```C++
+int n_node;
+int graph[405][405];
+int match[405];
+int visited[405];
+
+bool augment(int cur) {
+    for (int i = 0; i < n_node; i++) { // for all node
+        if (graph[cur][i] > 0 && visited[i] == 0) { // if have edge and not visited
+            visited[i] = 1; // mark visited
+            if (match[i] == -1 || augment(match[i])) { // if not matched, or its previous can find other match
+                match[i] = cur; // match it
+                return true;
+            }
+        }
+    }
+    return false; // cannot find any match
+}
+
+int match() {
+    memset(graph, 0, sizeof(graph));
+    ////////////////////////////////////////////////
+    // initialize n_node, graph
+    ////////////////////////////////////////////////
+    int n_match = 0;
+    memset(match, -1, sizeof(match));
+    for (int i = 0; i < n_node; i++) { // for each node, find an augmented path
+        memset(visited, 0, sizeof(visited)); // each node only visit once
+        if (augment(i)) // if found
+            n_match++; // maximum matching ++
+    }
+}
+```
+
 ### Maximum Flow Problem 最大流
 
 #### Dinic
@@ -1597,9 +1632,6 @@ int main(int argc, char const *argv[]) {
 ```
 
 ### 中国剩余定理
-
-
-
 
 ### 最小公倍数
 
