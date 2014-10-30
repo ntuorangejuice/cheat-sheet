@@ -1,4 +1,6 @@
-# Orange Juice - ACM-ICPC Cheat Sheet
+please reflect change on both side
+
+## Orange Juice - ACM-ICPC Cheat Sheet
 
 :balloon::balloon::balloon:
 
@@ -6,8 +8,7 @@
 
 ## Basic
 
-### C++ Solution Template
-
+#### C++ Solution Template
 ```c++
 #include <bits/stdc++.h>
 
@@ -48,7 +49,7 @@ int main() {
 }
 ```
 
-Optional include list
+> Optional include list
 
 ```c++
 #include <iostream>
@@ -64,11 +65,11 @@ Optional include list
 #include <list>
 ```
 
-### C++ String
+#### C++ String
 
-#### Input string
+##### Input string
 
-* get one string with no space and new-line.
+get one string with no space and new-line.
 
 ```c++
 string a;
@@ -85,12 +86,12 @@ new line
 
 Output
 ```
-[C++] You have input "hello", , whose length is 5
+You have input "hello", , whose length is 5
 ```
 
-#### read one line
+##### read one line
 
-* getline()
+getline()
 
 ```C++
 string a;
@@ -99,17 +100,18 @@ cout << a << endl;
 ```
 
 Input
+
 ```
 Hello World!!!
 ```
 
 Output
+
 ```
 Hello World!!!
 ```
 
-
-#### Convert to char array
+##### Convert to char array
 
 ```C++
 string cppstr = "this is a string";
@@ -117,14 +119,13 @@ char target[1024];
 strcpy(target, cppstr.c_str());
 ```
 
+#### C String (Character Array)
 
-### C String (Character Array)
+##### Input C String
 
-#### Input C String
+gets()
 
-* gets()
-
-Reads characters from the standard input (stdin) and stores them as a C string into str until a newline character or the end-of-file is reached.
+> Reads characters from the standard input (stdin) and stores them as a C string into str until a newline character or the end-of-file is reached.
 
 ```c++
 char b[10];
@@ -134,18 +135,19 @@ cout << "[C++] You have input \"" << b << "\", "
 ```
 
 Input
+
 ```
  world
 new line
 ```
 
 Output
+
 ```
-[C] You have input " world", , whose length is 6
+You have input " world", , whose length is 6
 ```
 
 Note: There is a space in front of "world", which will be part of the string.
-
 However, using gets() is "unsafe", but we are not to discuss the details here.
 
 #### Convert to C++ string
@@ -155,14 +157,13 @@ char arrstr[] = "this is a string";
 string target = string(arr);
 ```
 
-
-### Algorithm
+#### Algorithm
 
 ```C++
 #include <algorithm>
 ```
 
-#### Permutation
+##### Permutation
 
 Usage
 ```c++
@@ -206,7 +207,7 @@ The 3! possible permutations with 3 elements:
 After loop: 1 2 3
 ```
 
-#### Binary Search
+##### Binary Search
 
 Usage
 
@@ -215,9 +216,9 @@ bool binary_search (ForwardIterator first, ForwardIterator last, const T& val, C
 // return true if found, false if not
 ```
 
-#### Lower Bound
+##### Lower Bound
 
-Returns an iterator pointing to the first element in the range [first,last) which does not compare less than val.
+> Returns an iterator pointing to the first element in the range [first,last) which does not compare less than val.
 
 Usage
 
@@ -232,14 +233,13 @@ ForwardIterator lower_bound (ForwardIterator first, ForwardIterator last,
 
 ```c++
 template <class ForwardIterator, class T>
-  bool binary_search (ForwardIterator first, ForwardIterator last, const T& val)
-{
+  bool binary_search (ForwardIterator first, ForwardIterator last, const T& val) {
   first = std::lower_bound(first,last,val);
   return (first!=last && !(val<*first));
 }
 ```
 
-#### Swap
+##### Swap
 
 Usage
 
@@ -261,7 +261,7 @@ std::iter_swap(myints+3,myvector.begin()+2); //   myints:  99  20  30 [99] 50
                                              // myvector:  10  99 [40] 99
 ```
 
-#### Heap
+##### Heap
 
 // not completed
 
@@ -283,9 +283,9 @@ void sort_heap (RandomAccessIterator first, RandomAccessIterator last); Compare 
 
 Note: Priority queue is more recoomeneded.
 
-#### Sort
+##### Sort
 
-Sorts the elements in the range [first,last) into ascending order.
+> Sorts the elements in the range [first,last) into ascending order.
 `stable_sort` preserves the relative order of the elements with equivalent values.
 
 Usage
@@ -299,9 +299,12 @@ void stable_sort ( RandomAccessIterator first, RandomAccessIterator last,
 
 #### Compare
 
+> bool operator< (ele);
+> true at bottom (for sort, true at front)
+
 ##### Compare function
 
-Binary function that accepts two elements in the range as arguments, and returns a value convertible to bool. It should returns true if the first element is considered to be "smaller" than the second one.
+> Binary function that accepts two elements in the range as arguments, and returns a value convertible to bool. It should returns true if the first element is considered to be "smaller" than the second one.
 
 Using by `sort`, `make_heap` and etc.
 
@@ -312,9 +315,8 @@ bool myfunction (int i,int j) { return (i<j); }
 ##### Define operator <()
 
 Member function
-```c++
-// recommended // can use for priority_queue, sort, <ADD MORE HERE>
-```
+> recommended // can use for priority_queue, sort, <ADD MORE HERE>
+
 ```c++
 struct Edge {
    int from, to, weight;
@@ -335,7 +337,6 @@ struct Edge {
 };
 ```
 
-
 Non-member function
 
 ```c++
@@ -349,13 +350,13 @@ struct Edge {
 
 ##### Define operator()()
 
-You can use comparison function for STL containers by passing them as the first argument of the constructor, and specifying the function type as the additional template argument. For example:
+> You can use comparison function for STL containers by passing them as the first argument of the constructor, and specifying the function type as the additional template argument. For example:
 
 ```c++
 set<int, bool (*)(int, int)> s(cmp);
 ```
 
-A functor, or a function object, is an object that can behave like a function. This is done by defining operator()() of the class. In this case, implement operator()() as a comparison function:
+> A functor, or a function object, is an object that can behave like a function. This is done by defining operator()() of the class. In this case, implement operator()() as a comparison function:
 
 ```c++
 vector<int> occurrences;
@@ -368,19 +369,19 @@ set<int, cmp> s;
 priority_queue<int, vector<int>, cmp> pq;
 ```
 
-Using by `priority_queue `.
+Used by `priority_queue `.
 
-### Map
+#### Map
 
 // TODO add interface
 
-Maps are associative containers that store elements formed by a combination of a key value and a mapped value, following a specific order.
+> Maps are associative containers that store elements formed by a combination of a key value and a mapped value, following a specific order.
 
 ```c++
 #include <map>
 ```
 
-#### Define a Map
+##### Define a Map
 
 ```c++
 template < class Key,                                     // map::key_type
@@ -390,7 +391,24 @@ template < class Key,                                     // map::key_type
            > class map;
 ```
 
-#### Commonly used method
+##### Commonly used method
+
+```C++
+begin()
+end()
+
+empty()
+size()
+
+operator[] // if not found, insert one
+
+insert(pair<first type, second type)
+erase()
+clear()
+
+find() // if not found, return end()
+count() // return 1 or 0
+```
 
 #### Red-black Tree
 
@@ -407,15 +425,15 @@ In addition to the requirements imposed on a binary search tree the following mu
 5. Every path from a given node to any of its descendant leaves contains the same number of black nodes.
 
 
-### Hash Map
+#### Hash Map
 
-#### Unordered Map
+##### Unordered Map
 
 // TODO add interface
 
-Unordered map is implemented as a hash table.
+> Unordered map is implemented as a hash table.
 
-Unordered maps are associative containers that store elements formed by the combination of a key value and a mapped value, and which allows for fast retrieval of individual elements based on their keys.
+> Unordered maps are associative containers that store elements formed by the combination of a key value and a mapped value, and which allows for fast retrieval of individual elements based on their keys.
 
 ```c++
 template < class Key,                                    // unordered_map::key_type
@@ -427,7 +445,7 @@ template < class Key,                                    // unordered_map::key_t
 
 ```
 
-#### Deprecated Hash Map
+##### Deprecated Hash Map
 
 ```c++
 #include <ext/hash_map>
@@ -437,16 +455,16 @@ months["february"] = 28;
 ```
 
 
-### Pair
+#### Pair
 
-### Vector
+#### Vector
 
-#### Constructor
+##### Constructor
 ```c++
 std::vector<int> second (4,100);  // four ints with value 100
 ```
 
-#### Methods
+##### Methods
 
 * begin(), end()
 * front(), back()
@@ -455,11 +473,11 @@ std::vector<int> second (4,100);  // four ints with value 100
 * push_back(const value_type& val)
 * pop_back()
 
-### List
+#### List
 
-List containers are implemented as doubly-linked lists.
+> List containers are implemented as doubly-linked lists.
 
-#### Methods
+##### Methods
 
 * begin(), end()
 * front(), back()
@@ -474,15 +492,19 @@ List containers are implemented as doubly-linked lists.
 * reverse()
 * sort(), sort (Compare comp)
 
-### Queue
-
-``include <queue>``
+#### Queue
 
 ```C++
-// constructor
+include <queue>
+```
+Constructor
+```C++
 queue<int> my_queue;
-queue<int, list<int> > my_queue (my_list); // use list<int> as container, copy my_list into my_queue
-
+queue<int, list<int> > my_queue (my_list);
+// use list<int> as container, copy my_list into my_queue
+```
+Methods
+```C++
 void queue::push(const value_type& val);
 void queue::pop();
 bool queue::empty() const;
@@ -492,14 +514,16 @@ const_reference& queue::front() const;
 
 #### Double-ended Queue
 
-``include <dequeue>``
-
-
-### Stack
-
 ```C++
-// constructor, use vector<int> as container, copy my_data into my_stack
+include <dequeue>
+```
+
+
+#### Stack
+Constructor
+```C++
 stack<int, vector<int> > my_stack (my_data);
+// use vector<int> as container, copy my_data into my_stack
 
 bool stack::empty() const;
 size_type stack::size() const;
@@ -508,12 +532,11 @@ void stack::push (const value_type& val);
 void stack::pop();
 ```
 
-### Iterator
+#### Iterator
 
-### Priority Queue
+#### Priority Queue
 
-# bool operator< (ele);
-# true at bottom (for sort, true at front)
+
 
 ```C++
 // constructor
@@ -579,9 +602,9 @@ while (three_priority_queue.size() != 0) {
 ```
 
 
-## BigInteger & BigDecimal
+#### BigInteger & BigDecimal
 
-### C++ Big Integer
+##### C++ Big Integer
 
 ```c++
 const int BASE_LENGTH = 2;
@@ -750,15 +773,15 @@ ASSERT(b.ll() == 9999)
 ```
 
 
-### The Java Approach 
+##### The Java Approach 
 
-##### BigInteger
+###### BigInteger
 
 ```java
 import java. math. BigInteger;
 ```
+Constructor and Description
 ```java
-//Constructor and Description
 BigInteger(String val) // translates the decimal String representation of a BigInteger into a BigInteger.
 BigInteger(String val, int radix) // translates the String representation of a BigInteger in the specified radix into a BigInteger.
 
@@ -790,7 +813,6 @@ String  toString(int radix) // returns the String representation of this BigInte
 static BigInteger   valueOf(long val) // returns a BigInteger whose value is equal to that of the specified long.
 long    longValue() // converts this BigInteger to a long.
 ```
-
 
 ##### BigDecimal
 
@@ -956,21 +978,21 @@ Translates a long unscaled value and an int scale into a BigDecimal.
 
 ## String
 
-### KMP
+#### KMP
 
-### Longest palindromic substring (Manacher's algorithm)
+#### Longest palindromic substring (Manacher's algorithm)
 
 ## Tree
 
-### Tree Traversal
+#### Tree Traversal
 
-### Trie
+#### Trie
 
-### 后缀数组
+#### 后缀数组
 
-### Binary Indexed Tree
+#### Binary Indexed Tree
 
-### Segment Tree
+#### Segment Tree
 
 ```c++
 const int MAX = 100000;
@@ -1072,9 +1094,17 @@ int main() {
 }
 ```
 
-### Range Minimum Query RMQ
+#### Range Minimum Query RMQ
 
-### Union-find Set
+> place holder
+
+##### Union-find Set - application
+
+> place holder
+
+## Graph
+
+#### Union-find Set
 ```C++
 int father[n];
 int get_father(int a) {
@@ -1088,15 +1118,12 @@ void init() {
 }
 ```
 
-## Graph
+#### Minimium Spanning Tree
 
-### Minimium Spanning Tree
+##### Prim's
 
-#### Prim's
+> graph[][], time complexity: O(V^2)
 
-```C++
-//graph[][], time complexity: O(V^2)
-```
 ```C++
 void mst_prim() {
     int n_node, n_edge;
@@ -1129,10 +1156,7 @@ void mst_prim() {
     }
 }
 ```
-
-```C++
-// vector<int> graph[], time complexity: (V + E)log(V)
-```
+> vector<int> graph[], time complexity: (V + E)log(V)
 
 ```C++
 struct Edge {
@@ -1185,9 +1209,10 @@ void mst_prim() {
 }
 ```
 
-#### Kruskal
+##### Kruskal
 
-####### TO-DO check union find set
+> Elog(E) + Elog(V)
+
 ```C++
 struct Edge {
     int from;
@@ -1233,9 +1258,9 @@ void solve() {
 ```
 
 
-### Shortest Path
+#### Shortest Path
 
-#### 任意两点
+##### 任意两点
 
 ```
 for ()
@@ -1243,31 +1268,34 @@ for ()
         for ()
 ```
 
-#### Bellman–Ford
+##### Bellman–Ford
 
-Bellman–Ford algorithm is O(VE).
-Can be applied to situations when there is a maximun number of vertices in shortest path.
+> Bellman–Ford algorithm is O(VE).
+> Can be applied to situations when there is a maximun number of vertices in shortest path.
+
 ```
 for (n times of relax)
     for (each node)
         relax each node
 ```
 
-###### SPFA
+##### SPFA
 
-#### Dijkstra
+##### Dijkstra
 
-Dijkstra is good for graphs non-negative edges.
+> Dijkstra is good for graphs non-negative edges.
 
-O(V^2)
+> O(V^2)
 
-### Bipartite Graph 二分图
+#### Bipartite Graph 二分图
 
-1. A graph is bipartite if and only if it does not contain an odd cycle.
-2. A graph is bipartite if and only if it is 2-colorable, (i.e. its chromatic number is less than or equal to 2).
-3. The spectrum of a graph is symmetric if and only if it's a bipartite graph.
+> 1. A graph is bipartite if and only if it does not contain an odd cycle.
+> 2. A graph is bipartite if and only if it is 2-colorable, (i.e. its chromatic number is less than or equal to 2).
+> 3. The spectrum of a graph is symmetric if and only if it's a bipartite graph.
 
 ##### Hungarian algorithm 匈牙利算法
+> O(E * V)
+
 ```C++
 int n_node;
 int graph[405][405];
@@ -1302,11 +1330,10 @@ int match() {
 }
 ```
 
-### Maximum Flow Problem 最大流
+#### Maximum Flow Problem 最大流
 
-#### Dinic
+##### Dinic
 ``` C++
-// node index: 0 <= i <= n_node - 1
 int graph[250][250];
 int level[250];
 int n_node;
@@ -1360,7 +1387,7 @@ int dinic(int start, int end) {
 }
 ```
  
-##### Minimum-Cost Maximum-Flow 
+#### Minimum-Cost Maximum-Flow 
 
 ```C++
 // have not tested
@@ -1414,27 +1441,29 @@ void min_cost_max_flow() {
 }
 ```
 
-##### 强连通分量 图的 割点, 桥, 双连通分支 ``https://www.byvoid.com/blog/biconnect``
+#### 强连通分量 图的 割点, 桥, 双连通分支 ``https://www.byvoid.com/blog/biconnect``
 
-##### 拓扑排序
+> place holder
 
-##### Euler Cycle/Path, Hamilton Cycle/Path
+#### 拓扑排序
 
+> place holder
 
+#### Euler Cycle/Path, Hamilton Cycle/Path
 
-
+> place holder
 
 
 ## Mathematics
 
-### class/struct Matrix
+#### class/struct Matrix
 
 ```C++
 operator+
 operator*
 ```
 
-Square matrix
+> Square matrix
 
 ```C++
 
@@ -1494,13 +1523,13 @@ Matrix Matrix::mirror() {
 }
 ```
 
-### 欧拉函数 ?
+#### 欧拉函数 ?
 
-### 欧几里得算法 / gcd
+#### 欧几里得算法 / gcd
 
-see next section
+> see next section
 
-### 扩展欧几里得算法 
+#### 扩展欧几里得算法 
 
 ``http://www.cnblogs.com/frog112111/archive/2012/08/19/2646012.html``
 
@@ -1566,7 +1595,7 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
-### 求解不定方程
+##### 求解不定方程
 
 > for: p * a + q * b = c
 
@@ -1596,7 +1625,7 @@ int main(int argc, char const *argv[]) {
 // smallest: ansx % (b / gcd(a, b) + b / gcd(a, b)) % (b / gcd(a, b))
 ```
 
-### 求解模线性方程（线性同余方程）
+##### 求解模线性方程（线性同余方程）
 
 > (a * x) % n = b % n, x = ?
 
@@ -1613,7 +1642,7 @@ int main(int argc, char const *argv[]) {
 ```C++
 ```
 
-### 求解模的逆元
+##### 求解模的逆元
 
 > (a * x) % n = 1, x = ?
 
@@ -1631,16 +1660,15 @@ int main(int argc, char const *argv[]) {
 // smallest ansx = (ansx % (n / gcd(a, n)) + (n / gcd(a, n))) % (n / gcd(a, n))
 ```
 
-### 中国剩余定理
+#### 中国剩余定理
 
-### 最小公倍数
+#### 最小公倍数
 
-```
+```C++
 a * b / gcd(a, b)
 ```
 
-
-### 分解质因数
+#### 分解质因数
 
 ```C++
 long long x;
@@ -1653,18 +1681,17 @@ for (long long factor = 2; x != 1; factor++) {
 }
 ```
 
-### 因数个数
+#### 因数个数
 
-```
+```C++
 n = p1 ^ x1 * p2 ^ x2 * ... * pn ^ xn
 total = (x1 + 1) * (x2 + 1) * ... * (xn + 1)
 ```
 
-### 素数判定
+#### 素数判定
 
-```C++
-// 大于 3 的质数可以被表示为 6n - 1 或 6n + 1
-```
+> 大于 3 的质数可以被表示为 6n - 1 或 6n + 1
+
 ```C++
 bool is_prime(int n) {
     if (n == 1 || n % 2 == 0)
@@ -1677,7 +1704,7 @@ bool is_prime(int n) {
 }
 ```
 
-### 进制转换
+#### 进制转换
 
 ```C++
 void convert_dec_to_base(int n, const int base) {
@@ -1698,18 +1725,20 @@ int convert_base_to_dec(const int s[], const int len, const int base) {
 }
 ```
 
-### A / C
-C(n, k) = C(n-1, k) + C(n-1, k-1)
-C(n, k) = C(n, n-k)
+#### A / C
+> C(n, k) = C(n-1, k) + C(n-1, k-1)
+> C(n, k) = C(n, n-k)
 
-### 博弈论
 
+## 博弈论
+
+> place holder
 
 
 
 ## Geometry
 
-### template class for Point?
+#### template class for Point?
 
 ```C++
 struct point {
@@ -1762,42 +1791,49 @@ struct point {
 };
 ```
 
-##### 向量点乘 叉乘
+#### 向量点乘 叉乘
 
-a = (x1, y1)
-b = (x2, y2)
-i ... |i| = 1, vertical to a-b surface
+> a = (x1, y1)
+> b = (x2, y2)
+> i ... |i| = 1, vertical to a-b surface
 
-####### dot product
-a dot b = x1 * x2 + y1 * y2 = |a| * |b| * cos(angle)
-
+##### dot product
+> a dot b = x1 * x2 + y1 * y2 = |a| * |b| * cos(angle)
+> 
 > if = 0: 90 degree
+> 
+> a dot b / |b| = a project to b
 
-a dot b / |b| = a project to b
-
-####### cross product
-a x b = x1 * y2 - x2 * y1 = |a| * |b| * sin(angle) * i
-
+##### cross product
+> a x b = x1 * y2 - x2 * y1 = |a| * |b| * sin(angle) * i
+> 
 > if < 0: b is at left of a
-
+> 
 > if = 0: a, b in a line
+> 
+> if 0: b is at right of a
+> 
+> a x b = area of 平行四边形
+> a x b x c = area of 平行六面体, c = (x3, y3)
 
-> if > 0: b is at right of a
+#### 直线公式
 
-a x b = area of 平行四边形
-a x b x c = area of 平行六面体, c = (x3, y3)
+> (x, y) = (x1, y1) + k * ((x2, y2) - (x1, y1))
 
-##### 直线公式
+#### Convex Hull
 
-(x, y) = (x1, y1) + k * ((x2, y2) - (x1, y1))
+##### Gift Wrapping
 
-##### Convex Hull
+> place holder
 
-####### Gift Wrapping
+##### QuickHull
 
-####### QuickHull
+> place holder
 
-####### Graham scan
+##### Graham scan
+
+> O(VlogV)
+
 ```C++
 struct Point {
     long x;
@@ -1895,13 +1931,11 @@ int main(int argc, char const *argv[]) {
 
 
 
-## Tricks
+## Tricks / 分析方法
 
-分析方法
+#### Recursive
 
-##### recursive
-
-####### Hanoi
+##### Hanoi
 
 ```C++
 void hanoi(int n, char x, char y, char z) { // 将 x 上编号 1 至 n 的圆盘移到 z, y 作辅助塔
@@ -1915,13 +1949,13 @@ void hanoi(int n, char x, char y, char z) { // 将 x 上编号 1 至 n 的圆盘
 }
 ```
 
-##### Dynamic Programming
+#### Dynamic Programming
 
-####### 树上的
+##### 树上的
 
-##### Divide and Conquer
+#### Divide and Conquer
 
-##### 迭代加深搜索 (+ binary increase/decrease)
+#### 迭代加深搜索 (binary increase/decrease)
 
 ```C++
 int up_limit = ;
@@ -1944,19 +1978,21 @@ while (true) {
 }
 ```
 
-##### 双向 BFS
+#### 双向 BFS
 
-##### 从终点开始搜
+#### 从终点开始搜
 
-##### Brute Force
+#### Brute Force
 
-####### 子集生成
+##### 子集生成
 
 
 
-### Userful Code Snippets
+## Userful Code Snippets
 
-##### ``cantor_expansion / reverse_cantor_expansion``
+#### cantor_expansion / reverse_cantor_expansion
+
+> for hashing, or ...
 
 ```C++
 long long factorial(int n) {
@@ -2013,9 +2049,9 @@ void reverse_cantor_expansion(int n, long long m) {
 }
 ```
 
-### Fast Exponention
+#### Fast Exponention
 
-To calculate n ^ p % M
+> To calculate n ^ p % M
 
 ```C++
 int power_modulo(int n, int p, int M) {
@@ -2030,7 +2066,7 @@ int power_modulo(int n, int p, int M) {
 }
 ```
 
-### 质数表
+#### 质数表
 
 ```C++
 int is_prime[UP_LIMIT + 1];
