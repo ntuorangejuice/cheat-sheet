@@ -1265,14 +1265,14 @@ O(V^2)
 // node index: 0 <= i <= n_node - 1
 int graph[250][250];
 int level[250];
-int n_node, n_edge;
+int n_node;
 
-int mark_level() {
+int mark_level(int start, int end) {
     memset(level, -1, sizeof(level));
     queue<int> to_visit;
     
-    level[0] = 0;
-    to_visit.push(0);
+    level[start] = 0;
+    to_visit.push(start);
     while (!to_visit.empty()) {
         int cur = to_visit.front();
         to_visit.pop();
@@ -1284,18 +1284,20 @@ int mark_level() {
         }
     }
 
-    if (level[n_node - 1] == -1)
+    if (level[end] == -1)
         return 0; // cannot reach the sink
     return 1; // can reach the sink
 }
 
-int augment(int cur, int min_flow) {
-    if (cur == n_node - 1)
+int augment(int cur, int end, int min_flow) {
+    if (cur == end)
         return min_flow;
 
     int augmented_flow = 0;
     for (int i = 0; i < n_node; ++i) {
-        if (level[i] == level[cur] + 1 && graph[cur][i] > 0 && (augmented_flow = augment(i, min(graph[cur][i], min_flow)))) {
+        if ((level[i] == level[cur] + 1 && graph[cur][i] > 0) &&
+            (augmented_flow = augment(i, end, min(graph[cur][i], min_flow)))
+        ) {
             graph[cur][i] -= augmented_flow;
             graph[i][cur] += augmented_flow;
             return augmented_flow;
@@ -1304,11 +1306,11 @@ int augment(int cur, int min_flow) {
     return 0;
 }
 
-int dinic() {
+int dinic(int start, int end) {
     int ans = 0;
     int temp = 0;
-    while (mark_level())
-        while (temp = augment(0, INT_MAX))
+    while (mark_level(start, end))
+        while (temp = augment(start, end, INT_MAX))
             ans += temp;
     return ans;
 }
