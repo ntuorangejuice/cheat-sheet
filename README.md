@@ -1731,9 +1731,22 @@ struct point {
 
 ##### 向量点乘 叉乘
 
-> 点乘意义 点乘公式
+a = (x1, y1)
+b = (x2, y2)
+i ... |i| = 1, vertical to a-b surface
 
-> 叉乘意义 叉乘公式
+####### dot product
+a dot b = x1 * x2 + y1 * y2 = |a| * |b| * cos(angle)
+> if = 0: 90 degree
+a dot b / |b| = a project to b
+
+####### cross product
+a x b = x1 * y2 - x2 * y1 = |a| * |b| * sin(angle) * i
+> if < 0: b is at left of a
+> if = 0: a, b in a line
+> if > 0: b is at right of a
+a x b = area of 平行四边形
+a x b x c = area of 平行六面体, c = (x3, y3)
 
 ##### 直线公式
 
@@ -1989,9 +2002,3 @@ for (int k = 3; k*k <= UP_LIMIT; k++) // start from 9, end at sqrt
         for(int i = k*k; i <= UP_LIMIT; i += 2*k) // every two is not 
             is_prime[i] = 0;
 ```
-
-
-
-/play unix
-
-/play yeah
