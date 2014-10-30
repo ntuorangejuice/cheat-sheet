@@ -1083,7 +1083,8 @@ int main() {
 
 ### Minimium Spanning Tree
 
-#### Prim
+#### Prim's
+
 ```C++
 //graph[][], time complexity: O(V^2)
 ```
@@ -1119,9 +1120,11 @@ void mst_prim() {
     }
 }
 ```
+
 ```C++
 // vector<int> graph[], time complexity: (V + E)log(V)
 ```
+
 ```C++
 struct Edge {
     int from;
@@ -1629,7 +1632,41 @@ C(n, k) = C(n, n-k)
 ### template class for Point?
 
 ```C++
+struct point {
+    int x, y;
 
+    double length() {
+        return sqrt(x*x + y*y);
+    }
+
+    long operator* (const point& b) {
+        return x*b.y - y*b.x;
+    }
+
+    bool at_right_of(const point& a, const point& b) const {
+        // a: relative point, b: base
+        point vec_self = {x - b.x, y - b.y};
+        point vec_that = {a.x - b.x, a.y - b.y};
+        long product = vec_self * vec_that;
+        if (product>0) return true;
+        if (product==0 && vec_self.length()>vec_that.length()) return true;
+        return false;
+    }
+
+    double to_point(const point& b) const {
+        return sqrt(pow(x-b.x,2) + pow(y-b.y,2));
+    }
+
+    double to_segment(const point& a, const point& b) const {
+        double len_ab = a.to_point(b);
+        if (abs(len_ab)<E) return to_point(a);
+        double r = ((a.y-y)*(a.y-b.y) - (a.x-x)*(a.x-b.x))/pow(len_ab,2);
+        if (r>1 || r<0) return min(to_point(a), to_point(b));
+        // projection of p is on extension of AB
+        r = ((a.y - y)*(b.y - y) - (a.x - x)*(b.y - a.y))/pow(len_ab,2);
+        return fabs(r*len_ab);
+    }
+};
 ```
 
 ##### 向量点乘 叉乘
