@@ -512,6 +512,9 @@ void stack::pop();
 
 ### Priority Queue
 
+# bool operator< (ele);
+# true at bottom (for sort, true at front)
+
 ```C++
 // constructor
 priority_queue<int> my_priority_queue;
@@ -1087,7 +1090,6 @@ void init() {
 
 ## Graph
 
-
 ### Minimium Spanning Tree
 
 #### Prim's
@@ -1137,12 +1139,9 @@ struct Edge {
     int from;
     int to;
     int length;
-};
 
-struct compare {
-public:
-    bool operator() (Edge a, Edge b) {
-        return a.length > b.length;
+    bool operator< (Edge b) const {
+        return this->length > b.length;
     }
 };
 
@@ -1157,7 +1156,7 @@ void mst_prim() {
     // read graph
     ////////////////////////////////////////////
 
-    priority_queue<Edge, vector<Edge>, compare> discovered;
+    priority_queue<Edge> discovered;
     int added[n_node];
     memset(added, 0, sizeof(added));
 
@@ -1247,10 +1246,14 @@ for ()
 #### Bellman–Ford
 
 Bellman–Ford algorithm is O(VE).
-
 Can be applied to situations when there is a maximun number of vertices in shortest path.
+```
+for (n times of relax)
+    for (each node)
+        relax each node
+```
 
-#### SPFA
+###### SPFA
 
 #### Dijkstra
 
@@ -1258,70 +1261,13 @@ Dijkstra is good for graphs non-negative edges.
 
 O(V^2)
 
-### Augmenting Path Algorithm (增广路)
-
-### Bipartite Graph (二分图)
+### Bipartite Graph 二分图
 
 1. A graph is bipartite if and only if it does not contain an odd cycle.
 2. A graph is bipartite if and only if it is 2-colorable, (i.e. its chromatic number is less than or equal to 2).
 3. The spectrum of a graph is symmetric if and only if it's a bipartite graph.
 
-### Maximum Flow Problem (最大流)
-
-### Minimum-Cost Maximum-Flow Problem (最小费用最大流问题)
-
-#####
-```C++
-// have not tested
-int n_node;
-int n_edge;
-
-int cost[405][405]; // cost[i][j] = -cost[j][i]
-int residual[405][405];
-
-bool bellman_ford(int& flow_sum, int&cost_sum) { // 0: start, n_node - 1: end
-    int min_cost[405]; for (int i = 0; i < n_node; i++) min_cost[i] = INT_MAX; min_cost[0] = 0;
-    int pre_node[405]; pre_node[0] = 0;
-    int max_flow[405];
-    int in_queue[405]; memset(in_queue, 0, sizeof(in_queue));
-
-    queue<int> q;
-    q.push(0);
-    while (q.size()) {
-        int cur = q.front(); q.pop();
-        in_queue[cur] = 0;
-
-        for (int i = 0; i < n_node; i++) {
-            if (residual[cur][i] > 0 && min_cost[i] > min_cost[cur] + cost[cur][i]) {
-                min_cost[i] = min_cost[cur] + cost[cur][i];
-                pre_node[i] = cur;
-                max_flow[i] = min(max_flow[cur], residual[cur][i]);
-
-                if (in_queue[i] == 0) {
-                    in_queue[i] = 1;
-                    q.push(i);
-                }
-            }
-        }
-    }
-    if (min_cost[n_node - 1] == INT_MAX)
-        return false;
-    flow_sum += max_flow[n_node - 1];
-    cost_sum += max_flow[n_node - 1] * min_cost[n_node - 1];
-    for (int cur = n_node - 1; cur != 0; cur = pre_node[cur]) {
-        residual[pre_node[cur]][cur] -= max_flow[n_node - 1];
-        residual[cur][pre_node[cur]] += max_flow[n_node - 1];
-    }
-    return true;
-}
-
-void min_cost_max_flow() {
-    int flow_sum = 0;
-    int cost_sum = 0;
-    while (bellman_ford(flow_sum, cost_sum));
-    cout << flow_sum << " " << cost_sum << endl;
-}
-```
+### Maximum Flow Problem 最大流
 
 #### Dinic
 ``` C++
@@ -1379,7 +1325,59 @@ int dinic(int start, int end) {
 }
 ```
  
-##### 最小费用最大流 ?
+##### Minimum-Cost Maximum-Flow 
+
+```C++
+// have not tested
+int n_node;
+int n_edge;
+
+int cost[405][405]; // cost[i][j] = -cost[j][i]
+int residual[405][405];
+
+bool bellman_ford(int& flow_sum, int&cost_sum) { // 0: start, n_node - 1: end
+    int min_cost[405]; for (int i = 0; i < n_node; i++) min_cost[i] = INT_MAX; min_cost[0] = 0;
+    int pre_node[405]; pre_node[0] = 0;
+    int max_flow[405];
+    int in_queue[405]; memset(in_queue, 0, sizeof(in_queue));
+
+    queue<int> q;
+    q.push(0);
+    while (q.size()) {
+        int cur = q.front(); q.pop();
+        in_queue[cur] = 0;
+
+        for (int i = 0; i < n_node; i++) {
+            if (residual[cur][i] > 0 && min_cost[i] > min_cost[cur] + cost[cur][i]) {
+                min_cost[i] = min_cost[cur] + cost[cur][i];
+                pre_node[i] = cur;
+                max_flow[i] = min(max_flow[cur], residual[cur][i]);
+
+                if (in_queue[i] == 0) {
+                    in_queue[i] = 1;
+                    q.push(i);
+                }
+            }
+        }
+    }
+    if (min_cost[n_node - 1] == INT_MAX)
+        return false;
+    flow_sum += max_flow[n_node - 1];
+    cost_sum += max_flow[n_node - 1] * min_cost[n_node - 1];
+    for (int cur = n_node - 1; cur != 0; cur = pre_node[cur]) {
+        residual[pre_node[cur]][cur] -= max_flow[n_node - 1];
+        residual[cur][pre_node[cur]] += max_flow[n_node - 1];
+    }
+    return true;
+}
+
+void min_cost_max_flow() {
+    int flow_sum = 0;
+    int cost_sum = 0;
+    while (bellman_ford(flow_sum, cost_sum));
+    cout << flow_sum << " " << cost_sum << endl;
+}
+```
 
 ##### 强连通分量 图的 割点, 桥, 双连通分支 ``https://www.byvoid.com/blog/biconnect``
 
@@ -1387,7 +1385,7 @@ int dinic(int start, int end) {
 
 ##### Euler Cycle/Path, Hamilton Cycle/Path
 
-##### 。。。
+
 
 
 
@@ -1465,9 +1463,7 @@ Matrix Matrix::mirror() {
 
 ### 欧几里得算法 / gcd
 
-```C++
-int gcd();
-```
+see next section
 
 ### 扩展欧几里得算法 
 
@@ -1674,20 +1670,12 @@ int convert_base_to_dec(const int s[], const int len, const int base) {
 C(n, k) = C(n-1, k) + C(n-1, k-1)
 C(n, k) = C(n, n-k)
 
-##### 。。。
-
-
-
 ### 博弈论
-
-##### 。。。
 
 
 
 
 ## Geometry
-
-计算几何
 
 ### template class for Point?
 
@@ -1701,6 +1689,10 @@ struct point {
 
     long operator* (const point& b) {
         return x*b.y - y*b.x;
+    }
+
+    long cross_product(const point& b) {
+      return x * b.x + y * b.y;
     }
 
     bool at_right_of(const point& a, const point& b) const {
@@ -1726,6 +1718,15 @@ struct point {
         r = ((a.y - y)*(b.y - y) - (a.x - x)*(b.y - a.y))/pow(len_ab,2);
         return fabs(r*len_ab);
     }
+
+    double to_segment_v2(const point& a, const point& b) const {
+        point vec_ab = {b.x - a.x, b.y - a.y};
+        point vec_ia = {x - a.x, y - a.y};
+        point vec_ib = {x - b.x, y - b.y};
+        if (vec_ia.cross_product(ba) < 0 ||　vec_ib.cross_product(ba) > 0)
+          return min(to_point(a), to_point(b));
+        return abs(vec_ab * vec_ia) / vec_ab.length();
+    } // same meaning with v1, need test
 };
 ```
 
@@ -1737,18 +1738,26 @@ i ... |i| = 1, vertical to a-b surface
 
 ####### dot product
 a dot b = x1 * x2 + y1 * y2 = |a| * |b| * cos(angle)
+
 > if = 0: 90 degree
+
 a dot b / |b| = a project to b
 
 ####### cross product
 a x b = x1 * y2 - x2 * y1 = |a| * |b| * sin(angle) * i
+
 > if < 0: b is at left of a
+
 > if = 0: a, b in a line
+
 > if > 0: b is at right of a
+
 a x b = area of 平行四边形
 a x b x c = area of 平行六面体, c = (x3, y3)
 
 ##### 直线公式
+
+(x, y) = (x1, y1) + k * ((x2, y2) - (x1, y1))
 
 ##### Convex Hull
 
