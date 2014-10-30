@@ -1,10 +1,7 @@
-please reflect change on both side
+#### Nanyang Technological Univerisity
 
 ## Orange Juice - ACM-ICPC Cheat Sheet
-
-:balloon::balloon::balloon:
-
-:fried_shrimp::sushi::fish_cake::rice_ball::rice_cracker:
+---
 
 ## Basic
 
@@ -33,17 +30,16 @@ void _assert(bool result) {
     cout << (result ? "PASS: " : "FAIL: ");
 }
 
-
 int main() {
     ios::sync_with_stdio(false);
 
-    int x = 0;
-    ASSERT(x==0)
-    ASSERT((x = SET_BIT(x, 3))==4)
-    ASSERT((x = CLR_BIT(x, 3))==0)
+    // int x = 0;
+    // ASSERT(x==0)
+    // ASSERT((x = SET_BIT(x, 3))==4)
+    // ASSERT((x = CLR_BIT(x, 3))==0)
 
-    cout << "Total test: " << test << endl;
-    cout << "Passed: " << pass << " (" << 100.0*pass/test << "%%)" << endl;
+    // cout << "Total test: " << test << endl;
+    // cout << "Passed: " << pass << " (" << 100.0*pass/test << "%%)" << endl;
 
     return 0;
 }
@@ -74,19 +70,6 @@ get one string with no space and new-line.
 ```c++
 string a;
 cin >> a;
-cout << "[C++] You have input \"" << a << "\", "
-     << ", whose length is " << a.length() << endl;
-```
-
-Input
-```
-hello world
-new line
-```
-
-Output
-```
-You have input "hello", , whose length is 5
 ```
 
 ##### read one line
@@ -96,20 +79,8 @@ getline()
 ```C++
 string a;
 getline(cin, a);
-cout << a << endl;
 ```
 
-Input
-
-```
-Hello World!!!
-```
-
-Output
-
-```
-Hello World!!!
-```
 
 ##### Convert to char array
 
@@ -117,6 +88,11 @@ Hello World!!!
 string cppstr = "this is a string";
 char target[1024];
 strcpy(target, cppstr.c_str());
+```
+or
+```C++
+string hi = "hi";
+const char[] = hi.c_str();
 ```
 
 #### C String (Character Array)
@@ -132,19 +108,6 @@ char b[10];
 gets(b);
 cout << "[C++] You have input \"" << b << "\", "
      << ", whose length is " << strlen(b) << endl;
-```
-
-Input
-
-```
- world
-new line
-```
-
-Output
-
-```
-You have input " world", , whose length is 6
 ```
 
 Note: There is a space in front of "world", which will be part of the string.
@@ -174,7 +137,6 @@ bool next_permutation (BidirectionalIterator first, BidirectionalIterator last, 
 Example
 
 ```C++
-// next_permutation example
 #include <iostream>     // std::cout
 #include <algorithm>    // std::next_permutation, std::sort
 
@@ -373,10 +335,6 @@ Used by `priority_queue `.
 
 #### Map
 
-// TODO add interface
-
-> Maps are associative containers that store elements formed by a combination of a key value and a mapped value, following a specific order.
-
 ```c++
 #include <map>
 ```
@@ -412,18 +370,7 @@ count() // return 1 or 0
 
 #### Red-black Tree
 
-C++ map is implemented as a red-black tree.
-
-A red–black tree is a data structure which is a type of self-balancing binary search tree.
-
-In addition to the requirements imposed on a binary search tree the following must be satisfied by a red–black tree:
-
-1. A node is either red or black.
-2. The root is black. (This rule is sometimes omitted. Since the root can always be changed from red to black, but not necessarily vice-versa, this rule has little effect on analysis.)
-3. All leaves (NIL) are black. (All leaves are same color as the root.)
-4. Every red node must have two black child nodes.
-5. Every path from a given node to any of its descendant leaves contains the same number of black nodes.
-
+> deleted...
 
 #### Hash Map
 
@@ -433,8 +380,6 @@ In addition to the requirements imposed on a binary search tree the following mu
 
 > Unordered map is implemented as a hash table.
 
-> Unordered maps are associative containers that store elements formed by the combination of a key value and a mapped value, and which allows for fast retrieval of individual elements based on their keys.
-
 ```c++
 template < class Key,                                    // unordered_map::key_type
            class T,                                      // unordered_map::mapped_type
@@ -442,7 +387,6 @@ template < class Key,                                    // unordered_map::key_t
            class Pred = equal_to<Key>,                   // unordered_map::key_equal
            class Alloc = allocator< pair<const Key,T> >  // unordered_map::allocator_type
            > class unordered_map;
-
 ```
 
 ##### Deprecated Hash Map
@@ -460,6 +404,7 @@ months["february"] = 28;
 #### Vector
 
 ##### Constructor
+
 ```c++
 std::vector<int> second (4,100);  // four ints with value 100
 ```
@@ -541,15 +486,24 @@ void stack::pop();
 ```C++
 // constructor
 priority_queue<int> my_priority_queue;
-priority_queue<int, vector<int>, greater<int> > two_priority_queue; // if use greater<int>, must have vector<int>
-priority_queue<My_type, vector<My_type>, Comparator_class> my_priority_queue (my_data.begin(), my_data.end()); // use Comparator_class as comparator, use vector<My_type> as container, copy my_data into my_priority_queue
+priority_queue<int, vector<int>, greater<int> > two_priority_queue;
+// if use greater<int>, must have vector<int>
+priority_queue<My_type, vector<My_type>, Comparator_class>
+			my_priority_queue (my_data.begin(), my_data.end());
+// use Comparator_class as comparator, use vector<My_type> as container, copy my_data into my_priority_queue
 
-bool priority_queue::empty() const; // return true if empty, false if not
-size_type priority_queue::size() const; // return size of queue
-const_reference priority_queue::top() const; // returns a constant reference to the top element
-void priority_queue::push(const value_type& val); // inserts a new element, initialize to val
-void priority_queue::pop(); // removes the element on top
+bool empty() const;
+// return true if empty, false if not
+size_type size() const;
+// return size of queue
+const_reference :top() const;
+// returns a constant reference to the top element
+void push(const value_type& val);
+// inserts a new element, initialize to val
+void pop();
+// removes the element on top
 ```
+
 ```C++
 struct My_type {
     int weight;
@@ -565,7 +519,8 @@ struct My_class_for_compare {
 
 vector<My_type> my_vector = {(My_type){2, 789}, (My_type){1, 127}, (My_type){3, 456}};
 
-priority_queue<My_type, vector<My_type>, My_class_for_compare> one_priority_queue (my_vector.begin(), my_vector.end());
+priority_queue<My_type, vector<My_type>, My_class_for_compare>
+			one_priority_queue (my_vector.begin(), my_vector.end());
 one_priority_queue.push((My_type){4, 483});
 while (one_priority_queue.size() != 0) {
     My_type temp = one_priority_queue.top();
@@ -581,13 +536,6 @@ while (two_priority_queue.size() != 0) {
     two_priority_queue.pop();
 }
 
-priority_queue<int> three_priority_queue (my_int.begin(), my_int.end());
-while (three_priority_queue.size() != 0) {
-    SHOW_A(three_priority_queue.top());
-    three_priority_queue.pop();
-}
-
-
 // output
 // temp.weight = 4, temp.other = 483
 // temp.weight = 3, temp.other = 456
@@ -596,9 +544,6 @@ while (three_priority_queue.size() != 0) {
 // two_priority_queue.top() = 1
 // two_priority_queue.top() = 2
 // two_priority_queue.top() = 3
-// three_priority_queue.top() = 3
-// three_priority_queue.top() = 2
-// three_priority_queue.top() = 1
 ```
 
 
@@ -753,26 +698,6 @@ struct bigint {
 };
 ```
 
-Examples
-
-```c++
-ASSERT((a+b).str()=="10001")
-ASSERT((a+b)==bigint(10001))
-ASSERT((b/2)==4999)
-ASSERT(c == 12345)
-ASSERT(c < 123456)
-ASSERT(c > 123)
-ASSERT(!(c > 123456))
-ASSERT(!(c < 123))
-ASSERT(!(c == 12346))
-ASSERT(!(c == 12344))
-ASSERT(c.str() == "12345")
-ASSERT((b-1)==9998)
-ASSERT(a.ll() == 2)
-ASSERT(b.ll() == 9999)
-```
-
-
 ##### The Java Approach 
 
 ###### BigInteger
@@ -782,36 +707,51 @@ import java. math. BigInteger;
 ```
 Constructor and Description
 ```java
-BigInteger(String val) // translates the decimal String representation of a BigInteger into a BigInteger.
-BigInteger(String val, int radix) // translates the String representation of a BigInteger in the specified radix into a BigInteger.
+BigInteger(String val)
+// translates the decimal String representation of a BigInteger into a BigInteger.
+BigInteger(String val, int radix)
+// translates the String representation of a BigInteger in the specified radix into a BigInteger.
 
 //Modifier and Type   Method and Description
-BigInteger  abs() // returns a BigInteger whose value is the absolute value of this BigInteger.
+BigInteger  abs()
+// returns a BigInteger whose value is the absolute value of this BigInteger.
 
-BigInteger  add(BigInteger val) // returns a BigInteger whose value is (this + val).
+BigInteger  add(BigInteger val)
+// returns a BigInteger whose value is (this + val).
 BigInteger  subtract(BigInteger val)
 BigInteger  multiply(BigInteger val)
 BigInteger  divide(BigInteger val)
-BigInteger  pow(int exponent) // returns a BigInteger whose value is (thisexponent).
+BigInteger  pow(int exponent)
+// returns a BigInteger whose value is (thisexponent).
 
-BigInteger  and(BigInteger val) // returns a BigInteger whose value is (this & val).
+BigInteger  and(BigInteger val)
+// returns a BigInteger whose value is (this & val).
 BigInteger  or(BigInteger val)
 BigInteger  not()
 
-BigInteger  shiftLeft(int n) // returns a BigInteger whose value is (this << n).
+BigInteger  shiftLeft(int n)
+// returns a BigInteger whose value is (this << n).
 BigInteger  shiftRight(int n)
 
-BigInteger  mod(BigInteger m) // returns a BigInteger whose value is (this mod m).
-BigInteger  remainder(BigInteger val) // returns a BigInteger whose value is (this % val).
-BigInteger  gcd(BigInteger val) // returns a BigInteger whose value is the greatest common divisor of abs(this) and abs(val).
+BigInteger  mod(BigInteger m)
+// returns a BigInteger whose value is (this mod m).
+BigInteger  remainder(BigInteger val)
+// returns a BigInteger whose value is (this % val).
+BigInteger  gcd(BigInteger val)
+// returns a BigInteger whose value is the greatest common divisor of abs(this) and abs(val).
 
-BigInteger  max(BigInteger val) // returns the maximum of this BigInteger and val.
+BigInteger  max(BigInteger val)
+// returns the maximum of this BigInteger and val.
 BigInteger  min(BigInteger val)
 
-int compareTo(BigInteger val) // compares this BigInteger with the specified BigInteger.
-String  toString(int radix) // returns the String representation of this BigInteger in the given radix.
-static BigInteger   valueOf(long val) // returns a BigInteger whose value is equal to that of the specified long.
-long    longValue() // converts this BigInteger to a long.
+int compareTo(BigInteger val)
+// compares this BigInteger with the specified BigInteger.
+String  toString(int radix)
+// returns the String representation of this BigInteger in the given radix.
+static BigInteger   valueOf(long val)
+// returns a BigInteger whose value is equal to that of the specified long.
+long    longValue()
+// converts this BigInteger to a long.
 ```
 
 ##### BigDecimal
@@ -853,125 +793,125 @@ Translates the string representation of a BigDecimal into a BigDecimal, acceptin
 ```
 ```java
 BigDecimal  abs()
-Returns a BigDecimal whose value is the absolute value of this BigDecimal, and whose scale is this.scale().
+// Returns a BigDecimal whose value is the absolute value of this BigDecimal, and whose scale is this.scale().
 BigDecimal  abs(MathContext mc)
-Returns a BigDecimal whose value is the absolute value of this BigDecimal, with rounding according to the context settings.
+// Returns a BigDecimal whose value is the absolute value of this BigDecimal, with rounding according to the context settings.
 BigDecimal  add(BigDecimal augend)
-Returns a BigDecimal whose value is (this + augend), and whose scale is max(this.scale(), augend.scale()).
+// Returns a BigDecimal whose value is (this + augend), and whose scale is max(this.scale(), augend.scale()).
 BigDecimal  add(BigDecimal augend, MathContext mc)
-Returns a BigDecimal whose value is (this + augend), with rounding according to the context settings.
+// Returns a BigDecimal whose value is (this + augend), with rounding according to the context settings.
 byte    byteValueExact()
-Converts this BigDecimal to a byte, checking for lost information.
+// Converts this BigDecimal to a byte, checking for lost information.
 int compareTo(BigDecimal val)
-Compares this BigDecimal with the specified BigDecimal.
+// Compares this BigDecimal with the specified BigDecimal.
 BigDecimal  divide(BigDecimal divisor)
-Returns a BigDecimal whose value is (this / divisor), and whose preferred scale is (this.scale() - divisor.scale()); if the exact quotient cannot be represented (because it has a non-terminating decimal expansion) an ArithmeticException is thrown.
+// Returns a BigDecimal whose value is (this / divisor), and whose preferred scale is (this.scale() - divisor.scale()); if the exact quotient cannot be represented (because it has a non-terminating decimal expansion) an ArithmeticException is thrown.
 BigDecimal  divide(BigDecimal divisor, int roundingMode)
-Returns a BigDecimal whose value is (this / divisor), and whose scale is this.scale().
+// Returns a BigDecimal whose value is (this / divisor), and whose scale is this.scale().
 BigDecimal  divide(BigDecimal divisor, int scale, int roundingMode)
-Returns a BigDecimal whose value is (this / divisor), and whose scale is as specified.
+// Returns a BigDecimal whose value is (this / divisor), and whose scale is as specified.
 BigDecimal  divide(BigDecimal divisor, int scale, RoundingMode roundingMode)
-Returns a BigDecimal whose value is (this / divisor), and whose scale is as specified.
+// Returns a BigDecimal whose value is (this / divisor), and whose scale is as specified.
 BigDecimal  divide(BigDecimal divisor, MathContext mc)
-Returns a BigDecimal whose value is (this / divisor), with rounding according to the context settings.
+// Returns a BigDecimal whose value is (this / divisor), with rounding according to the context settings.
 BigDecimal  divide(BigDecimal divisor, RoundingMode roundingMode)
-Returns a BigDecimal whose value is (this / divisor), and whose scale is this.scale().
+// Returns a BigDecimal whose value is (this / divisor), and whose scale is this.scale().
 BigDecimal[]    divideAndRemainder(BigDecimal divisor)
-Returns a two-element BigDecimal array containing the result of divideToIntegralValue followed by the result of remainder on the two operands.
+// Returns a two-element BigDecimal array containing the result of divideToIntegralValue followed by the result of remainder on the two operands.
 BigDecimal[]    divideAndRemainder(BigDecimal divisor, MathContext mc)
-Returns a two-element BigDecimal array containing the result of divideToIntegralValue followed by the result of remainder on the two operands calculated with rounding according to the context settings.
+//Returns a two-element BigDecimal array containing the result of divideToIntegralValue followed by the result of remainder on the two operands calculated with rounding according to the context settings.
 BigDecimal  divideToIntegralValue(BigDecimal divisor)
-Returns a BigDecimal whose value is the integer part of the quotient (this / divisor) rounded down.
+// Returns a BigDecimal whose value is the integer part of the quotient (this / divisor) rounded down.
 BigDecimal  divideToIntegralValue(BigDecimal divisor, MathContext mc)
-Returns a BigDecimal whose value is the integer part of (this / divisor).
+// Returns a BigDecimal whose value is the integer part of (this / divisor).
 double  doubleValue()
-Converts this BigDecimal to a double.
+// Converts this BigDecimal to a double.
 boolean equals(Object x)
-Compares this BigDecimal with the specified Object for equality.
+// Compares this BigDecimal with the specified Object for equality.
 float   floatValue()
-Converts this BigDecimal to a float.
+// Converts this BigDecimal to a float.
 int hashCode()
-Returns the hash code for this BigDecimal.
+// Returns the hash code for this BigDecimal.
 int intValue()
-Converts this BigDecimal to an int.
+// Converts this BigDecimal to an int.
 int intValueExact()
-Converts this BigDecimal to an int, checking for lost information.
+// Converts this BigDecimal to an int, checking for lost information.
 long    longValue()
-Converts this BigDecimal to a long.
+// Converts this BigDecimal to a long.
 long    longValueExact()
-Converts this BigDecimal to a long, checking for lost information.
+// Converts this BigDecimal to a long, checking for lost information.
 BigDecimal  max(BigDecimal val)
-Returns the maximum of this BigDecimal and val.
+// Returns the maximum of this BigDecimal and val.
 BigDecimal  min(BigDecimal val)
-Returns the minimum of this BigDecimal and val.
+// Returns the minimum of this BigDecimal and val.
 BigDecimal  movePointLeft(int n)
-Returns a BigDecimal which is equivalent to this one with the decimal point moved n places to the left.
+// Returns a BigDecimal which is equivalent to this one with the decimal point moved n places to the left.
 BigDecimal  movePointRight(int n)
-Returns a BigDecimal which is equivalent to this one with the decimal point moved n places to the right.
+// Returns a BigDecimal which is equivalent to this one with the decimal point moved n places to the right.
 BigDecimal  multiply(BigDecimal multiplicand)
-Returns a BigDecimal whose value is (this × multiplicand), and whose scale is (this.scale() + multiplicand.scale()).
+// Returns a BigDecimal whose value is (this × multiplicand), and whose scale is (this.scale() + multiplicand.scale()).
 BigDecimal  multiply(BigDecimal multiplicand, MathContext mc)
-Returns a BigDecimal whose value is (this × multiplicand), with rounding according to the context settings.
+// Returns a BigDecimal whose value is (this × multiplicand), with rounding according to the context settings.
 BigDecimal  negate()
-Returns a BigDecimal whose value is (-this), and whose scale is this.scale().
+// Returns a BigDecimal whose value is (-this), and whose scale is this.scale().
 BigDecimal  negate(MathContext mc)
-Returns a BigDecimal whose value is (-this), with rounding according to the context settings.
+// Returns a BigDecimal whose value is (-this), with rounding according to the context settings.
 BigDecimal  plus()
-Returns a BigDecimal whose value is (+this), and whose scale is this.scale().
+// Returns a BigDecimal whose value is (+this), and whose scale is this.scale().
 BigDecimal  plus(MathContext mc)
-Returns a BigDecimal whose value is (+this), with rounding according to the context settings.
+// Returns a BigDecimal whose value is (+this), with rounding according to the context settings.
 BigDecimal  pow(int n)
-Returns a BigDecimal whose value is (thisn), The power is computed exactly, to unlimited precision.
+// Returns a BigDecimal whose value is (thisn), The power is computed exactly, to unlimited precision.
 BigDecimal  pow(int n, MathContext mc)
-Returns a BigDecimal whose value is (thisn).
+// Returns a BigDecimal whose value is (thisn).
 int precision()
-Returns the precision of this BigDecimal.
+// Returns the precision of this BigDecimal.
 BigDecimal  remainder(BigDecimal divisor)
-Returns a BigDecimal whose value is (this % divisor).
+// Returns a BigDecimal whose value is (this % divisor).
 BigDecimal  remainder(BigDecimal divisor, MathContext mc)
-Returns a BigDecimal whose value is (this % divisor), with rounding according to the context settings.
+// Returns a BigDecimal whose value is (this % divisor), with rounding according to the context settings.
 BigDecimal  round(MathContext mc)
-Returns a BigDecimal rounded according to the MathContext settings.
+// Returns a BigDecimal rounded according to the MathContext settings.
 int scale()
-Returns the scale of this BigDecimal.
+// Returns the scale of this BigDecimal.
 BigDecimal  scaleByPowerOfTen(int n)
-Returns a BigDecimal whose numerical value is equal to (this * 10n).
+// Returns a BigDecimal whose numerical value is equal to (this * 10n).
 BigDecimal  setScale(int newScale)
-Returns a BigDecimal whose scale is the specified value, and whose value is numerically equal to this BigDecimal's.
+// Returns a BigDecimal whose scale is the specified value, and whose value is numerically equal to this BigDecimal's.
 BigDecimal  setScale(int newScale, int roundingMode)
-Returns a BigDecimal whose scale is the specified value, and whose unscaled value is determined by multiplying or dividing this BigDecimal's unscaled value by the appropriate power of ten to maintain its overall value.
+// Returns a BigDecimal whose scale is the specified value, and whose unscaled value is determined by multiplying or dividing this BigDecimal's unscaled value by the appropriate power of ten to maintain its overall value.
 BigDecimal  setScale(int newScale, RoundingMode roundingMode)
-Returns a BigDecimal whose scale is the specified value, and whose unscaled value is determined by multiplying or dividing this BigDecimal's unscaled value by the appropriate power of ten to maintain its overall value.
+// Returns a BigDecimal whose scale is the specified value, and whose unscaled value is determined by multiplying or dividing this BigDecimal's unscaled value by the appropriate power of ten to maintain its overall value.
 short   shortValueExact()
-Converts this BigDecimal to a short, checking for lost information.
+// Converts this BigDecimal to a short, checking for lost information.
 int signum()
-Returns the signum function of this BigDecimal.
+// Returns the signum function of this BigDecimal.
 BigDecimal  stripTrailingZeros()
-Returns a BigDecimal which is numerically equal to this one but with any trailing zeros removed from the representation.
+// Returns a BigDecimal which is numerically equal to this one but with any trailing zeros removed from the representation.
 BigDecimal  subtract(BigDecimal subtrahend)
-Returns a BigDecimal whose value is (this - subtrahend), and whose scale is max(this.scale(), subtrahend.scale()).
+// Returns a BigDecimal whose value is (this - subtrahend), and whose scale is max(this.scale(), subtrahend.scale()).
 BigDecimal  subtract(BigDecimal subtrahend, MathContext mc)
-Returns a BigDecimal whose value is (this - subtrahend), with rounding according to the context settings.
+// Returns a BigDecimal whose value is (this - subtrahend), with rounding according to the context settings.
 BigInteger  toBigInteger()
-Converts this BigDecimal to a BigInteger.
+// Converts this BigDecimal to a BigInteger.
 BigInteger  toBigIntegerExact()
-Converts this BigDecimal to a BigInteger, checking for lost information.
+// Converts this BigDecimal to a BigInteger, checking for lost information.
 String  toEngineeringString()
-Returns a string representation of this BigDecimal, using engineering notation if an exponent is needed.
+// Returns a string representation of this BigDecimal, using engineering notation if an exponent is needed.
 String  toPlainString()
-Returns a string representation of this BigDecimal without an exponent field.
+// Returns a string representation of this BigDecimal without an exponent field.
 String  toString()
-Returns the string representation of this BigDecimal, using scientific notation if an exponent is needed.
+// Returns the string representation of this BigDecimal, using scientific notation if an exponent is needed.
 BigDecimal  ulp()
-Returns the size of an ulp, a unit in the last place, of this BigDecimal.
+// Returns the size of an ulp, a unit in the last place, of this BigDecimal.
 BigInteger  unscaledValue()
-Returns a BigInteger whose value is the unscaled value of this BigDecimal.
+// Returns a BigInteger whose value is the unscaled value of this BigDecimal.
 static BigDecimal   valueOf(double val)
-Translates a double into a BigDecimal, using the double's canonical string representation provided by the Double.toString(double) method.
+// Translates a double into a BigDecimal, using the double's canonical string representation provided by the Double.toString(double) method.
 static BigDecimal   valueOf(long val)
-Translates a long value into a BigDecimal with a scale of zero.
+// Translates a long value into a BigDecimal with a scale of zero.
 static BigDecimal   valueOf(long unscaledVal, int scale)
-Translates a long unscaled value and an int scale into a BigDecimal.
+// Translates a long unscaled value and an int scale into a BigDecimal.
 ```
 
 
