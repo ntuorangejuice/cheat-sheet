@@ -975,13 +975,6 @@ Translates a long unscaled value and an int scale into a BigDecimal.
 ```
 
 
-
-## String
-
-#### KMP
-
-#### Longest palindromic substring (Manacher's algorithm)
-
 ## Tree
 
 #### Tree Traversal
@@ -1098,9 +1091,16 @@ int main() {
 
 > place holder
 
-##### Union-find Set - application
 
-> place holder
+
+## String
+
+#### KMP
+
+#### Longest palindromic substring (Manacher's algorithm)
+
+
+
 
 ## Graph
 
@@ -1117,6 +1117,10 @@ void init() {
         father[i] = i;
 }
 ```
+
+##### Union-find Set - application
+
+> place holder
 
 #### Minimium Spanning Tree
 
