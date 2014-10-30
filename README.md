@@ -312,13 +312,11 @@ bool myfunction (int i,int j) { return (i<j); }
 ##### Define operator <()
 
 Member function
-```c++
-// recommended // can use for priority_queue, sort, <ADD MORE HERE>
-```
+
 ```c++
 struct Edge {
    int from, to, weight;
-	bool operator<(Edge that) const {
+	bool operator<(Edge that) {
         return weight > that.weight;
     }
 };
@@ -1086,46 +1084,6 @@ int main() {
 #### Prim's
 
 ```C++
-//graph[][], time complexity: O(V^2)
-```
-```C++
-void mst_prim() {
-    int n_node, n_edge;
-    ////////////////////////////////////////
-    // read data
-    ////////////////////////////////////////
-    int graph[n_node][n_node];
-    int min_dis[n_node];
-    for (int i = 0; i < n_node; i++)
-        min_dis[i] = INT_MAX; // initialize
-    ////////////////////////////////////////
-    // read graph[][]
-    ////////////////////////////////////////
-
-    int cur = 0; // the node just added
-    for (int i = 1; i < n_node; i++) { // total need pick n-1 edges
-        min_dis[cur] = -1; // add cur
-        for (int j = 0; j < n_node; j++) // for all node
-            if (graph[cur][j] < min_dis[j]) // if can reach from new node and nearer
-                min_dis[j] = graph[cur][j]; // update the distance
-        int next = -1; // the node to add
-        int cur_min_dis = INT_MAX; // current distance of nearest node
-        for (int j = 0; j < n_node; j++) // check all node
-            if (min_dis[j] >= 0 && min_dis[j] < cur_min_dis) { // if j node is nearer
-                next = j; // record
-                cur_min_dis = min_dis[j];
-            }
-        // add edge: cur->next
-        cur = next; // next node to add
-    }
-}
-```
-
-```C++
-// vector<int> graph[], time complexity: (V + E)log(V)
-```
-
-```C++
 struct Edge {
     int from;
     int to;
@@ -1139,7 +1097,7 @@ public:
     }
 };
 
-void mst_prim() {
+void mst() {
     int n_node;
     int n_edge;
     ////////////////////////////////////////////
@@ -1148,6 +1106,7 @@ void mst_prim() {
     vector<Edge> graph[n_node];
     ////////////////////////////////////////////
     // read graph
+    // if many edge, graphp[][] would be faster
     ////////////////////////////////////////////
 
     priority_queue<Edge, vector<Edge>, compare> discovered;
@@ -1174,57 +1133,10 @@ void mst_prim() {
             }
         }
     }
-    // should directly maintain the min distance for each node to current tree
-    // use heapfy...
 }
 ```
 
 #### Kruskal
-
-####### TO-DO check union find set
-```C++
-struct Edge {
-    int from;
-    int to;
-    int length;
-
-    bool operator< (Edge b) const {
-        return this->length < b.length;
-    }
-};
-
-int get_father(int father[], int a) {
-    if (father[a] != a)
-        return father[a] = get_father(father, father[a]);
-    return a;
-}
-
-void solve() {
-    int n_node, n_edge;
-    /////////////////////////////////////////////////////
-    // initialize n_edge
-    /////////////////////////////////////////////////////
-    Edge e[n_edge];
-    /////////////////////////////////////////////////////
-    // initialize edge e
-    /////////////////////////////////////////////////////
-    int father[n_node];
-    for (int i = 0; i < n_node; i++)
-        father[i] = i; // initialize
-    sort(e, e + n_edge);
-
-    int to_add = n_node - 1;
-    for (int cur = 0; to_add; cur++) {
-        int fromSfather = get_father(father, e[cur].from);
-        int toSfather = get_father(father, e[cur].to);
-        if (fromSfather != toSfather) {
-            father[fromSfather] = toSfather;
-            to_add--;
-            // add edge e[cur]
-        }
-    }
-}
-```
 
 
 ### Shortest Path
@@ -1265,7 +1177,6 @@ O(V^2)
 
 #### Dinic
 ``` C++
-// node index: 0 <= i <= n_node - 1
 int graph[250][250];
 int level[250];
 int n_node, n_edge;
@@ -1274,12 +1185,12 @@ int mark_level() {
     memset(level, -1, sizeof(level));
     queue<int> to_visit;
     
-    level[0] = 0;
-    to_visit.push(0);
+    level[1] = 0;
+    to_visit.push(1);
     while (!to_visit.empty()) {
         int cur = to_visit.front();
         to_visit.pop();
-        for (int i = 0; i < n_node; ++i) {
+        for (int i = 1; i <= n_node; ++i) {
             if (graph[cur][i] != 0 && level[i] == -1) {
                 level[i] = level[cur] + 1;
                 to_visit.push(i);
@@ -1287,18 +1198,18 @@ int mark_level() {
         }
     }
 
-    if (level[n_node - 1] == -1)
+    if (level[n_node] == -1)
         return 0; // cannot reach the sink
     return 1; // can reach the sink
 }
 
-int augment(int cur, int min_flow) {
-    if (cur == n_node - 1)
+int augment_recursive(int cur, int min_flow) {
+    if (cur == n_node)
         return min_flow;
 
     int augmented_flow = 0;
-    for (int i = 0; i < n_node; ++i) {
-        if (level[i] == level[cur] + 1 && graph[cur][i] > 0 && (augmented_flow = augment(i, min(graph[cur][i], min_flow)))) {
+    for (int i = 1; i <= n_node; ++i) {
+        if (level[i] == level[cur] + 1 && graph[cur][i] > 0 && (augmented_flow = augment_recursive(i, min(graph[cur][i], min_flow)))) {
             graph[cur][i] -= augmented_flow;
             graph[i][cur] += augmented_flow;
             return augmented_flow;
@@ -1311,9 +1222,21 @@ int dinic() {
     int ans = 0;
     int temp = 0;
     while (mark_level())
-        while (temp = augment(0, INT_MAX))
+        while (temp = augment_recursive(1, INT_MAX))
             ans += temp;
     return ans;
+}
+
+int main() {
+    cin >> n_edge >> n_node)
+    memset(graph, 0, sizeof(graph));
+    
+    int start_node, end_node, flow;
+    for (int i = 0; i < n_edge; ++i) {
+        cin >> start_node >> end_node >> flow;
+        graph[start_node][end_node] += flow; // use "+" to combine
+    }
+    cout << dinic() << endl;
 }
 ```
  
@@ -1608,10 +1531,6 @@ int convert_base_to_dec(const int s[], const int len, const int base) {
 }
 ```
 
-### A / C
-C(n, k) = C(n-1, k) + C(n-1, k-1)
-C(n, k) = C(n, n-k)
-
 ##### 。。。
 
 
@@ -1627,10 +1546,44 @@ C(n, k) = C(n, n-k)
 
 计算几何
 
-### template class for Point?
+### Point
 
 ```C++
+struct point {
+    int x, y;
 
+    double length() {
+        return sqrt(x*x + y*y);
+    }
+
+    long operator* (const point& b) {
+        return x*b.y - y*b.x;
+    }
+
+    bool at_right_of(const point& a, const point& b) const {
+        // a: relative point, b: base
+        point vec_self = {x - b.x, y - b.y};
+        point vec_that = {a.x - b.x, a.y - b.y};
+        long product = vec_self * vec_that;
+        if (product>0) return true;
+        if (product==0 && vec_self.length()>vec_that.length()) return true;
+        return false;
+    }
+
+    double to_point(const point& b) const {
+        return sqrt(pow(x-b.x,2) + pow(y-b.y,2));
+    }
+
+    double to_segment(const point& a, const point& b) const {
+        double len_ab = a.to_point(b);
+        if (abs(len_ab)<E) return to_point(a);
+        double r = ((a.y-y)*(a.y-b.y) - (a.x-x)*(a.x-b.x))/pow(len_ab,2);
+        if (r>1 || r<0) return min(to_point(a), to_point(b));
+        // projection of p is on extension of AB
+        r = ((a.y - y)*(b.y - y) - (a.x - x)*(b.y - a.y))/pow(len_ab,2);
+        return fabs(r*len_ab);
+    }
+};
 ```
 
 ##### 向量点乘 叉乘
