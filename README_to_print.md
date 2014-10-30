@@ -759,37 +759,37 @@ long    longValue()
 ```java
 // constructor
 BigDecimal(BigInteger val)
-Translates a BigInteger into a BigDecimal.
+// Translates a BigInteger into a BigDecimal.
 BigDecimal(BigInteger unscaledVal, int scale)
-Translates a BigInteger unscaled value and an int scale into a BigDecimal.
+// Translates a BigInteger unscaled value and an int scale into a BigDecimal.
 BigDecimal(BigInteger unscaledVal, int scale, MathContext mc)
-Translates a BigInteger unscaled value and an int scale into a BigDecimal, with rounding according to the context settings.
+// Translates a BigInteger unscaled value and an int scale into a BigDecimal, with rounding according to the context settings.
 BigDecimal(BigInteger val, MathContext mc)
-Translates a BigInteger into a BigDecimal rounding according to the context settings.
+// Translates a BigInteger into a BigDecimal rounding according to the context settings.
 BigDecimal(char[] in)
-Translates a character array representation of a BigDecimal into a BigDecimal, accepting the same sequence of characters as the BigDecimal(String) constructor.
+// Translates a character array representation of a BigDecimal into a BigDecimal, accepting the same sequence of characters as the BigDecimal(String) constructor.
 BigDecimal(char[] in, int offset, int len)
-Translates a character array representation of a BigDecimal into a BigDecimal, accepting the same sequence of characters as the BigDecimal(String) constructor, while allowing a sub-array to be specified.
+// Translates a character array representation of a BigDecimal into a BigDecimal, accepting the same sequence of characters as the BigDecimal(String) constructor, while allowing a sub-array to be specified.
 BigDecimal(char[] in, int offset, int len, MathContext mc)
-Translates a character array representation of a BigDecimal into a BigDecimal, accepting the same sequence of characters as the BigDecimal(String) constructor, while allowing a sub-array to be specified and with rounding according to the context settings.
+// Translates a character array representation of a BigDecimal into a BigDecimal, accepting the same sequence of characters as the BigDecimal(String) constructor, while allowing a sub-array to be specified and with rounding according to the context settings.
 BigDecimal(char[] in, MathContext mc)
-Translates a character array representation of a BigDecimal into a BigDecimal, accepting the same sequence of characters as the BigDecimal(String) constructor and with rounding according to the context settings.
+// Translates a character array representation of a BigDecimal into a BigDecimal, accepting the same sequence of characters as the BigDecimal(String) constructor and with rounding according to the context settings.
 BigDecimal(double val)
-Translates a double into a BigDecimal which is the exact decimal representation of the double's binary floating-point value.
+// Translates a double into a BigDecimal which is the exact decimal representation of the double's binary floating-point value.
 BigDecimal(double val, MathContext mc)
-Translates a double into a BigDecimal, with rounding according to the context settings.
+// Translates a double into a BigDecimal, with rounding according to the context settings.
 BigDecimal(int val)
-Translates an int into a BigDecimal.
+// Translates an int into a BigDecimal.
 BigDecimal(int val, MathContext mc)
-Translates an int into a BigDecimal, with rounding according to the context settings.
+// Translates an int into a BigDecimal, with rounding according to the context settings.
 BigDecimal(long val)
-Translates a long into a BigDecimal.
+// Translates a long into a BigDecimal.
 BigDecimal(long val, MathContext mc)
-Translates a long into a BigDecimal, with rounding according to the context settings.
+// Translates a long into a BigDecimal, with rounding according to the context settings.
 BigDecimal(String val)
-Translates the string representation of a BigDecimal into a BigDecimal.
+// Translates the string representation of a BigDecimal into a BigDecimal.
 BigDecimal(String val, MathContext mc)
-Translates the string representation of a BigDecimal into a BigDecimal, accepting the same strings as the BigDecimal(String) constructor, with rounding according to the context settings.
+// Translates the string representation of a BigDecimal into a BigDecimal, accepting the same strings as the BigDecimal(String) constructor, with rounding according to the context settings.
 ```
 ```java
 BigDecimal  abs()
