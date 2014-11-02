@@ -1,6 +1,6 @@
 please reflect change on both side
 
-## Orange Juice - ACM-ICPC Cheat Sheet
+## Orange Juice - ACM-ICPC Cheat Sheet - 情報
 
 :balloon::balloon::balloon:
 
