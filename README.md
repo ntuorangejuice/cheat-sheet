@@ -988,6 +988,7 @@ Translates a long unscaled value and an int scale into a BigDecimal.
 #### Binary Indexed Tree
 
 > Binary Indexed Tree
+
 > O(logN) to query and update SUM(a[1]~a[i])
 
 ```C++
