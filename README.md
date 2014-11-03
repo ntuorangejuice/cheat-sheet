@@ -1,6 +1,8 @@
 please reflect change on both side
 
-## Orange Juice - ACM-ICPC Cheat Sheet - 情報
+## 情報
+
+## Orange Juice - ACM-ICPC Cheat Sheet
 
 :balloon::balloon::balloon:
 
@@ -984,6 +986,31 @@ Translates a long unscaled value and an int scale into a BigDecimal.
 #### 后缀数组
 
 #### Binary Indexed Tree
+
+> Binary Indexed Tree
+> O(logN) to query and update SUM(a[1]~a[i])
+
+```C++
+#define MAX_INDEX ???
+
+int tree[MAX_INDEX + 1]; // 1 <= I <= MAX_INDEX
+
+int low_bit(int i) {
+    return i & -i;
+}
+
+int query(int i) {
+    int ans = 0;
+    for (; i > 0; i -= low_bit(i))
+        ans += tree[i];
+    return ans;
+}
+
+void insert(int i, int value) {
+    for (; i <= MAX_INDEX; i += low_bit(i))
+        tree[i] += value;
+}
+```
 
 #### Segment Tree
 
