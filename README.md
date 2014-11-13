@@ -983,6 +983,8 @@ Translates a long unscaled value and an int scale into a BigDecimal.
 
 #### Trie
 
+##### Surffix Tree
+
 ```c++
 // http://blog.csdn.net/u010700335/article/details/38930175
 
@@ -1081,7 +1083,7 @@ int main()
 }
 ```
 
-#### Surffix Array
+##### Surffix Array
 
 ```c++
 #define MAXN  65536
