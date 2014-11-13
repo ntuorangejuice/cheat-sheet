@@ -983,7 +983,141 @@ Translates a long unscaled value and an int scale into a BigDecimal.
 
 #### Trie
 
-#### 后缀数组
+```c++
+// http://blog.csdn.net/u010700335/article/details/38930175
+
+const int maxn = 26;//26个小写字母或者大写字母，再加上0~9就是72
+//定义字典树结构体
+typedef struct Trie
+{
+    bool flag;//从根到此是否为一个单词
+    Trie *next[maxn];//有多少个分支
+}Trie;
+// 声明一个根，不含任何信息
+Trie *root;
+//初始化该根
+void trie_init()
+{
+    int i;
+    root = new Trie;
+    root->flag = false;
+    for(i=0;i<maxn;i++)
+        root->next[i] = NULL;
+}
+// 插入一个字符串
+void trie_insert(char *word)
+{
+    //int i = 0;
+    //while(word[i] != '\0')
+    Trie *tem = root;
+    int i;
+    while(*word != '\0')
+    {
+       // cout << "root**" << tem->next[0];
+        if(tem->next[*word-'a'] == NULL)// 为空才建立
+        {
+            Trie *cur = new Trie;
+            cur->flag = false;
+            for(i=0;i<maxn;i++)
+                cur->next[i] = NULL;
+            tem->next[*word-'a'] = cur;
+        }
+        tem = tem->next[*word-'a'];
+        //cout << *word << "**";
+        word++;
+    }
+    tem->flag = true;//插入一个完整的单词
+}
+// 查找一个字符串
+bool trie_search(char *word)
+{
+    Trie *tem = root;
+    int i;
+    for(i=0; word[i]!='\0'; i++)
+    {
+        if(tem==NULL || tem->next[word[i]-'a']==NULL)
+            return false;
+        tem = tem->next[word[i]-'a'];
+    }
+    return tem->flag;
+}
+
+
+void trie_del(Trie *cur)
+{
+    int i;
+    for(i=0;i<maxn;i++)
+    {
+        if(cur->next[i] != NULL)
+            trie_del(cur->next[i]);
+    }
+    delete cur;
+}
+
+
+int main()
+{
+    int i,n;
+    char tmp[50];
+    trie_init();
+    cout << "请输入初始化字典树的字符串(字符0结束）：" << endl;
+    while(cin >> tmp)
+    {
+        //cout << tmp << endl;
+        if(tmp[0] == '0' && tmp[1] =='\0') break;
+        trie_insert(tmp);
+    }
+    cout << "请输入要查找的字符串：" << endl;
+    while(cin >> tmp)
+    {
+        //cout << tmp << endl;
+        if(tmp[0] == '0' && tmp[1] =='\0') break;
+        if(trie_search(tmp))
+            cout << "查找成功！再次输入查找，字符0结束查找：" << endl;
+        else
+            cout << "查找失败！再次输入查找，字符0结束查找：" << endl;
+    }
+    return 0;
+}
+```
+
+#### Surffix Array
+
+```c++
+#define MAXN  65536
+#define MAXLG 17
+char A[MAXN];
+struct entry {
+    int nr[2], p;
+} L[MAXN];
+int P[MAXLG][MAXN], N, i, stp, cnt;
+int cmp(struct entry a, struct entry b) {
+    return a.nr[0] == b.nr[0] ? (a.nr[1] < b.nr[1] ? 1 : 0) : (a.nr[0] < b.nr[0] ? 1 : 0);
+}
+int main(void) {
+    gets(A);
+    for (N = strlen(A), i = 0; i < N; i ++)
+        P[0][i] = A[i] - 'a';
+    for (stp = 1, cnt = 1; cnt >> 1 < N; stp ++, cnt <<= 1) {
+        for (i = 0; i < N; i ++) {
+            L[i].nr[0] = P[stp - 1][i];
+            L[i].nr[1] = i + cnt < N ? P[stp - 1][i + cnt] : -1;
+            L[i].p = i;
+        }
+        sort(L, L + N, cmp);
+        for (i = 0; i < N; i ++)
+            P[stp][L[i].p] = i > 0 && L[i].nr[0] == L[i - 1].nr[0] && L[i].nr[1] == L[i - 1].nr[1] ? P[stp][L[i - 1].p] : i;
+    }
+    return 0;
+}
+```
+
+##### Longest Common Prefix
+
+```c++
+int lcp(int x, int y) {	int k, ret = 0;	if (x == y) return N - x;	for (k = stp - 1; k >= 0 && x < N && y < N; k --)        if (P[k][x] == P[k][y])            x += 1 << k, y += 1 << k, ret += 1 << k;	return ret;
+}
+```
 
 #### Binary Indexed Tree
 
