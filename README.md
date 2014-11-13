@@ -1017,33 +1017,48 @@ void insert(int i, int value) {
 > 【1】修改操作：将A[l..r]之间的全部元素值加上c；
 > 【2】求和操作：求此时A[x]的值。
 > 这个模型中需要设置一个辅助数组B：B[i]表示A[1..i]到目前为止共被整体加了多少
-> 则可以发现，对于之前的所有ADD(x, c)操作，当且仅当x>=i时，该操作会对A[i]的值造成影响（将A[i]加上c），又由于初始A[i]=0，所以有A[i] = B[i..N]之和！而ADD(i, c)（将A[1..i]整体加上c），将B[i]加上c即可——只要对B数组进行操作就行了。
 
 ```C++
-void change(int i,int x){  //往前改值
-    while (i>0){
-        c[i]+=x;
-        i-=(i&(-i));
-    }
-} 
-int getnode(int i){  //往后求值
-    int s=0;
-    while (i<=n) {
-        s+=c[i];
-        i+=(i&(-i));
-    }
-    return s;
+#define INTERVAL_LIMIT 100005
+
+int tree_add_i_n[INTERVAL_LIMIT];
+
+int low_bit(int i) {
+    return i & -i;
 }
-int main(){
-    scanf("%d",&n);
-    for (int i=1;i<=n;i++) scanf("%d",&data[i]);
-        scanf("%d%d%d",&l,&r,&d);
-        change(r,d); //c[i]表示从1..i累计加了多少
-        change(l-1,-d);  //把对l之前的影响去除
-        printf("%d\n",getnode(x)+data[x]);
-    }
+
+int query(int i, int* tree, int UP_LIMIT) {
+    int ans = 0;
+    for (; i > 0; i -= low_bit(i))
+        ans += tree[i];
+    return ans;
+}
+
+void insert(int i, int value, int* tree, int UP_LIMIT) {
+    for (; i <= UP_LIMIT; i += low_bit(i))
+        tree[i] += value;
+}
+
+int main() {
+    memset(tree_add_in, 0, sizeof(tree_add_in));
+    insert(3, 1, tree_add_in, INTERVAL_LIMIT);
+    insert(5, -1, tree_add_in, INTERVAL_LIMIT);
+    insert(4, 2, tree_add_in, INTERVAL_LIMIT);
+    insert(6, -2, tree_add_in, INTERVAL_LIMIT);
+
+    for (int i = 1; i <= 7; i++)
+        SHOW_B(i, query(i, tree_add_in, INTERVAL_LIMIT));
 }
 ```
+
+> 修改区间+查询区间
+> b[i]: add b[i] to a[i], a[i+1], ..., a[n]
+> so
+> sigma(i): a[1] + a[2] + ... + a[i]
+> sigma(i) = ib[1] + (i-1)b[2] + ... + 2b[i-1] + b[i]
+> sigma(i) = (i+1){b[1] + b[2] + ... + b[i]} - {b[1] + 2b[2] + ... + ib[i]}
+> so use one more tree c[i]
+> c[i]: 1b[1] + 2b[2] + ... + ib[i]
 
 #### Segment Tree
 
