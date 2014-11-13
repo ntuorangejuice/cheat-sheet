@@ -1,72 +1,36 @@
-// Problem http://poj.org/problem?id=2777
+#include <bits/stdc++.h>
 
-// Count Color
-// Time Limit: 1000MS      Memory Limit: 65536K
-// Total Submissions: 36259        Accepted: 10943
-// Description
-
-// Chosen Problem Solving and Program design as an optional course, you are required to solve all kinds of problems. Here, we get a new problem. 
-
-// There is a very long board with length L centimeter, L is a positive integer, so we can evenly divide the board into L segments, and they are labeled by 1, 2, ... L from left to right, each is 1 centimeter long. Now we have to color the board - one segment with only one color. We can do following two operations on the board: 
-
-// 1. "C A B C" Color the board from segment A to segment B with color C. 
-// 2. "P A B" Output the number of different colors painted between segment A and segment B (including). 
-
-// In our daily life, we have very few words to describe a color (red, green, blue, yellow…), so you may assume that the total number of different colors T is very small. To make it simple, we express the names of colors as color 1, color 2, ... color T. At the beginning, the board was painted in color 1. Now the rest of problem is left to your. 
-// Input
-
-// First line of input contains L (1 <= L <= 100000), T (1 <= T <= 30) and O (1 <= O <= 100000). Here O denotes the number of operations. Following O lines, each contains "C A B C" or "P A B" (here A, B, C are integers, and A may be larger than B) as an operation defined previously.
-// Output
-
-// Ouput results of the output operation in order, each line contains a number.
-// Sample Input
-
-// 2 2 4
-// C 1 1 2
-// P 1 2
-// C 2 2 2
-// P 1 2
-// Sample Output
-
-// 2
-// 1
-
-
-#include <iostream>
-#include <string>
-#include <cstring>
-#include <algorithm>
-#include <climits>
-#include <stack>
-#include <queue>
-#include <vector>
-#include <set>
-#include <map>
-
+#define GET_BIT(n, i) (((n) & (1 << ((i)-1))) >> ((i)-1)) // i start from 1
 #define SET_BIT(n, i) ((n) | (1 << ((i)-1)))
 #define CLR_BIT(n, i) ((n) & ~(1 << ((i)-1)))
-#define GET_BIT(n, i) (((n) & (1 << ((i)-1))) >> ((i)-1))
-#define SHOW(x) {cout << #x << " = " << x << endl;}
+#define SHOW_A(x) {cout << #x << " = " << x << endl;}
+#define SHOW_B(x, y) {cout << #x << " = " << x << ", " << #y << " = " << y << endl;}
+#define SHOW_C(x, y, z) {cout << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;}
+#define SHOW_D(x, y, z, m) {cout << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << ", " << #m << " = " << m << endl;}
+#define REACH_HERE {cout << "REACH_HERE! line: " << __LINE__ << endl;}
+
+const double E = 1e-8;
+const double PI = acos(-1);
 
 using namespace std;
 
-// mainly copied from http://blog.sina.com.cn/s/blog_6635898a0100kzph.html
-
-const int MAX = 100000;
+const int MAX = 30005;
 
 struct node {
     int left, right;
-    int color;
-    bool cover;
+    long long sum;
+    int lazy;
+    bool dirty;
 };
 
-node nodes[3*MAX];
+node nodes[4*MAX];
 
 void build_tree(int left, int right, int u) {
     nodes[u].left = left;
     nodes[u].right = right;
-    nodes[u].color = 1;
-    nodes[u].cover = true;
+    nodes[u].sum = 0;
+    nodes[u].lazy = 0;
+    nodes[u].dirty = false;
     if (left == right) return;
     int mid = (left + right)/2;
     build_tree(left, mid, 2*u);
@@ -74,41 +38,51 @@ void build_tree(int left, int right, int u) {
 }
 
 void get_down(int u) {
-    int value = nodes[u].color;
-    nodes[u].cover = false;
-    nodes[2*u].color = value;
-    nodes[2*u].cover = true;
-    nodes[2*u + 1].color = value;
-    nodes[2*u + 1].cover = true;
+    if (!nodes[u].dirty) return;
+    // SHOW_B(nodes[2*u].right, nodes[2*u].left)
+    // SHOW_B(nodes[2*u+1].right, nodes[2*u+1].left)
+    nodes[2*u].sum = (long long) nodes[u].lazy * (nodes[2*u].right - nodes[2*u].left + 1);
+    nodes[2*u].lazy = nodes[u].lazy;
+    nodes[2*u].dirty = true;
+    nodes[2*u + 1].sum = (long long) nodes[u].lazy * (nodes[2*u + 1].right - nodes[2*u + 1].left + 1);
+    nodes[2*u + 1].lazy = nodes[u].lazy;
+    nodes[2*u + 1].dirty = true;
+    nodes[u].dirty = false;
 }
 
 void update(int left, int right, int value, int u) {
     if (left <= nodes[u].left && nodes[u].right <= right) {
-        nodes[u].color = value;
-        nodes[u].cover = true;
+        // cout << "UPDATE ";
+        // SHOW_D(value, u, nodes[u].left, nodes[u].right)
+        nodes[u].sum = (long long)value * (nodes[u].right - nodes[u].left + 1);
+        nodes[u].lazy = value;
+        nodes[u].dirty = true;
         return;
     }
-    if (nodes[u].color == value) return;  // optimize purpose
     //SHOW(u);
-    if (nodes[u].cover) get_down(u);
+    get_down(u);
     if (left <= nodes[2*u].right) {
         update(left, right, value, 2*u);
     }
     if (right >= nodes[2*u+1].left) {
         update(left, right, value, 2*u + 1);
     }
-    nodes[u].color = nodes[2*u].color | nodes[2*u+1].color;
+    nodes[u].sum = nodes[2*u].sum + nodes[2*u+1].sum;
+    // SHOW_A(u)
+    // SHOW_C(nodes[2*u].sum, nodes[2*u].left, nodes[2*u].right)
+    // SHOW_C(nodes[2*u+1].sum, nodes[2*u+1].left, nodes[2*u+1].right)
+    // SHOW_D(nodes[u].sum, u, nodes[u].left, nodes[u].right)
 }
 
-void query(int left, int right, int &sum, int u) {
-    if (nodes[u].cover) {
-        sum |= nodes[u].color;
-        return;
-    }
+void query(int left, int right, long long &sum, int u) {
     if (left <= nodes[u].left && nodes[u].right <= right) {
-        sum |= nodes[u].color;
+        sum += nodes[u].sum;
+        // cout << "QUERY " ;
+        // SHOW_D(left, right, sum, u)
+        // SHOW_B(nodes[u].left, nodes[u].right)
         return;
     }
+    get_down(u);
     if (left <= nodes[2*u].right) {
         query(left, right, sum, 2*u);
     }
@@ -117,36 +91,78 @@ void query(int left, int right, int &sum, int u) {
     }
 }
 
-int bit_count(int sum) {
-    int ans = 0;
-    while (sum) {
-        if (sum%2) ans++;
-        sum = sum >> 1;
+long long round_down(long long a, int b) {
+    if (a%b) {
+        if (a > 0) return a/b;
+        return a/b - 1;
+    } else {
+        return a/b;
     }
-    return ans;
+}
+
+long long round_up(long long a, long long b) {
+    if (a%b) {
+        if (a > 0) return a/b + 1;
+        return a/b;
+    } else {
+        return a/b;
+    }
 }
 
 int main() {
     ios::sync_with_stdio(false);
 
-    int L, T, O;
-    cin >> L >> T >> O;
-    build_tree(1, L, 1);
-    while (O--) {
-        char op;
-        int a, b, c;
-        cin >> op;
-        if (op == 'C') {
-            cin >> a >> b >> c;
-            if (a > b) swap(a, b);
-            update(a, b, 1<<(c-1), 1);
-        } else {
-            cin >> a >> b;
-            if (a > b) swap(a, b);
-            int sum = 0;
-            query(a, b, sum, 1);
-            cout << bit_count(sum) << endl;
+    int n, m;
+
+    while (cin >> n >> m) {
+        long long ori_sum = 0;
+
+        build_tree(1, n, 1);
+
+        int v;
+
+        for (int i = 0; i < n; i++) {
+            cin >> v;
+            ori_sum += v;
+            update(i+1, i+1, v, 1);
         }
+
+        int a, b;
+
+        for (int i = 0; i < m; i++) {
+            cin >> a >> b;
+
+            if (a > b) swap(a, b);
+
+            long long sum = 0;
+            long long whole_sume = 0;
+
+            query(a, b, sum, 1);
+            query(1, n, whole_sume, 1);
+
+            // SHOW_C(a, b, sum);
+
+            if (whole_sume > ori_sum) {
+                // round down
+                // cout << "down" << endl;
+                // SHOW_A(sum / (b - a + 1))
+                update(a, b, round_down(sum, (b - a + 1)), 1);
+            } else {
+                // cout << "up" << endl;
+                // round up
+                update(a, b, round_up(sum, (b - a + 1)), 1);
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            long long sum = 0;
+            query(i+1, i+1, sum, 1);
+            cout << sum;
+            if (i != n-1) cout << " ";
+        }
+
+        cout << endl;
+        cout << endl;
     }
 
     return 0;
