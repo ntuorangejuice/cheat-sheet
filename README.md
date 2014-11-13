@@ -1047,6 +1047,8 @@ int main(){
 
 #### Segment Tree
 
+##### Color
+
 ```c++
 const int MAX = 100000;
 
@@ -1113,6 +1115,11 @@ void query(int left, int right, int &sum, int u) {
     }
 }
 
+// Usage
+// build_tree(1, L, 1);
+// update(a, b, new_color, 1);
+// query(a, b, sum_as_reference, 1);
+
 // only for this question
 int bit_count(int sum) {
     int ans = 0;
@@ -1145,6 +1152,82 @@ int main() {
     }
     return 0;
 }
+```
+
+##### Range Sum & Range Replace
+
+```c++
+const int MAX = 30005;
+
+struct node {
+    int left, right;
+    long long sum;
+    int lazy;
+    bool dirty;
+};
+
+node nodes[4*MAX];
+
+void build_tree(int left, int right, int u) {
+    nodes[u].left = left;
+    nodes[u].right = right;
+    nodes[u].sum = 0;
+    nodes[u].lazy = 0;
+    nodes[u].dirty = false;
+    if (left == right) return;
+    int mid = (left + right)/2;
+    build_tree(left, mid, 2*u);
+    build_tree(mid+1, right, 2*u + 1);
+}
+
+void get_down(int u) {
+    if (!nodes[u].dirty) return;
+    nodes[2*u].sum = (long long) nodes[u].lazy * (nodes[2*u].right - nodes[2*u].left + 1);
+    // if update not replace use +=
+    nodes[2*u].lazy = nodes[u].lazy;
+    nodes[2*u].dirty = true;
+    nodes[2*u + 1].sum = (long long) nodes[u].lazy * (nodes[2*u + 1].right - nodes[2*u + 1].left + 1);
+    nodes[2*u + 1].lazy = nodes[u].lazy;
+    nodes[2*u + 1].dirty = true;
+    nodes[u].dirty = false;
+}
+
+void update(int left, int right, int value, int u) {
+    if (left <= nodes[u].left && nodes[u].right <= right) {
+        nodes[u].sum = (long long)value * (nodes[u].right - nodes[u].left + 1);
+        // if update not replace use +=
+        nodes[u].lazy = value;
+        nodes[u].dirty = true;
+        return;
+    }
+    get_down(u);
+    if (left <= nodes[2*u].right) {
+        update(left, right, value, 2*u);
+    }
+    if (right >= nodes[2*u+1].left) {
+        update(left, right, value, 2*u + 1);
+    }
+    nodes[u].sum = nodes[2*u].sum + nodes[2*u+1].sum;
+}
+
+void query(int left, int right, long long &sum, int u) {
+    if (left <= nodes[u].left && nodes[u].right <= right) {
+        sum += nodes[u].sum;
+        return;
+    }
+    get_down(u);
+    if (left <= nodes[2*u].right) {
+        query(left, right, sum, 2*u);
+    }
+    if (right >= nodes[2*u+1].left) {
+        query(left, right, sum, 2*u + 1);
+    }
+}
+
+// Usage
+// build_tree(1, L, 1);
+// update(a, b, new_value, 1);
+// query(a, b, sum_as_reference, 1);
 ```
 
 #### Range Minimum Query RMQ
