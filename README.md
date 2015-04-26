@@ -263,7 +263,7 @@ std::iter_swap(myints+3,myvector.begin()+2); //   myints:  99  20  30 [99] 50
                                              // myvector:  10  99 [40] 99
 ```
 
-##### Heap
+##### STL Heap
 
 // not completed
 
@@ -284,6 +284,96 @@ void sort_heap (RandomAccessIterator first, RandomAccessIterator last); Compare 
 ```
 
 Note: Priority queue is more recoomeneded.
+
+##### Heap
+
+```c++
+struct HiHeap {
+    // a max-heap
+    int _size_;
+    int _max_size_;
+    int* value;
+
+    HiHeap(int max_size) : _max_size_(max_size) {
+        _size_ = 0;
+        value = new int[_max_size_+1];
+    }
+
+    ~HiHeap() {
+        delete[] value;
+    }
+    
+    void clear() {
+        _size_ = 0;
+        _max_size_ = -1;
+        delete[] value;
+    }
+
+    int top() {
+        return value[1];
+    }
+
+    bool push(int var) {
+        if (_size_ == _max_size_)
+            return false;
+        _size_++;
+        value[_size_] = var;
+        adjust_up(_size_);
+        return true;
+    }
+
+    bool pop() {
+        if (_size_ == 0)
+            return false;
+        swap(value[1], value[_size_]);
+        _size_--;
+        adjust_down(1);
+    }
+
+    void adjust_it(int cur) {
+        adjust_up(cur);
+        adjust_down(cur);
+    }
+
+    void adjust_down(int cur) {
+        int left = cur * 2;
+        int right= cur * 2 + 1;
+
+        if (left > _size_)
+            return ;
+        if (right > _size_)
+            right = left;
+        
+        int max_one = cur;
+        if (value[max_one] < value[left])
+            max_one = left;
+        if (value[max_one] < value[right])
+            max_one = right;
+
+        if (max_one == cur)
+            return ;
+        
+        swap(value[max_one], value[cur]);
+        adjust_down(max_one);
+    }
+
+    void adjust_up(int cur) {
+        if (cur == 1)
+            return ;
+        
+        int father = cur / 2;
+        if (value[cur] <= value[father])
+            return ;
+        
+        swap(value[cur], value[father]);
+        adjust_up(father);
+    }
+
+    int size() {
+        return _size_;
+    }
+};
+```
 
 ##### Sort
 
@@ -1117,7 +1207,13 @@ int main(void) {
 ##### Longest Common Prefix
 
 ```c++
-int lcp(int x, int y) {	int k, ret = 0;	if (x == y) return N - x;	for (k = stp - 1; k >= 0 && x < N && y < N; k --)        if (P[k][x] == P[k][y])            x += 1 << k, y += 1 << k, ret += 1 << k;	return ret;
+int lcp(int x, int y) {
+	int k, ret = 0;
+	if (x == y) return N - x;
+	for (k = stp - 1; k >= 0 && x < N && y < N; k --)
+        if (P[k][x] == P[k][y])
+            x += 1 << k, y += 1 << k, ret += 1 << k;
+	return ret;
 }
 ```
 
@@ -1431,6 +1527,8 @@ int KMP(const string str, const string sub, const int *next) {
     return -1; //如果找不到就返回-1
 }
 ```
+
+#### Boyer-Moore?
 
 #### Longest palindromic substring (Manacher's algorithm)
 
@@ -2345,6 +2443,10 @@ void hanoi(int n, char x, char y, char z) { // 将 x 上编号 1 至 n 的圆盘
 #### Divide and Conquer
 
 #### 迭代加深搜索 (binary increase/decrease)
+
+> placeholder
+
+#### binary search
 
 ```C++
 int up_limit = ;
