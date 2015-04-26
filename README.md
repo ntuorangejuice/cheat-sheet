@@ -12,9 +12,11 @@ please reflect change on both side
 ![fish_cake](https://assets-cdn.github.com/images/icons/emoji/unicode/1f365.png?v5)
 ![rice_ball](https://assets-cdn.github.com/images/icons/emoji/unicode/1f359.png?v5)
 ![rice_cracker](https://assets-cdn.github.com/images/icons/emoji/unicode/1f358.png?v5)
-
-:balloon: :balloon: :balloon:
-:fried_shrimp: :sushi: :fish_cake: :rice_ball: :rice_cracker:
+![stew](https://assets-cdn.github.com/images/icons/emoji/unicode/1f372.png?v5)
+![oden](https://assets-cdn.github.com/images/icons/emoji/unicode/1f362.png?v5)
+![hamburger](https://assets-cdn.github.com/images/icons/emoji/unicode/1f354.png?v5)
+![doughnut](https://assets-cdn.github.com/images/icons/emoji/unicode/1f369.png?v5)
+![cookie](https://assets-cdn.github.com/images/icons/emoji/unicode/1f36a.png?v5)
 
 ## Basic
 
