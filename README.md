@@ -1073,7 +1073,145 @@ Translates a long unscaled value and an int scale into a BigDecimal.
 
 #### Trie
 
-##### Surffix Tree
+> Total number of node <= sum(length of all string)
+
+```c++
+// 
+// hihocoder 1014
+// 
+// 
+// 
+// input: n, q, string x n, string x q
+// output: for each query, print number of string whose prefix is the query
+// 
+// Sample Input
+// 5
+// babaab
+// babbbaaaa
+// abba
+// aaaaabaa
+// babaababb
+// 5
+// babb
+// baabaaa
+// bab
+// bb
+// bbabbaab
+// Sample Output
+// 1
+// 0
+// 3
+// 0
+// 0
+
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+#define HHH 1000002
+struct TrieNode
+{
+    int val; // 'a' ~ 'z'
+    bool ended; // is a word ended here
+    int count; // number of word ended here
+    int childCount; // number of word contianing this prefix
+
+    int next[26]; // index of child node, 'a' ~ 'z'
+
+    TrieNode() {
+        val = 0;
+        memset(next, -1, sizeof(next));
+        ended = false;
+        count = 0;
+        childCount = 0;
+    }
+
+    void show() {
+        cout <<
+        "Val: " << (char)val <<
+        ", ended = " << ended <<
+        ", count = " << count <<
+        ", childCount = " << childCount
+        << endl;
+        cout << "\t ";
+        for (int i = 0; i < 26; i++)
+            cout << (char)('a' + i) << ":" << next[i] << " ";
+        cout << endl;
+    }
+};
+
+struct Trie
+{
+    TrieNode node[HHH];
+    int size = 0; // the index of last node
+    int add(string& s) { // return index of new node
+        int preIndex = 0;
+        for (int i = 0; i < s.length(); i++) {
+            TrieNode& pre = node[preIndex];
+            int& curIndex = pre.next[s[i] - 'a'];
+            if (curIndex == -1) {
+                size++;
+                curIndex = size;
+            }
+            TrieNode& cur = node[curIndex];
+            cur.val = s[i];
+            cur.childCount++;
+            if (i == s.length() - 1) {
+                cur.ended = true;
+                cur.count++;
+            }
+
+            preIndex = curIndex;
+        }
+        
+        node[0].childCount++;
+        return preIndex;
+    };
+
+    int get(string& s) { // get index of node
+        int preIndex = 0;
+        for (int i = 0; i < s.length() && preIndex != -1; i++)
+            preIndex = node[preIndex].next[s[i] - 'a'];
+        return preIndex;
+    };
+
+    Trie() {};
+
+    void show() {
+        for (int i = 0; i <= size; i++) {
+            SHOW_A(i);
+            node[i].show();
+        }
+    }
+};
+
+int n, q;
+Trie t;
+
+int main() {
+    cin >> n;
+
+    string temp;
+    for (int i = 0; i < n; i++) {
+        cin >> temp;
+        t.add(temp);
+    }
+
+    // t.show();
+
+    cin >> q;
+    for (int i = 0; i < q; i++) {
+        cin >> temp;
+        int index = t.get(temp);
+
+        if (index == -1)
+            cout << 0 << endl;
+        else
+            cout << t.node[index].childCount << endl;
+    }
+}
+```
 
 ```c++
 // http://blog.csdn.net/u010700335/article/details/38930175
@@ -1172,6 +1310,8 @@ int main()
     return 0;
 }
 ```
+
+##### Surffix Tree
 
 ##### Surffix Array
 
