@@ -1648,33 +1648,40 @@ void query(int left, int right, long long &sum, int u) {
 #### KMP
 
 ```C++
-void get_next(const string sub, int *next) {
-    int len=sub.length();
-    int i,k;
-    next[0]=k=-1;
-    for (i=0; i<len;) {
-        if (k==-1 || sub[i]==sub[k]) {
-            k++; i++;
-            if (sub[k]!=sub[i]) next[i]=k;
-            else next[i]=next[k];    //避免重复计算优化next数组
-        }
-        else k=next[k];
+#define HHH 10003
+
+int ne[HHH]; // next[], if par[i] not matched, jump to i = ne[i]
+int kmp(string& par, string& ori) {
+    ne[0] = -1;
+    for (int p = ne[0], i = 1; i < par.length(); i++) {
+        while (p >= 0 && par[p+1] != par[i])
+            p = ne[p];
+        if (par[p+1] == par[i])
+            p++;
+        ne[i] = p;
     }
+
+    int match = 0;
+    for (int p = -1, q = 0; q < ori.length(); q++) {
+        while (p >= 0 && par[p+1] != ori[q])
+            p = ne[p];
+        if (par[p+1] == ori[q])
+            p++;
+        if (p + 1 == par.length()) { // match!
+            p = ne[p];
+            match++;
+        }
+    }
+
+    return match; // return number of occurance
 }
 
-int KMP(const string str, const string sub, const int *next) {
-	//返回子串在主串中的起始位置下标
-    int i,j;
-    int len1=str.length();
-    int len2=sub.length();
-    for (i=0, j=0; i<len1 && j<len2;)
-        if (j==-1 || str[i]==sub[j])
-            i++; j++;
-        else 
-            j=next[j];
-    if (j==len2)
-    	return i-len2;
-    return -1; //如果找不到就返回-1
+int main () {
+    int n; cin >> n;
+    string par, ori;
+    while (cin >> par >> ori)
+        cout << kmp(par, ori) << endl;
+    return 0;
 }
 ```
 
@@ -1682,7 +1689,43 @@ int KMP(const string str, const string sub, const int *next) {
 
 #### Longest palindromic substring (Manacher's algorithm)
 
+```c++
+int dp[HHH];
+int lengthLongestPalindromSubstring(string& s) {
+    memset(dp, 0, sizeof(dp));
+    int ans = 0;
+    int pivot = 1;
+    int len = s.length() * 2; // _s0_s1_s2 = 2 * length
+    for (int i = 1; i < len; i++) {
+        int pBorder = pivot + dp[pivot];
+        int iBorder = i;
+        if (iBorder < pBorder && 2 * pivot - i > 0) {
+            dp[i] = dp[2*pivot-i];
+            iBorder = min(pBorder, i + dp[i]);
+        }
 
+        if (iBorder >= pBorder) {
+            int j = iBorder + (iBorder % 2 ? 2 : 1);
+            for (; j < len && 2*i-j > 0 && s[j/2] == s[(2*i-j)/2]; j += 2)
+                ;
+            iBorder = j - 2;
+            dp[i] = iBorder - i;
+            pivot = i;
+        }
+        ans = max(ans, dp[i] + 1);
+    }
+
+    return ans;
+}
+
+int main () {
+    int n; cin >> n;
+    string s;
+    while (cin >> s)
+        cout << lengthLongestPalindromSubstring(s) << endl;
+    return 0;
+}
+```
 
 
 ## Graph
