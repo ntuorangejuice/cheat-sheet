@@ -1647,6 +1647,9 @@ void query(int left, int right, long long &sum, int u) {
 
 #### KMP
 
+> Match pattern in a string
+> O(n) = O(len(pattern) + len(string))
+
 ```C++
 #define HHH 10003
 
@@ -1688,6 +1691,8 @@ int main () {
 #### Boyer-Moore?
 
 #### Longest palindromic substring (Manacher's algorithm)
+
+> O(n)
 
 ```c++
 int dp[HHH];
