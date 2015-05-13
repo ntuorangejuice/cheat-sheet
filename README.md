@@ -1081,15 +1081,11 @@ Translates a long unscaled value and an int scale into a BigDecimal.
 
 #### Tree Traversal
 
-#### Trie
+#### Trie / Trie Graph / AC Automaton
 
-> Total number of node <= sum(length of all string)
+> O(NL+M) - NL: total len of words in dict, M: len of article
 
 ```c++
-// 
-// hihocoder 1014
-// 
-// 
 // 
 // input: n, q, string x n, string x q
 // output: for each query, print number of string whose prefix is the query
@@ -1113,21 +1109,40 @@ Translates a long unscaled value and an int scale into a BigDecimal.
 // 3
 // 0
 // 0
-
-#include <iostream>
-#include <cstring>
+// 
+// 
+// 
+// check if any word in dict appear in article
+// 
+// Sample Input
+// 6
+// aaabc
+// aaac
+// abcc
+// ac
+// bcd
+// cd
+// aaaaaaaaaaabaaadaaac
+// 
+// Sample Output
+// YES
+// 
 
 using namespace std;
 
 #define HHH 1000002
 struct TrieNode
 {
-    int val; // 'a' ~ 'z'
+    char val; // 'a' ~ 'z'
     bool ended; // is a word ended here
     int count; // number of word ended here
     int childCount; // number of word contianing this prefix
 
     int next[26]; // index of child node, 'a' ~ 'z'
+
+    int prev; // parent node // for trie-graph
+    bool suffixEnded;// suffix node is an end // for trie-graph
+    int suffix[26]; // suffix node // for trie-graph
 
     TrieNode() {
         val = 0;
@@ -1135,26 +1150,35 @@ struct TrieNode
         ended = false;
         count = 0;
         childCount = 0;
+
+        prev = -1;
+        suffixEnded = false;
+        memset(suffix, -1, sizeof(suffix));
     }
 
     void show() {
-        cout <<
-        "Val: " << (char)val <<
+        cerr <<
+        "Val: " << val <<
+        ", prev = " << prev <<
         ", ended = " << ended <<
         ", count = " << count <<
         ", childCount = " << childCount
-        << endl;
-        cout << "\t ";
-        for (int i = 0; i < 26; i++)
-            cout << (char)('a' + i) << ":" << next[i] << " ";
-        cout << endl;
+        << "\n\t ";
+        for (int i = 0; i < 4; i++)
+            cerr << (char)('a' + i) << ":" << next[i] << " ";
+        cerr
+        << "\n\tsuffix suffixEnded = " << suffixEnded << "\n"
+        << "\t ";
+        for (int i = 0; i < 4; i++)
+            cerr << (char)('a' + i) << ":" << suffix[i] << " ";
+        cerr << endl;
     }
 };
 
 struct Trie
 {
     TrieNode node[HHH];
-    int size = 0; // the index of last node
+    int size; // the index of last node
     int add(string& s) { // return index of new node
         int preIndex = 0;
         for (int i = 0; i < s.length(); i++) {
@@ -1167,17 +1191,51 @@ struct Trie
             TrieNode& cur = node[curIndex];
             cur.val = s[i];
             cur.childCount++;
-            if (i == s.length() - 1) {
-                cur.ended = true;
-                cur.count++;
-            }
 
             preIndex = curIndex;
         }
-        
+        node[preIndex].ended = true;
+        node[preIndex].count++;
         node[0].childCount++;
         return preIndex;
     };
+
+    void buildSuffix() {
+        queue<int> q;
+        for (int i = 0; i < 26; i++) {
+            int& next = node[0].next[i];
+            int& suffix = node[0].suffix[i];
+
+            suffix = 0;
+            if (next == -1)
+                next = 0;
+            else {
+                q.push(next);
+                node[next].prev = 0;
+            }
+        }
+
+        while (q.size()) {
+            int cur = q.front(); q.pop();
+            int prev = node[cur].prev;
+            int prevSuffix = node[prev].suffix[node[cur].val - 'a'];
+            if (node[prevSuffix].ended)
+                node[cur].suffixEnded = true;
+
+            for (int i = 0; i < 26; i++) {
+                int& next = node[cur].next[i];
+                int& suffix = node[cur].suffix[i];
+
+                suffix = node[prevSuffix].next[i];
+                if (next == -1)
+                    next = suffix;
+                else {
+                    q.push(next);
+                    node[next].prev = cur;
+                }
+            }
+        }
+    }
 
     int get(string& s) { // get index of node
         int preIndex = 0;
@@ -1186,11 +1244,22 @@ struct Trie
         return preIndex;
     };
 
-    Trie() {};
+    bool match(string& s) {
+        for (int i = 0, cur = 0; i < s.length(); i++) {
+            cur = node[cur].next[s[i] - 'a'];
+            if (node[cur].ended || node[cur].suffixEnded)
+                return true;
+        }
+        return false;
+    }
+
+    Trie() {
+        size = 0;
+    };
 
     void show() {
         for (int i = 0; i <= size; i++) {
-            SHOW_A(i);
+            show_A(i);
             node[i].show();
         }
     }
@@ -1208,18 +1277,26 @@ int main() {
         t.add(temp);
     }
 
-    // t.show();
-
     cin >> q;
     for (int i = 0; i < q; i++) {
         cin >> temp;
         int index = t.get(temp);
 
         if (index == -1)
-            cout << 0 << endl;
+            cout << 0 << endl; // not found 
         else
-            cout << t.node[index].childCount << endl;
+            cout << t.node[index].childCount << endl; // found
     }
+    
+    
+    // check if any word in dict appear in article
+    t.buildSuffix();
+    
+    string article; cin >> article;
+    if (t.match(article))
+        cout << "YES" << endl;
+    else
+        cout << "NO" << endl;
 }
 ```
 
@@ -1321,9 +1398,9 @@ int main()
 }
 ```
 
-##### Surffix Tree
+##### Suffix Tree
 
-##### Surffix Array
+##### Suffix Array
 
 ```c++
 #define MAXN  65536
