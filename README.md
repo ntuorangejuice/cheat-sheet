@@ -2198,6 +2198,127 @@ void min_cost_max_flow() {
 > 
 > 统计出树中度为1的节点的个数，即为叶节点的个数，记为leaf。则至少在树上添加(leaf+1)/2条边，就能使树达到边二连通，所以至少添加的边数就是(leaf+1)/2。具体方法为，首先把两个最近公共祖先最远的两个叶节点之间连接一条边，这样可以把这两个点到祖先的路径上所有点收缩到一起，因为一个形成的环一定是双连通的。然后再找两个最近公共祖先最远的两个叶节点，这样一对一对找完，恰好是(leaf+1)/2次，把所有点收缩到了一起。
 
+find articulation point (cut vertex) / bridge (cutedge) in directed / undirected graph
+
+find and merge biconnected component in undirected graph
+
+find and merge strongly connected component in directed graph
+
+
+time complexity `O(E+V)`
+
+``` c++
+#define NN 20002
+#define MM 100002
+
+int n;
+int m;
+
+int visit_order[NN];
+int smallest_order_can_reach[NN];
+int parent[NN];
+int in_stack[NN];
+int temp_component[NN];
+
+vector<int> g[NN];
+
+void merge(const vector<int>& component) {
+    vector<int> out_vertex;
+    int new_vertex = component.back();
+    for (int v : component)
+        temp_component[v] = 1;
+    for (int v : component) {
+        for (int o : g[v]) {
+            if (!temp_component[o])
+                out_vertex.push_back(o);
+        }
+        g[v].clear();
+        g[v].push_back(new_vertex);
+    }
+    for (int v : component)
+        temp_component[v] = 0;
+
+    // use last vertex in the component as new vertex
+    g[new_vertex] = out_vertex;
+}
+
+void dfs(int cur) {
+    static int order = 0;
+    static stack<int> s;
+
+    visit_order[cur] = smallest_order_can_reach[cur] = ++order;
+    s.push(cur);
+    in_stack[cur] = 1;
+
+    int subtree = 0;
+    for (int next : g[cur]) {
+        if (visit_order[next] == 0) {
+            subtree++;
+            parent[next] = cur;
+            dfs(next);
+            smallest_order_can_reach[cur] = min(smallest_order_can_reach[cur], smallest_order_can_reach[next]);
+
+            // if cur is root, and subtree > 1
+            // it is an articulation point
+            if (visit_order[cur] == 1 && subtree > 1)
+                ;
+
+            // if cur is not root, and next cannot reach smaller vertex
+            // it is an articulation point
+            if (visit_order[cur] != 1 && visit_order[cur] <= smallest_order_can_reach[next])
+                ;
+
+            // if cannot use this edge to reach a smaller vertex
+            // it is a bridge
+            if (visit_order[cur] < smallest_order_can_reach[next])
+                ;
+        }
+
+            // for undirected graph
+            // update the smallness of vertex that can reach
+//        else if (next != parent[cur])
+//            smallest_order_can_reach[cur] = min(smallest_order_can_reach[cur], visit_order[next]);
+
+            // for directed graph
+        else if (in_stack[next])
+            smallest_order_can_reach[cur] = min(smallest_order_can_reach[cur], visit_order[next]);
+    }
+    
+    if (visit_order[cur] == smallest_order_can_reach[cur]) {
+        // because visit_order[cur] == smallest_order_can_reach[cur]
+        // and visit_order[cur] > visit_order[parent[cur]]
+        // so visit_order[parent[cur]] < smallest_order_can_reach[cur]
+        // so cur-parent[cur] is a bridge
+        // cur is root of the biconnected component
+        // so pop all util cur
+
+        vector<int> component;
+        int min_vertex = s.top();
+        while (1) {
+            int vertex = s.top(); s.pop();
+            in_stack[vertex] = 0;
+            min_vertex = min(min_vertex, vertex);
+            component.push_back(vertex);
+            if (vertex == cur)
+                break;
+        }
+        // cur is the last vertex in the component
+        merge(component);
+    }
+}
+
+int main() {
+    cin >> n >> m;
+    for (int i = 0; i < m; i++) {
+        int a, b;
+        cin >> a >> b;
+        g[a].push_back(b);
+    }
+
+    dfs(1);
+}
+```
+
 #### 拓扑排序
 
 > place holder
