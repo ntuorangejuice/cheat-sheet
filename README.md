@@ -399,6 +399,13 @@ void stable_sort ( RandomAccessIterator first, RandomAccessIterator last,
                    Compare comp );
 ```
 
+#### Compare using Lambda
+
+``` c++
+auto cmp = [](const T& a, const T& b) { return true; };
+set<T, decltype(cmp)> a_set_with_customized_comparator(cmp);
+```
+
 #### Compare
 
 > bool operator< (ele);
