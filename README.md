@@ -2319,9 +2319,59 @@ int main() {
 }
 ```
 
-#### 拓扑排序
+#### Topological Sort / 拓扑排序
 
-> place holder
+> Topological Sorting on Directed Acyclic Graph (DAG)
+>
+> time complexity `O(N)`
+
+``` c++
+#define NN 100000
+
+int n;
+int m;
+
+vector<int> g[NN];
+int in_degree[NN];
+
+void topological_sort() {
+    queue<int> q; // vertex pending to remove
+    for (int i = 1; i <= n; i++)
+        if (in_degree[i] == 0) // all with in-degree == 0 can be removed
+            q.push(i);
+
+    int left_to_remove = n;
+    while (q.size()) {
+        int cur = q.front(); q.pop();
+        for (int next : g[cur]) {
+            in_degree[next]--;
+            if (in_degree[next] == 0) // if in-degree == 0, can be removed
+                q.push(next);
+        }
+        left_to_remove--;
+    }
+
+    if (left_to_remove == 0)
+        cout << "Correct" << endl;
+    else
+        cout << "Wrong" << endl;
+}
+
+void init_graph() {
+    cin >> n >> m;
+    for (int i = 0; i < m; i++) {
+        int a, b;
+        cin >> a >> b;
+        g[a].push_back(b);
+        in_degree[b]++;
+    }
+}
+
+int main() {
+    init_graph();
+    topological_sort();
+}
+```
 
 #### Euler Cycle/Path, Hamilton Cycle/Path
 
