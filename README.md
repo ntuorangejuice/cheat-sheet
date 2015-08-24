@@ -1,7 +1,4 @@
-please reflect change on both side
-
-
-## Orange Juice - ACM-ICPC Cheat Sheet - 情報
+# Orange Juice - ACM-ICPC Cheat Sheet - 情報
 
 ![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
 ![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
