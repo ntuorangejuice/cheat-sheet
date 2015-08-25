@@ -6,6 +6,12 @@ ACM-ICPC Cheat Sheet
 ![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
 ![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
 ![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
+![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
+![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
+![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
+![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
+![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
+![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
 
 ![fried_shrimp](https://assets-cdn.github.com/images/icons/emoji/unicode/1f364.png?v5)
 ![sushi](https://assets-cdn.github.com/images/icons/emoji/unicode/1f363.png?v5)
