@@ -32,13 +32,15 @@ ACM-ICPC Cheat Sheet
 ```c++
 #include <bits/stdc++.h>
 
+#define DEBUG true
+
 #define GET_BIT(n, i) (((n) & (1 << ((i)-1))) >> ((i)-1)) // i start from 1
 #define SET_BIT(n, i) ((n) | (1 << ((i)-1)))
 #define CLR_BIT(n, i) ((n) & ~(1 << ((i)-1)))
-#define SHOW_A(x) {cout << #x << " = " << x << endl;}
-#define SHOW_B(x, y) {cout << #x << " = " << x << ", " << #y << " = " << y << endl;}
-#define SHOW_C(x, y, z) {cout << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;}
-#define REACH_HERE {cout << "REACH_HERE! line: " << __LINE__ << endl;}
+#define SHOW_A(x) {if (DEBUG) cout << #x << " = " << x << endl;}
+#define SHOW_B(x, y) {if (DEBUG) cout << #x << " = " << x << ", " << #y << " = " << y << endl;}
+#define SHOW_C(x, y, z) {if (DEBUG) cout << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;}
+#define REACH_HERE {if (DEBUG) cout << "REACH_HERE! line: " << __LINE__ << endl;}
 
 const double E = 1e-8;
 const double PI = acos(-1);
