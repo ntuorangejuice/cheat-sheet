@@ -1,4 +1,7 @@
-# Orange Juice - ACM-ICPC Cheat Sheet - 情報
+ACM-ICPC Cheat Sheet
+====================
+
+# Orange Juice 情報
 
 ![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
 ![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
@@ -29,7 +32,6 @@
 #define SHOW_B(x, y) {cout << #x << " = " << x << ", " << #y << " = " << y << endl;}
 #define SHOW_C(x, y, z) {cout << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;}
 #define REACH_HERE {cout << "REACH_HERE! line: " << __LINE__ << endl;}
-#define ASSERT(x) { _assert(x); cout << #x << endl; }
 
 const double E = 1e-8;
 const double PI = acos(-1);
