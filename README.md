@@ -1,7 +1,7 @@
-ACM-ICPC Cheat Sheet
-====================
+   ACM-ICPC Cheat Sheet
+==========================
 
-# Orange Juice 情報
+    Orange Juice 情報
 
 ![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
 ![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
@@ -25,9 +25,9 @@ ACM-ICPC Cheat Sheet
 ![doughnut](https://assets-cdn.github.com/images/icons/emoji/unicode/1f369.png?v5)
 ![cookie](https://assets-cdn.github.com/images/icons/emoji/unicode/1f36a.png?v5)
 
-## Basic
+## 1. Basic
 
-### C++ Solution Template
+### 1.1 C++ Solution Template
 
 ```c++
 #include <bits/stdc++.h>
@@ -56,19 +56,20 @@ int main() {
 }
 ```
 
-#### Test template
+#### 1.1.1 Test template
 
 ```c++
 #include <bits/stdc++.h>
 
+#define DEBUG true
+
 #define GET_BIT(n, i) (((n) & (1 << ((i)-1))) >> ((i)-1)) // i start from 1
 #define SET_BIT(n, i) ((n) | (1 << ((i)-1)))
 #define CLR_BIT(n, i) ((n) & ~(1 << ((i)-1)))
-#define SHOW_A(x) {cout << #x << " = " << x << endl;}
-#define SHOW_B(x, y) {cout << #x << " = " << x << ", " << #y << " = " << y << endl;}
-#define SHOW_C(x, y, z) {cout << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;}
-#define REACH_HERE {cout << "REACH_HERE! line: " << __LINE__ << endl;}
-#define ASSERT(x) { _assert(x); cout << #x << endl; }
+#define SHOW_A(x) {if (DEBUG) cout << #x << " = " << x << endl;}
+#define SHOW_B(x, y) {if (DEBUG) cout << #x << " = " << x << ", " << #y << " = " << y << endl;}
+#define SHOW_C(x, y, z) {if (DEBUG) cout << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;}
+#define REACH_HERE {if (DEBUG) cout << "REACH_HERE! line: " << __LINE__ << endl;}
 
 const double E = 1e-8;
 const double PI = acos(-1);
@@ -98,7 +99,7 @@ int main() {
 }
 ```
 
-#### Optional include list
+#### 1.1.2 Optional include list
 
 > Use it when there is no `bits/stdc++.h`
 
@@ -116,11 +117,11 @@ int main() {
 #include <list>
 ```
 
-### Strings
+### 1.2 Strings
 
-#### C++ String
+#### 1.2.1 C++ String
 
-### Input string
+##### Input string
 
 get one string with no space and new-line.
 
@@ -164,7 +165,7 @@ Output
 Hello World!!!
 ```
 
-##### Convert to char array
+##### 1.2.1.3 Convert to char array
 
 ```C++
 string cppstr = "this is a string";
@@ -172,7 +173,7 @@ char target[1024];
 strcpy(target, cppstr.c_str());
 ```
 
-#### C String (Character Array)
+#### 1.2.2 C String (Character Array)
 
 ##### Input C String
 
@@ -203,20 +204,22 @@ You have input " world", , whose length is 6
 Note: There is a space in front of "world", which will be part of the string.
 However, using gets() is "unsafe", but we are not to discuss the details here.
 
-#### Convert to C++ string
+##### Convert to C++ string
 
 ```c++
 char arrstr[] = "this is a string";
 string target = string(arr);
 ```
 
-#### Algorithm
+### 1.3 STL Algorithm
+
+> Include the algorithm library if you do not use the solution template.
 
 ```C++
 #include <algorithm>
 ```
 
-##### Permutation
+#### 1.3.1 Permutation
 
 Usage
 ```c++
@@ -260,7 +263,7 @@ The 3! possible permutations with 3 elements:
 After loop: 1 2 3
 ```
 
-##### Binary Search
+#### 1.3.2 Binary Search
 
 Usage
 
@@ -269,7 +272,7 @@ bool binary_search (ForwardIterator first, ForwardIterator last, const T& val, C
 // return true if found, false if not
 ```
 
-##### Lower Bound
+#### 1.3.3 Lower Bound
 
 > Returns an iterator pointing to the first element in the range [first,last) which does not compare less than val.
 
@@ -292,7 +295,7 @@ template <class ForwardIterator, class T>
 }
 ```
 
-##### Swap
+#### 1.3.4 Swap
 
 Usage
 
@@ -314,7 +317,7 @@ std::iter_swap(myints+3,myvector.begin()+2); //   myints:  99  20  30 [99] 50
                                              // myvector:  10  99 [40] 99
 ```
 
-##### STL Heap
+#### 1.3.5 Heap
 
 // not completed
 
@@ -334,9 +337,351 @@ void push_heap (RandomAccessIterator first, RandomAccessIterator last, Compare c
 void sort_heap (RandomAccessIterator first, RandomAccessIterator last); Compare comp);
 ```
 
+Self implementation of heap is available in section 2.
+
 Note: Priority queue is more recoomeneded.
 
-##### Heap
+
+#### 1.3.6 Sort
+
+> Sorts the elements in the range [first,last) into ascending order.
+`stable_sort` preserves the relative order of the elements with equivalent values.
+
+Usage
+```c++
+void sort (RandomAccessIterator first, RandomAccessIterator last);
+void sort (RandomAccessIterator first, RandomAccessIterator last, Compare comp);
+void stable_sort ( RandomAccessIterator first, RandomAccessIterator last );
+void stable_sort ( RandomAccessIterator first, RandomAccessIterator last,
+                   Compare comp );
+```
+
+#### 1.3.7 Compare
+
+##### Using lambda expression
+
+``` c++
+auto cmp = [](const T& a, const T& b) { return true; };
+set<T, decltype(cmp)> a_set_with_customized_comparator(cmp);
+```
+
+##### Compare function
+
+> Binary function that accepts two elements in the range as arguments, and returns a value convertible to bool. It should returns true if the first element is considered to be "smaller" than the second one.
+
+Using by `sort`, `make_heap` and etc.
+
+```c++
+bool myfunction (int i,int j) { return (i<j); }
+```
+
+##### Define operator <()
+
+Member function
+> recommended // can use for priority_queue, sort, <ADD MORE HERE>
+
+```c++
+struct Edge {
+   int from, to, weight;
+	bool operator<(Edge that) const {
+        return weight > that.weight;
+    }
+};
+```
+
+verbal version
+
+```c++
+struct Edge {
+   int from, to, weight;
+	bool operator<(const Edge& that) const {
+        return this->weight > that.weight;
+    }
+};
+```
+
+Non-member function
+
+```c++
+struct Edge {
+    int from, to, weight;
+    friend bool operator<(Edge a, Edge b) {
+        return a.weight > b.weight;
+    }
+};
+```
+
+##### Define operator()()
+
+> You can use comparison function for STL containers by passing them as the first argument of the constructor, and specifying the function type as the additional template argument. For example:
+
+```c++
+set<int, bool (*)(int, int)> s(cmp);
+```
+
+> A functor, or a function object, is an object that can behave like a function. This is done by defining operator()() of the class. In this case, implement operator()() as a comparison function:
+
+```c++
+vector<int> occurrences;
+struct cmp {
+    bool operator()(int a, int b) {
+        return occurrences[a] < occurrences[b];
+    }
+};
+set<int, cmp> s;
+priority_queue<int, vector<int>, cmp> pq;
+```
+
+Used by `priority_queue `.
+
+### 1.4 Containers
+
+A container is a holder object that stores a collection of other objects (its elements). They are implemented as class templates, which allows a great flexibility in the types supported as elements.
+
+#### 1.4.1 Map
+
+// TODO add interface
+
+> Maps are associative containers that store elements formed by a combination of a key value and a mapped value, following a specific order.
+
+```c++
+#include <map>
+```
+
+##### Define a Map
+
+```c++
+template < class Key,                                     // map::key_type
+           class T,                                       // map::mapped_type
+           class Compare = less<Key>,                     // map::key_compare
+           class Alloc = allocator<pair<const Key,T> >    // map::allocator_type
+           > class map;
+```
+
+##### Commonly used method
+
+```C++
+begin()
+end()
+
+empty()
+size()
+
+operator[] // if not found, insert one
+
+insert(pair<first type, second type)
+erase()
+clear()
+
+find() // if not found, return end()
+count() // return 1 or 0
+```
+
+// TODO add interface
+
+> Maps are associative containers that store elements formed by a combination of a key value and a mapped value, following a specific order.
+
+```c++
+#include <map>
+```
+
+##### Red-black Tree
+
+C++ map is implemented as a red-black tree.
+
+A red–black tree is a data structure which is a type of self-balancing binary search tree.
+
+In addition to the requirements imposed on a binary search tree the following must be satisfied by a red–black tree:
+
+1. A node is either red or black.
+2. The root is black. (This rule is sometimes omitted. Since the root can always be changed from red to black, but not necessarily vice-versa, this rule has little effect on analysis.)
+3. All leaves (NIL) are black. (All leaves are same color as the root.)
+4. Every red node must have two black child nodes.
+5. Every path from a given node to any of its descendant leaves contains the same number of black nodes.
+
+// TODO add interface
+
+> Maps are associative containers that store elements formed by a combination of a key value and a mapped value, following a specific order.
+
+```c++
+#include <map>
+```
+
+##### Hash Map (Unordered Map)
+
+// TODO add interface
+
+> Unordered map is implemented as a hash table.
+
+> Unordered maps are associative containers that store elements formed by the combination of a key value and a mapped value, and which allows for fast retrieval of individual elements based on their keys.
+
+```c++
+template < class Key,                                    // unordered_map::key_type
+           class T,                                      // unordered_map::mapped_type
+           class Hash = hash<Key>,                       // unordered_map::hasher
+           class Pred = equal_to<Key>,                   // unordered_map::key_equal
+           class Alloc = allocator< pair<const Key,T> >  // unordered_map::allocator_type
+           > class unordered_map;
+
+```
+
+##### Deprecated Hash Map
+
+```c++
+#include <ext/hash_map>
+__gnu_cxx::hash_map<string, int> months;
+months["january"] = 31;
+months["february"] = 28;
+```
+
+
+#### 1.4.2 Pair
+
+#### 1.4.3 Vector
+
+##### Constructor
+```c++
+std::vector<int> second (4,100);  // four ints with value 100
+```
+
+##### Methods
+
+* begin(), end()
+* front(), back()
+* clear()
+* size()
+* push_back(const value_type& val)
+* pop_back()
+
+#### 1.4.4 List
+
+> List containers are implemented as doubly-linked lists.
+
+##### Methods
+
+* begin(), end()
+* front(), back()
+* clear()
+* push_front(const value_type& val)
+* push_back(const value_type& val)
+* pop_front(): remove the first element.
+* pop_back(): remove the last element.
+* remove(const value_type& val): remove all elements of value val.
+* insert(iterator position, const value_type& val)
+* size()
+* reverse()
+* sort(), sort (Compare comp)
+
+#### 1.4.5 Queue
+
+```C++
+include <queue>
+```
+Constructor
+```C++
+queue<int> my_queue;
+queue<int, list<int> > my_queue (my_list);
+// use list<int> as container, copy my_list into my_queue
+```
+Methods
+```C++
+void queue::push(const value_type& val);
+void queue::pop();
+bool queue::empty() const;
+size_type queue::size() const;
+const_reference& queue::front() const;
+```
+
+#### 1.4.6 Double-ended Queue
+
+```C++
+include <dequeue>
+```
+
+
+#### 1.4.7 Stack
+Constructor
+```C++
+stack<int, vector<int> > my_stack (my_data);
+// use vector<int> as container, copy my_data into my_stack
+
+bool stack::empty() const;
+size_type stack::size() const;
+const_reference& stack::top() const;
+void stack::push (const value_type& val);
+void stack::pop();
+```
+
+#### 1.4.8 Priority Queue
+
+
+
+```C++
+// constructor
+priority_queue<int> my_priority_queue;
+priority_queue<int, vector<int>, greater<int> > two_priority_queue; // if use greater<int>, must have vector<int>
+priority_queue<My_type, vector<My_type>, Comparator_class> my_priority_queue (my_data.begin(), my_data.end()); // use Comparator_class as comparator, use vector<My_type> as container, copy my_data into my_priority_queue
+
+bool priority_queue::empty() const; // return true if empty, false if not
+size_type priority_queue::size() const; // return size of queue
+const_reference priority_queue::top() const; // returns a constant reference to the top element
+void priority_queue::push(const value_type& val); // inserts a new element, initialize to val
+void priority_queue::pop(); // removes the element on top
+```
+```C++
+struct My_type {
+    int weight;
+    int other;
+};
+
+struct My_class_for_compare {
+    public:
+        bool operator() (My_type a, My_type b) {
+            return a.weight < b.weight;
+        }
+};
+
+vector<My_type> my_vector = {(My_type){2, 789}, (My_type){1, 127}, (My_type){3, 456}};
+
+priority_queue<My_type, vector<My_type>, My_class_for_compare> one_priority_queue (my_vector.begin(), my_vector.end());
+one_priority_queue.push((My_type){4, 483});
+while (one_priority_queue.size() != 0) {
+    My_type temp = one_priority_queue.top();
+    one_priority_queue.pop();
+    SHOW_B(temp.weight, temp.other);
+}
+
+vector<int> my_int = {2, 3, 1};
+
+priority_queue<int, vector<int>, greater<int> > two_priority_queue (my_int.begin(), my_int.end());
+while (two_priority_queue.size() != 0) {
+    SHOW_A(two_priority_queue.top());
+    two_priority_queue.pop();
+}
+
+priority_queue<int> three_priority_queue (my_int.begin(), my_int.end());
+while (three_priority_queue.size() != 0) {
+    SHOW_A(three_priority_queue.top());
+    three_priority_queue.pop();
+}
+
+
+// output
+// temp.weight = 4, temp.other = 483
+// temp.weight = 3, temp.other = 456
+// temp.weight = 2, temp.other = 789
+// temp.weight = 1, temp.other = 127
+// two_priority_queue.top() = 1
+// two_priority_queue.top() = 2
+// two_priority_queue.top() = 3
+// three_priority_queue.top() = 3
+// three_priority_queue.top() = 2
+// three_priority_queue.top() = 1
+```
+
+## 2. Advanced Data Structures
+
+### 2.1 Heap
 
 ```c++
 struct HiHeap {
@@ -426,516 +771,11 @@ struct HiHeap {
 };
 ```
 
-##### Sort
+### 2.2 Tree
 
-> Sorts the elements in the range [first,last) into ascending order.
-`stable_sort` preserves the relative order of the elements with equivalent values.
+#### 2.2.1 Tree Traversal
 
-Usage
-```c++
-void sort (RandomAccessIterator first, RandomAccessIterator last);
-void sort (RandomAccessIterator first, RandomAccessIterator last, Compare comp);
-void stable_sort ( RandomAccessIterator first, RandomAccessIterator last );
-void stable_sort ( RandomAccessIterator first, RandomAccessIterator last,
-                   Compare comp );
-```
-
-#### Compare using Lambda
-
-``` c++
-auto cmp = [](const T& a, const T& b) { return true; };
-set<T, decltype(cmp)> a_set_with_customized_comparator(cmp);
-```
-
-#### Compare
-
-> bool operator< (ele);
-> true at bottom (for sort, true at front)
-
-##### Compare function
-
-> Binary function that accepts two elements in the range as arguments, and returns a value convertible to bool. It should returns true if the first element is considered to be "smaller" than the second one.
-
-Using by `sort`, `make_heap` and etc.
-
-```c++
-bool myfunction (int i,int j) { return (i<j); }
-```
-
-##### Define operator <()
-
-Member function
-> recommended // can use for priority_queue, sort, <ADD MORE HERE>
-
-```c++
-struct Edge {
-   int from, to, weight;
-	bool operator<(Edge that) const {
-        return weight > that.weight;
-    }
-};
-```
-
-verbal version
-
-```c++
-struct Edge {
-   int from, to, weight;
-	bool operator<(const Edge& that) const {
-        return this->weight > that.weight;
-    }
-};
-```
-
-Non-member function
-
-```c++
-struct Edge {
-    int from, to, weight;
-    friend bool operator<(Edge a, Edge b) {
-        return a.weight > b.weight;
-    }
-};
-```
-
-##### Define operator()()
-
-> You can use comparison function for STL containers by passing them as the first argument of the constructor, and specifying the function type as the additional template argument. For example:
-
-```c++
-set<int, bool (*)(int, int)> s(cmp);
-```
-
-> A functor, or a function object, is an object that can behave like a function. This is done by defining operator()() of the class. In this case, implement operator()() as a comparison function:
-
-```c++
-vector<int> occurrences;
-struct cmp {
-    bool operator()(int a, int b) {
-        return occurrences[a] < occurrences[b];
-    }
-};
-set<int, cmp> s;
-priority_queue<int, vector<int>, cmp> pq;
-```
-
-Used by `priority_queue `.
-
-#### Map
-
-// TODO add interface
-
-> Maps are associative containers that store elements formed by a combination of a key value and a mapped value, following a specific order.
-
-```c++
-#include <map>
-```
-
-##### Define a Map
-
-```c++
-template < class Key,                                     // map::key_type
-           class T,                                       // map::mapped_type
-           class Compare = less<Key>,                     // map::key_compare
-           class Alloc = allocator<pair<const Key,T> >    // map::allocator_type
-           > class map;
-```
-
-##### Commonly used method
-
-```C++
-begin()
-end()
-
-empty()
-size()
-
-operator[] // if not found, insert one
-
-insert(pair<first type, second type)
-erase()
-clear()
-
-find() // if not found, return end()
-count() // return 1 or 0
-```
-
-#### Red-black Tree
-
-C++ map is implemented as a red-black tree.
-
-A red–black tree is a data structure which is a type of self-balancing binary search tree.
-
-In addition to the requirements imposed on a binary search tree the following must be satisfied by a red–black tree:
-
-1. A node is either red or black.
-2. The root is black. (This rule is sometimes omitted. Since the root can always be changed from red to black, but not necessarily vice-versa, this rule has little effect on analysis.)
-3. All leaves (NIL) are black. (All leaves are same color as the root.)
-4. Every red node must have two black child nodes.
-5. Every path from a given node to any of its descendant leaves contains the same number of black nodes.
-
-
-#### Hash Map
-
-##### Unordered Map
-
-// TODO add interface
-
-> Unordered map is implemented as a hash table.
-
-> Unordered maps are associative containers that store elements formed by the combination of a key value and a mapped value, and which allows for fast retrieval of individual elements based on their keys.
-
-```c++
-template < class Key,                                    // unordered_map::key_type
-           class T,                                      // unordered_map::mapped_type
-           class Hash = hash<Key>,                       // unordered_map::hasher
-           class Pred = equal_to<Key>,                   // unordered_map::key_equal
-           class Alloc = allocator< pair<const Key,T> >  // unordered_map::allocator_type
-           > class unordered_map;
-
-```
-
-##### Deprecated Hash Map
-
-```c++
-#include <ext/hash_map>
-__gnu_cxx::hash_map<string, int> months;
-months["january"] = 31;
-months["february"] = 28;
-```
-
-
-#### Pair
-
-#### Vector
-
-##### Constructor
-```c++
-std::vector<int> second (4,100);  // four ints with value 100
-```
-
-##### Methods
-
-* begin(), end()
-* front(), back()
-* clear()
-* size()
-* push_back(const value_type& val)
-* pop_back()
-
-#### List
-
-> List containers are implemented as doubly-linked lists.
-
-##### Methods
-
-* begin(), end()
-* front(), back()
-* clear()
-* push_front(const value_type& val)
-* push_back(const value_type& val)
-* pop_front(): remove the first element.
-* pop_back(): remove the last element.
-* remove(const value_type& val): remove all elements of value val.
-* insert(iterator position, const value_type& val)
-* size()
-* reverse()
-* sort(), sort (Compare comp)
-
-#### Queue
-
-```C++
-include <queue>
-```
-Constructor
-```C++
-queue<int> my_queue;
-queue<int, list<int> > my_queue (my_list);
-// use list<int> as container, copy my_list into my_queue
-```
-Methods
-```C++
-void queue::push(const value_type& val);
-void queue::pop();
-bool queue::empty() const;
-size_type queue::size() const;
-const_reference& queue::front() const;
-```
-
-#### Double-ended Queue
-
-```C++
-include <dequeue>
-```
-
-
-#### Stack
-Constructor
-```C++
-stack<int, vector<int> > my_stack (my_data);
-// use vector<int> as container, copy my_data into my_stack
-
-bool stack::empty() const;
-size_type stack::size() const;
-const_reference& stack::top() const;
-void stack::push (const value_type& val);
-void stack::pop();
-```
-
-#### Iterator
-
-#### Priority Queue
-
-
-
-```C++
-// constructor
-priority_queue<int> my_priority_queue;
-priority_queue<int, vector<int>, greater<int> > two_priority_queue; // if use greater<int>, must have vector<int>
-priority_queue<My_type, vector<My_type>, Comparator_class> my_priority_queue (my_data.begin(), my_data.end()); // use Comparator_class as comparator, use vector<My_type> as container, copy my_data into my_priority_queue
-
-bool priority_queue::empty() const; // return true if empty, false if not
-size_type priority_queue::size() const; // return size of queue
-const_reference priority_queue::top() const; // returns a constant reference to the top element
-void priority_queue::push(const value_type& val); // inserts a new element, initialize to val
-void priority_queue::pop(); // removes the element on top
-```
-```C++
-struct My_type {
-    int weight;
-    int other;
-};
-
-struct My_class_for_compare {
-    public:
-        bool operator() (My_type a, My_type b) {
-            return a.weight < b.weight;
-        }
-};
-
-vector<My_type> my_vector = {(My_type){2, 789}, (My_type){1, 127}, (My_type){3, 456}};
-
-priority_queue<My_type, vector<My_type>, My_class_for_compare> one_priority_queue (my_vector.begin(), my_vector.end());
-one_priority_queue.push((My_type){4, 483});
-while (one_priority_queue.size() != 0) {
-    My_type temp = one_priority_queue.top();
-    one_priority_queue.pop();
-    SHOW_B(temp.weight, temp.other);
-}
-
-vector<int> my_int = {2, 3, 1};
-
-priority_queue<int, vector<int>, greater<int> > two_priority_queue (my_int.begin(), my_int.end());
-while (two_priority_queue.size() != 0) {
-    SHOW_A(two_priority_queue.top());
-    two_priority_queue.pop();
-}
-
-priority_queue<int> three_priority_queue (my_int.begin(), my_int.end());
-while (three_priority_queue.size() != 0) {
-    SHOW_A(three_priority_queue.top());
-    three_priority_queue.pop();
-}
-
-
-// output
-// temp.weight = 4, temp.other = 483
-// temp.weight = 3, temp.other = 456
-// temp.weight = 2, temp.other = 789
-// temp.weight = 1, temp.other = 127
-// two_priority_queue.top() = 1
-// two_priority_queue.top() = 2
-// two_priority_queue.top() = 3
-// three_priority_queue.top() = 3
-// three_priority_queue.top() = 2
-// three_priority_queue.top() = 1
-```
-
-
-#### BigInteger & BigDecimal
-
-##### C++ Big Integer
-
-```c++
-const int BASE_LENGTH = 2;
-const int BASE = (int) pow(10, BASE_LENGTH);
-const int MAX_LENGTH = 500;
-
-string int_to_string(int i, int width, bool zero) {
-    string res = "";
-    while (width--) {
-        if (!zero && i == 0) return res;
-        res = (char)(i%10 + '0') + res;
-        i /= 10;
-    }
-    return res;
-}
-
-struct bigint {
-    int len, s[MAX_LENGTH];
-
-    bigint() {  
-        memset(s, 0, sizeof(s));  
-        len = 1;  
-    }
-
-    bigint(unsigned long long num) {
-        len = 0;
-        while (num >= BASE) {
-            s[len] = num % BASE;
-            num /= BASE;
-            len ++;
-        }
-        s[len++] = num;
-    }
-
-    bigint(const char* num) {
-        int l = strlen(num);
-        len = l/BASE_LENGTH;
-        if (l % BASE_LENGTH) len++;
-        int index = 0;
-        for (int i = l - 1; i >= 0; i -= BASE_LENGTH) {
-            int tmp = 0;
-            int k = i - BASE_LENGTH + 1;
-            if (k < 0) k = 0;
-            for (int j = k; j <= i; j++) {
-                tmp = tmp*10 + num[j] - '0';
-            }
-            s[index++] = tmp;
-        }
-    }
-
-    void clean() {  
-        while(len > 1 && !s[len-1]) len--;  
-    }
-
-    string str() const {
-        string ret = "";
-        if (len == 1 && !s[0]) return "0";
-        for(int i = 0; i < len; i++) {
-            if (i == 0) {
-                ret += int_to_string(s[len - i - 1], BASE_LENGTH, false);
-            } else {
-                ret += int_to_string(s[len - i - 1], BASE_LENGTH, true);
-            }
-        }
-        return ret;
-    }
-
-    unsigned long long ll() const {
-        unsigned long long ret = 0;
-        for(int i = len-1; i >= 0; i--) {
-            ret *= BASE;
-            ret += s[i];
-        }
-        return ret;
-    }
-
-    bigint operator + (const bigint& b) const {
-        bigint c = b;
-        while (c.len < len) c.s[c.len++] = 0;
-        c.s[c.len++] = 0;
-        bool r = 0;
-        for (int i = 0; i < len || r; i++) {
-            c.s[i] += (i<len)*s[i] + r;
-            r = c.s[i] >= BASE;
-            if (r) c.s[i] -= BASE;
-        }
-        c.clean();
-        return c;
-    }
-
-    bigint operator - (const bigint& b) const {
-        if (operator < (b)) throw "cannot do subtract";
-        bigint c = *this;
-        bool r = 0;
-        for (int i = 0; i < b.len || r; i++) {
-            c.s[i] -= b.s[i];
-            r = c.s[i] < 0;
-            if (r) c.s[i] += BASE;
-        }
-        c.clean();
-        return c;
-    }
-
-    bigint operator * (const bigint& b) const {  
-        bigint c;
-        c.len = len + b.len;  
-        for(int i = 0; i < len; i++)  
-            for(int j = 0; j < b.len; j++)  
-                c.s[i+j] += s[i] * b.s[j];  
-        for(int i = 0; i < c.len-1; i++){  
-            c.s[i+1] += c.s[i] / BASE;  
-            c.s[i] %= BASE;  
-        }  
-        c.clean();  
-        return c;  
-    }
-
-    bigint operator / (const int b) const {
-        bigint ret;
-        int down = 0;
-        for (int i = len - 1; i >= 0; i--) {
-            ret.s[i] = (s[i] + down * BASE) / b;
-            down = s[i] + down * BASE - ret.s[i] * b;
-        }
-        ret.len = len;
-        ret.clean();
-        return ret;
-    }
-
-    bool operator < (const bigint& b) const {
-        if (len < b.len) return true;
-        else if (len > b.len) return false;
-        for (int i = 0; i < len; i++)
-            if (s[i] < b.s[i]) return true;
-            else if (s[i] > b.s[i]) return false;
-        return false;
-    }
-
-    bool operator == (const bigint& b) const {
-        return !(*this<b) && !(b<(*this));
-    }
-
-    bool operator > (const bigint& b) const {
-        return b < *this;
-    }
-};
-```
-
-Examples
-
-```c++
-ASSERT((a+b).str()=="10001")
-ASSERT((a+b)==bigint(10001))
-ASSERT((b/2)==4999)
-ASSERT(c == 12345)
-ASSERT(c < 123456)
-ASSERT(c > 123)
-ASSERT(!(c > 123456))
-ASSERT(!(c < 123))
-ASSERT(!(c == 12346))
-ASSERT(!(c == 12344))
-ASSERT(c.str() == "12345")
-ASSERT((b-1)==9998)
-ASSERT(a.ll() == 2)
-ASSERT(b.ll() == 9999)
-```
-
-
-##### The Java Approach 
-
-BigInteger & BigDecimal
-
-> 学长说不可以印这些。
-
-## Advanced Data Structures and Algorithms
-
-### Tree
-
-### Tree Traversal
-
-### Trie / Trie Graph / AC Automaton
+### 2.3 Trie / Trie Graph / AC Automaton
 
 > O(NL+M) - NL: total len of words in dict, M: len of article
 
@@ -1252,9 +1092,9 @@ int main()
 }
 ```
 
-##### Suffix Tree
+### 2.4 Suffix Tree
 
-##### Suffix Array
+### 2.5 Suffix Array
 
 ```c++
 #define MAXN  65536
@@ -1285,7 +1125,7 @@ int main(void) {
 }
 ```
 
-##### Longest Common Prefix
+#### Longest Common Prefix
 
 ```c++
 int lcp(int x, int y) {
@@ -1298,7 +1138,7 @@ int lcp(int x, int y) {
 }
 ```
 
-#### Binary Indexed Tree
+### 2.6 Binary Indexed Tree
 
 > Binary Indexed Tree
 
@@ -1383,9 +1223,9 @@ int main() {
 > 
 > c[i]: 1b[1] + 2b[2] + ... + ib[i]
 
-#### Segment Tree
+### 2.7 Segment Tree
 
-##### Color
+#### 2.7.1 Color
 
 ```c++
 const int MAX = 100000;
@@ -1492,7 +1332,7 @@ int main() {
 }
 ```
 
-##### Range Sum & Range Replace
+#### 2.7.2 Range Sum & Range Replace
 
 ```c++
 const int MAX = 30005;
@@ -1568,15 +1408,76 @@ void query(int left, int right, long long &sum, int u) {
 // query(a, b, sum_as_reference, 1);
 ```
 
-#### Range Minimum Query RMQ
+#### 2.7.3 Range Minimum Query RMQ
 
 > place holder
 
+## 3. Search
 
+### 3.1 Recursive
 
-## String
+#### 3.1.1 Hanoi
 
-#### KMP
+```C++
+void hanoi(int n, char x, char y, char z) { // 将 x 上编号 1 至 n 的圆盘移到 z, y 作辅助塔
+    if (n == 1)
+        printf("%d from %c to %c\n", n, x, z); // 将编号为 n 的圆盘从 x 移到 z
+    else {
+        hanoi(n-1, x, z, y); // 将 x 上编号 1 至 n-1 的圆盘移到 y, z 作辅助塔
+        printf("%d from %c to %c\n", n, x, z); // 将编号为 n 的圆盘从 x 移到 z
+        hanoi(n-1, y, x, z); // 将 y 上编号 1 至 n-1 的圆盘移到 z, x 作辅助塔
+    }
+}
+```
+
+### 3.2 Dynamic Programming
+
+##### 8.2.1 树上的
+
+> 这是什么GUI
+
+### 3.3 Divide and Conquer
+
+### 3.4 Search
+
+#### 3.4.1 binary search
+
+```C++
+int up_limit = ;
+int down_limit = ;
+int cur, pre;
+
+while (true) {
+    cur = (down_limit + up_limit) / 2;
+
+    bool ok = search();
+
+    if (ok)
+        up_limit = cur;
+    else
+        down_limit = cur;
+    pre = cur;
+    cur = (down_limit + up_limit) / 2;
+    if (pre == cur)
+        return up_limit;
+}
+```
+
+#### 3.4.2 双向 BFS
+
+#### 3.4.3 从终点开始搜
+
+#### 3.4.4 迭代加深搜索 (binary increase/decrease)
+
+> placeholder
+
+### 4. Brute Force
+
+#### 4.1 子集生成
+
+## 4. String
+
+### 4.1 KMP
 
 > Match pattern in a string
 > 
@@ -1620,9 +1521,9 @@ int main () {
 }
 ```
 
-#### Boyer-Moore?
+### 4.2 Boyer-Moore?
 
-#### Longest palindromic substring (Manacher's algorithm)
+### 4.3 Longest palindromic substring (Manacher's algorithm)
 
 > O(n)
 
@@ -1665,9 +1566,9 @@ int main () {
 ```
 
 
-## Graph
+## 5. Graph
 
-#### Union-find Set
+### 5.1 Union-find Set
 ```C++
 int father[n];
 int get_father(int a) {
@@ -1681,13 +1582,13 @@ void init() {
 }
 ```
 
-##### Union-find Set - application
+#### 5.1.1 Union-find Set - application
 
 > place holder
 
-#### Minimium Spanning Tree
+### 5.2 Minimium Spanning Tree
 
-##### Prim's
+#### 5.2.1 Prim's
 
 > graph[][], time complexity: O(V^2)
 
@@ -1776,7 +1677,7 @@ void mst_prim() {
 }
 ```
 
-##### Kruskal
+#### 5.2.2 Kruskal
 
 > Elog(E) + Elog(V)
 
@@ -1825,9 +1726,9 @@ void solve() {
 ```
 
 
-#### Shortest Path
+### 5.3 Shortest Path
 
-##### 任意两点
+#### 5.3.1 任意两点
 
 ```
 for ()
@@ -1835,7 +1736,7 @@ for ()
         for ()
 ```
 
-##### Bellman–Ford
+#### 5.3.2 Bellman–Ford
 
 > Bellman–Ford algorithm is O(VE).
 > Can be applied to situations when there is a maximun number of vertices in shortest path.
@@ -1846,21 +1747,21 @@ for (n times of relax)
         relax each node
 ```
 
-##### SPFA
+#### 5.3.3 SPFA
 
-##### Dijkstra
+#### 5.3.4 Dijkstra
 
 > Dijkstra is good for graphs non-negative edges.
 
 > O(V^2)
 
-#### Bipartite Graph 二分图
+### 5.4 Bipartite Graph 二分图
 
 > 1. A graph is bipartite if and only if it does not contain an odd cycle.
 > 2. A graph is bipartite if and only if it is 2-colorable, (i.e. its chromatic number is less than or equal to 2).
 > 3. The spectrum of a graph is symmetric if and only if it's a bipartite graph.
 
-##### Hungarian algorithm 匈牙利算法
+#### 5.4.1 Hungarian algorithm 匈牙利算法
 > O(E * V)
 
 ```C++
@@ -1897,9 +1798,9 @@ int match() {
 }
 ```
 
-#### Maximum Flow Problem 最大流
+### 5.5 Maximum Flow Problem 最大流
 
-##### Dinic
+#### 5.5.1 Dinic
 ``` C++
 int graph[250][250];
 int level[250];
@@ -1954,7 +1855,7 @@ int dinic(int start, int end) {
 }
 ```
  
-#### Minimum-Cost Maximum-Flow 
+#### 5.5.2 Minimum-Cost Maximum-Flow 
 
 ```C++
 // have not tested
@@ -2008,7 +1909,7 @@ void min_cost_max_flow() {
 }
 ```
 
-#### 强连通分量 图的 割点, 桥, 双连通分支 ``https://www.byvoid.com/blog/biconnect``
+### 5.6 强连通分量 图的 割点, 桥, 双连通分支 ``https://www.byvoid.com/blog/biconnect``
 
 > [点连通度与边连通度]
 > 
@@ -2173,7 +2074,7 @@ int main() {
 }
 ```
 
-#### Topological Sort / 拓扑排序
+### 5.7 Topological Sort / 拓扑排序
 
 > Topological Sorting on Directed Acyclic Graph (DAG)
 >
@@ -2227,18 +2128,195 @@ int main() {
 }
 ```
 
-#### Euler Cycle/Path, Hamilton Cycle/Path
+### 5.8 Euler Cycle/Path, Hamilton Cycle/Path
 
 > place holder
 
-#### find negative (weight) Cycle on a graph
+### 5.9 find negative (weight) Cycle on a graph
 
 > place holder
 
 
-## Mathematics
+## 6. Number & Mathematics
 
-#### class/struct Matrix
+### 6.1 BigInteger & BigDecimal
+
+#### 6.1.1 C++ Big Integer
+
+```c++
+const int BASE_LENGTH = 2;
+const int BASE = (int) pow(10, BASE_LENGTH);
+const int MAX_LENGTH = 500;
+
+string int_to_string(int i, int width, bool zero) {
+    string res = "";
+    while (width--) {
+        if (!zero && i == 0) return res;
+        res = (char)(i%10 + '0') + res;
+        i /= 10;
+    }
+    return res;
+}
+
+struct bigint {
+    int len, s[MAX_LENGTH];
+
+    bigint() {  
+        memset(s, 0, sizeof(s));  
+        len = 1;  
+    }
+
+    bigint(unsigned long long num) {
+        len = 0;
+        while (num >= BASE) {
+            s[len] = num % BASE;
+            num /= BASE;
+            len ++;
+        }
+        s[len++] = num;
+    }
+
+    bigint(const char* num) {
+        int l = strlen(num);
+        len = l/BASE_LENGTH;
+        if (l % BASE_LENGTH) len++;
+        int index = 0;
+        for (int i = l - 1; i >= 0; i -= BASE_LENGTH) {
+            int tmp = 0;
+            int k = i - BASE_LENGTH + 1;
+            if (k < 0) k = 0;
+            for (int j = k; j <= i; j++) {
+                tmp = tmp*10 + num[j] - '0';
+            }
+            s[index++] = tmp;
+        }
+    }
+
+    void clean() {  
+        while(len > 1 && !s[len-1]) len--;  
+    }
+
+    string str() const {
+        string ret = "";
+        if (len == 1 && !s[0]) return "0";
+        for(int i = 0; i < len; i++) {
+            if (i == 0) {
+                ret += int_to_string(s[len - i - 1], BASE_LENGTH, false);
+            } else {
+                ret += int_to_string(s[len - i - 1], BASE_LENGTH, true);
+            }
+        }
+        return ret;
+    }
+
+    unsigned long long ll() const {
+        unsigned long long ret = 0;
+        for(int i = len-1; i >= 0; i--) {
+            ret *= BASE;
+            ret += s[i];
+        }
+        return ret;
+    }
+
+    bigint operator + (const bigint& b) const {
+        bigint c = b;
+        while (c.len < len) c.s[c.len++] = 0;
+        c.s[c.len++] = 0;
+        bool r = 0;
+        for (int i = 0; i < len || r; i++) {
+            c.s[i] += (i<len)*s[i] + r;
+            r = c.s[i] >= BASE;
+            if (r) c.s[i] -= BASE;
+        }
+        c.clean();
+        return c;
+    }
+
+    bigint operator - (const bigint& b) const {
+        if (operator < (b)) throw "cannot do subtract";
+        bigint c = *this;
+        bool r = 0;
+        for (int i = 0; i < b.len || r; i++) {
+            c.s[i] -= b.s[i];
+            r = c.s[i] < 0;
+            if (r) c.s[i] += BASE;
+        }
+        c.clean();
+        return c;
+    }
+
+    bigint operator * (const bigint& b) const {  
+        bigint c;
+        c.len = len + b.len;  
+        for(int i = 0; i < len; i++)  
+            for(int j = 0; j < b.len; j++)  
+                c.s[i+j] += s[i] * b.s[j];  
+        for(int i = 0; i < c.len-1; i++){  
+            c.s[i+1] += c.s[i] / BASE;  
+            c.s[i] %= BASE;  
+        }  
+        c.clean();  
+        return c;  
+    }
+
+    bigint operator / (const int b) const {
+        bigint ret;
+        int down = 0;
+        for (int i = len - 1; i >= 0; i--) {
+            ret.s[i] = (s[i] + down * BASE) / b;
+            down = s[i] + down * BASE - ret.s[i] * b;
+        }
+        ret.len = len;
+        ret.clean();
+        return ret;
+    }
+
+    bool operator < (const bigint& b) const {
+        if (len < b.len) return true;
+        else if (len > b.len) return false;
+        for (int i = 0; i < len; i++)
+            if (s[i] < b.s[i]) return true;
+            else if (s[i] > b.s[i]) return false;
+        return false;
+    }
+
+    bool operator == (const bigint& b) const {
+        return !(*this<b) && !(b<(*this));
+    }
+
+    bool operator > (const bigint& b) const {
+        return b < *this;
+    }
+};
+```
+
+Examples
+
+```c++
+ASSERT((a+b).str()=="10001")
+ASSERT((a+b)==bigint(10001))
+ASSERT((b/2)==4999)
+ASSERT(c == 12345)
+ASSERT(c < 123456)
+ASSERT(c > 123)
+ASSERT(!(c > 123456))
+ASSERT(!(c < 123))
+ASSERT(!(c == 12346))
+ASSERT(!(c == 12344))
+ASSERT(c.str() == "12345")
+ASSERT((b-1)==9998)
+ASSERT(a.ll() == 2)
+ASSERT(b.ll() == 9999)
+```
+
+
+#### 6.1.2 The Java Approach 
+
+BigInteger & BigDecimal
+
+> 学长说不可以印这些。
+
+### 6.2 Matrix
 
 ```C++
 operator+
@@ -2305,13 +2383,15 @@ Matrix Matrix::mirror() {
 }
 ```
 
-#### 欧拉函数 ?
+### 6.3 Number Theory
 
-#### 欧几里得算法 / gcd
+### 6.3.1 欧拉函数 ?
+
+#### 6.3.2 欧几里得算法 / gcd
 
 > see next section
 
-#### 扩展欧几里得算法 
+#### 6.3.3 扩展欧几里得算法 
 
 ``http://www.cnblogs.com/frog112111/archive/2012/08/19/2646012.html``
 
@@ -2377,7 +2457,7 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
-##### 求解不定方程
+#### 6.3.4 求解不定方程
 
 > for: p * a + q * b = c
 
@@ -2407,7 +2487,7 @@ int main(int argc, char const *argv[]) {
 // smallest: ansx % (b / gcd(a, b) + b / gcd(a, b)) % (b / gcd(a, b))
 ```
 
-##### 求解模线性方程（线性同余方程）
+#### 6.3.5 求解模线性方程（线性同余方程）
 
 > (a * x) % n = b % n, x = ?
 
@@ -2424,7 +2504,7 @@ int main(int argc, char const *argv[]) {
 ```C++
 ```
 
-##### 求解模的逆元
+#### 6.3.6 求解模的逆元
 
 > (a * x) % n = 1, x = ?
 
@@ -2442,15 +2522,15 @@ int main(int argc, char const *argv[]) {
 // smallest ansx = (ansx % (n / gcd(a, n)) + (n / gcd(a, n))) % (n / gcd(a, n))
 ```
 
-#### 中国剩余定理
+#### 6.3.7 中国剩余定理
 
-#### 最小公倍数
+#### 6.3.8 最小公倍数
 
 ```C++
 a * b / gcd(a, b)
 ```
 
-#### 分解质因数
+#### 6.3.9 分解质因数
 
 ```C++
 long long x;
@@ -2463,14 +2543,14 @@ for (long long factor = 2; x != 1; factor++) {
 }
 ```
 
-#### 因数个数
+#### 6.3.10 因数个数
 
 ```C++
 n = p1 ^ x1 * p2 ^ x2 * ... * pn ^ xn
 total = (x1 + 1) * (x2 + 1) * ... * (xn + 1)
 ```
 
-#### 素数判定
+#### 6.3.11 素数判定
 
 > 大于 3 的质数可以被表示为 6n - 1 或 6n + 1
 
@@ -2486,7 +2566,7 @@ bool is_prime(int n) {
 }
 ```
 
-#### 进制转换
+#### 6.3.12 进制转换
 
 ```C++
 void convert_dec_to_base(int n, const int base) {
@@ -2507,20 +2587,51 @@ int convert_base_to_dec(const int s[], const int len, const int base) {
 }
 ```
 
-#### A / C
+#### 6.3.13 A / C
 > C(n, k) = C(n-1, k) + C(n-1, k-1)
 > C(n, k) = C(n, n-k)
 
 
-## 博弈论
+#### 6.3.14 质数表
+
+```C++
+int is_prime[UP_LIMIT + 1];
+for (int i = 1; i <= UP_LIMIT; i++) // init to 1
+    is_prime[i] = 1;
+for (int i = 4; i <= UP_LIMIT; i += 2) // even number is not
+    is_prime[i] = 0;
+for (int k = 3; k*k <= UP_LIMIT; k++) // start from 9, end at sqrt
+    if (is_prime[k])
+        for(int i = k*k; i <= UP_LIMIT; i += 2*k) // every two is not 
+            is_prime[i] = 0;
+```
+
+#### 6.3.15 Fast Exponention
+
+> To calculate n ^ p % M
+
+```C++
+int power_modulo(int n, int p, int M) {
+    int result = 1;
+    while (p > 0) {
+        if (p % 2 == 1)
+            result = (result*n) % M;
+        p /= 2;
+        n = (n*n) % M;
+    }
+    return result;
+}
+```
+
+### 6.4 博弈论
 
 > place holder
 
+## 7. Geometry
 
+### 7.1 2-Dimension Space
 
-## Geometry
-
-#### template class for Point?
+#### 7.1.1 Template of Point
 
 ```C++
 struct point {
@@ -2579,20 +2690,20 @@ struct point {
 };
 ```
 
-#### 向量点乘 叉乘
+#### 7.1.2 向量点乘 叉乘
 
 > a = (x1, y1)
 > b = (x2, y2)
 > i ... |i| = 1, vertical to a-b surface
 
-##### dot product
+#### 7.1.3 dot product
 > a dot b = x1 * x2 + y1 * y2 = |a| * |b| * cos(angle)
 > 
 > if = 0: 90 degree
 > 
 > a dot b / |b| = a project to b
 
-##### cross product
+#### 7.1.4 cross product
 > a x b = x1 * y2 - x2 * y1 = |a| * |b| * sin(angle) * i
 > 
 > if < 0: b is at left of a
@@ -2604,11 +2715,11 @@ struct point {
 > a x b = area of 平行四边形
 > a x b x c = area of 平行六面体, c = (x3, y3)
 
-#### 直线公式
+#### 7.1.5 直线公式
 
 > (x, y) = (x1, y1) + k * ((x2, y2) - (x1, y1))
 
-#### Convex Hull
+#### 7.1.6 Convex Hull
 
 ##### Gift Wrapping
 
@@ -2719,70 +2830,10 @@ int main(int argc, char const *argv[]) {
 
 
 
-## Tricks / 分析方法
-
-#### Recursive
-
-##### Hanoi
-
-```C++
-void hanoi(int n, char x, char y, char z) { // 将 x 上编号 1 至 n 的圆盘移到 z, y 作辅助塔
-    if (n == 1)
-        printf("%d from %c to %c\n", n, x, z); // 将编号为 n 的圆盘从 x 移到 z
-    else {
-        hanoi(n-1, x, z, y); // 将 x 上编号 1 至 n-1 的圆盘移到 y, z 作辅助塔
-        printf("%d from %c to %c\n", n, x, z); // 将编号为 n 的圆盘从 x 移到 z
-        hanoi(n-1, y, x, z); // 将 y 上编号 1 至 n-1 的圆盘移到 z, x 作辅助塔
-    }
-}
-```
-
-#### Dynamic Programming
-
-##### 树上的
-
-#### Divide and Conquer
-
-#### 迭代加深搜索 (binary increase/decrease)
-
-> placeholder
-
-#### binary search
-
-```C++
-int up_limit = ;
-int down_limit = ;
-int cur, pre;
-
-while (true) {
-    cur = (down_limit + up_limit) / 2;
-
-    bool ok = search();
-
-    if (ok)
-        up_limit = cur;
-    else
-        down_limit = cur;
-    pre = cur;
-    cur = (down_limit + up_limit) / 2;
-    if (pre == cur)
-        return up_limit;
-}
-```
-
-#### 双向 BFS
-
-#### 从终点开始搜
-
-#### Brute Force
-
-##### 子集生成
+## 8. Tricks & Miscellaneous
 
 
-
-## Userful Code Snippets
-
-#### cantor_expansion / reverse_cantor_expansion
+### 8.1 cantor_expansion / reverse_cantor_expansion
 
 > for hashing, or ...
 
@@ -2839,35 +2890,4 @@ void reverse_cantor_expansion(int n, long long m) {
         cout << ans[i] << " ";
     cout << "\n";
 }
-```
-
-#### Fast Exponention
-
-> To calculate n ^ p % M
-
-```C++
-int power_modulo(int n, int p, int M) {
-    int result = 1;
-    while (p > 0) {
-        if (p % 2 == 1)
-            result = (result*n) % M;
-        p /= 2;
-        n = (n*n) % M;
-    }
-    return result;
-}
-```
-
-#### 质数表
-
-```C++
-int is_prime[UP_LIMIT + 1];
-for (int i = 1; i <= UP_LIMIT; i++) // init to 1
-    is_prime[i] = 1;
-for (int i = 4; i <= UP_LIMIT; i += 2) // even number is not
-    is_prime[i] = 0;
-for (int k = 3; k*k <= UP_LIMIT; k++) // start from 9, end at sqrt
-    if (is_prime[k])
-        for(int i = k*k; i <= UP_LIMIT; i += 2*k) // every two is not 
-            is_prime[i] = 0;
 ```
