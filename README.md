@@ -100,7 +100,7 @@ int main() {
 
 #### Optional include list
 
-    Use it when there is no `bits/stdc++.h`
+> Use it when there is no `bits/stdc++.h`
 
 ```c++
 #include <iostream>
@@ -116,9 +116,11 @@ int main() {
 #include <list>
 ```
 
+### Strings
+
 #### C++ String
 
-##### Input string
+### Input string
 
 get one string with no space and new-line.
 
@@ -925,13 +927,15 @@ ASSERT(b.ll() == 9999)
 
 BigInteger & BigDecimal
 
-学长说不可以印这些。
+> 学长说不可以印这些。
 
-## Tree
+## Advanced Data Structures and Algorithms
 
-#### Tree Traversal
+### Tree
 
-#### Trie / Trie Graph / AC Automaton
+### Tree Traversal
+
+### Trie / Trie Graph / AC Automaton
 
 > O(NL+M) - NL: total len of words in dict, M: len of article
 
