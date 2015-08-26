@@ -84,6 +84,7 @@
     - [2.7.2 Range Sum & Range Replace](#272-range-sum-&-range-replace)
     - [2.7.3 Range Minimum Query RMQ](#273-range-minimum-query-rmq)
 - [3. Methodology](#3-methodology)
+  - [3.0 Greedy](#30-greedy)
   - [3.1 Recursive](#31-recursive)
     - [3.1.1 Hanoi](#311-hanoi)
   - [3.2 Dynamic Programming](#32-dynamic-programming)
@@ -573,8 +574,6 @@ A container is a holder object that stores a collection of other objects (its el
 
 #### 1.4.1 Map
 
-// TODO add interface
-
 > Maps are associative containers that store elements formed by a combination of a key value and a mapped value, following a specific order.
 
 ```c++
@@ -610,13 +609,8 @@ find() // if not found, return end()
 count() // return 1 or 0
 ```
 
-// TODO add interface
+// TODO add more interface
 
-> Maps are associative containers that store elements formed by a combination of a key value and a mapped value, following a specific order.
-
-```c++
-#include <map>
-```
 
 ##### Red-black Tree
 
@@ -632,19 +626,14 @@ In addition to the requirements imposed on a binary search tree the following mu
 4. Every red node must have two black child nodes.
 5. Every path from a given node to any of its descendant leaves contains the same number of black nodes.
 
-// TODO add interface
-
-> Maps are associative containers that store elements formed by a combination of a key value and a mapped value, following a specific order.
-
-```c++
-#include <map>
-```
 
 ##### Hash Map (Unordered Map)
 
-// TODO add interface
-
 > Unordered map is implemented as a hash table.
+
+```c++
+#include <unordered_map>
+```
 
 > Unordered maps are associative containers that store elements formed by the combination of a key value and a mapped value, and which allows for fast retrieval of individual elements based on their keys.
 
@@ -657,6 +646,15 @@ template < class Key,                                    // unordered_map::key_t
            > class unordered_map;
 
 ```
+
+##### Commonly used method
+
+``` C++
+// most are similar to map
+```
+
+// TODO add more interface
+
 
 ##### Deprecated Hash Map
 
@@ -704,11 +702,14 @@ std::vector<int> second (4,100);  // four ints with value 100
 * size()
 * reverse()
 * sort(), sort (Compare comp)
+* 
+* resize()
+* reserve()
 
 #### 1.4.5 Queue
 
 ```C++
-include <queue>
+#include <queue>
 ```
 Constructor
 ```C++
@@ -728,11 +729,16 @@ const_reference& queue::front() const;
 #### 1.4.6 Double-ended Queue
 
 ```C++
-include <dequeue>
+#include <dequeue>
 ```
 
 
 #### 1.4.7 Stack
+
+``` c++
+#include <stack>
+```
+
 Constructor
 ```C++
 stack<int, vector<int> > my_stack (my_data);
@@ -747,7 +753,9 @@ void stack::pop();
 
 #### 1.4.8 Priority Queue
 
-
+``` c++
+#include <queue>
+```
 
 ```C++
 // constructor
@@ -815,6 +823,8 @@ while (three_priority_queue.size() != 0) {
 ## 2. Advanced Data Structures
 
 ### 2.1 Heap
+
+TODO make it general
 
 ```c++
 struct HiHeap {
@@ -1358,6 +1368,8 @@ int main() {
 
 ### 2.7 Segment Tree
 
+> place holder : simple version
+
 #### 2.7.1 Color
 
 ```c++
@@ -1547,6 +1559,10 @@ void query(int left, int right, long long &sum, int u) {
 
 ## 3. Methodology
 
+### 3.0 Greedy
+
+> It's Art.
+
 ### 3.1 Recursive
 
 #### 3.1.1 Hanoi
@@ -1567,7 +1583,7 @@ void hanoi(int n, char x, char y, char z) { // 将 x 上编号 1 至 n 的圆盘
 
 ##### 7.2.1 树上的
 
-> 这是什么GUI
+> 这是什么GUI (Graphical User Interface)
 
 ### 3.3 Divide and Conquer
 
@@ -1612,15 +1628,17 @@ while (true) {
 
 ### 4.1 Union-find Set
 ```C++
-int father[n];
-int get_father(int a) {
-    if (father[a] != a)
-        return father[a] = get_father(father[a]);
-    return a;
+int parent[HH];
+int find(int x) {
+	return x == parent[x] ? x : parent[x] = find(parent[x]);
+}
+void merge(int x, int y) {
+	if (find(x) != find(y))
+		parent[parent[x]] = parent[y];
 }
 void init() {
     for (int i = 0; i < n; i++) 
-        father[i] = i;
+        parent[i] = i;
 }
 ```
 #### 4.1.1 Union-find Set - application
@@ -1773,9 +1791,10 @@ void solve() {
 #### 4.3.1 任意两点
 
 ```
-for ()
-    for ()
-        for ()
+for (k)
+    for (i)
+        for (j)
+        	d(i, j) = min(d(i, j), d(i, k) + d(j, k))
 ```
 
 #### 4.3.2 Bellman–Ford
