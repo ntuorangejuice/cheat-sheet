@@ -167,6 +167,7 @@
 #include <bits/stdc++.h>
 
 #define DEBUG true
+#define OJ_DEBUG
 
 #define GET_BIT(n, i) (((n) & (1 << ((i)-1))) >> ((i)-1)) // i start from 1
 #define SET_BIT(n, i) ((n) | (1 << ((i)-1)))
@@ -184,9 +185,7 @@ using namespace std;
 int main() {
     ios::sync_with_stdio(false);
 
-    // do magic!
-
-    return 0;
+    
 }
 ```
 
@@ -249,6 +248,7 @@ int main() {
 #include <set>
 #include <map>
 #include <list>
+#include <cassert>
 ```
 
 ### 1.2 Strings
