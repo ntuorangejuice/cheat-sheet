@@ -31,8 +31,7 @@
 
 - [1. Basic](#1-basic)
   - [1.1 C++ Solution Template](#11-c-solution-template)
-    - [1.1.1 Test template](#111-test-template)
-    - [1.1.2 Optional include list](#112-optional-include-list)
+    - [1.1.1 Optional include list](#112-optional-include-list)
   - [1.2 Strings](#12-strings)
     - [1.2.1 C++ String](#121-c-string)
       - [Input string](#input-string)
@@ -185,54 +184,11 @@ using namespace std;
 int main() {
     ios::sync_with_stdio(false);
 
-    
-}
-```
-
-#### 1.1.1 Test template
-
-```c++
-#include <bits/stdc++.h>
-
-#define DEBUG true
-
-#define GET_BIT(n, i) (((n) & (1 << ((i)-1))) >> ((i)-1)) // i start from 1
-#define SET_BIT(n, i) ((n) | (1 << ((i)-1)))
-#define CLR_BIT(n, i) ((n) & ~(1 << ((i)-1)))
-#define SHOW_A(x) {if (DEBUG) cout << #x << " = " << x << endl;}
-#define SHOW_B(x, y) {if (DEBUG) cout << #x << " = " << x << ", " << #y << " = " << y << endl;}
-#define SHOW_C(x, y, z) {if (DEBUG) cout << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;}
-#define REACH_HERE {if (DEBUG) cout << "REACH_HERE! line: " << __LINE__ << endl;}
-
-const double E = 1e-8;
-const double PI = acos(-1);
-
-using namespace std;
-
-int test = 0, pass = 0;
-
-void _assert(bool result) {
-    test++; pass+=result;
-    cout << (result ? "PASS: " : "FAIL: ");
-}
-
-
-int main() {
-    ios::sync_with_stdio(false);
-
-    int x = 0;
-    ASSERT(x==0)
-    ASSERT((x = SET_BIT(x, 3))==4)
-    ASSERT((x = CLR_BIT(x, 3))==0)
-
-    cout << "Total test: " << test << endl;
-    cout << "Passed: " << pass << " (" << 100.0*pass/test << "%%)" << endl;
-
     return 0;
 }
 ```
 
-#### 1.1.2 Optional include list
+#### 1.1.1 Optional include list
 
 > Use it when there is no `bits/stdc++.h`
 
