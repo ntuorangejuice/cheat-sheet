@@ -1779,36 +1779,34 @@ for (n times of relax)
 > O(E * V)
 
 ```C++
-int n_node;
-int graph[405][405];
-int match[405];
-int visited[405];
+int n_cow, n_stall;
+bool cow_like_stall[HH][HH]; // cow_stall[cow][stall] // not adjacent matrix!!
+int stall_assigned_to[HH]; // stall_assigned_to[cow]
 
-bool augment(int cur) {
-    for (int i = 0; i < n_node; i++) { // for all node
-        if (graph[cur][i] > 0 && visited[i] == 0) { // if have edge and not visited
-            visited[i] = 1; // mark visited
-            if (match[i] == -1 || augment(match[i])) { // if not matched, or its previous can find other match
-                match[i] = cur; // match it
+bool visited[HH];
+bool match(int cur) {
+    for (int i = 1; i <= n_stall; i++) {
+        if (!visited[i] && cow_like_stall[cur][i]) {
+            visited[i] = true;
+            if (stall_assigned_to[i] == 0 || match(stall_assigned_to[i])) {
+                stall_assigned_to[i] = cur;
                 return true;
             }
         }
     }
-    return false; // cannot find any match
+    return false;
 }
-
-int match() {
-    memset(graph, 0, sizeof(graph));
-    ////////////////////////////////////////////////
-    // initialize n_node, graph
-    ////////////////////////////////////////////////
-    int n_match = 0;
-    memset(match, -1, sizeof(match));
-    for (int i = 0; i < n_node; i++) { // for each node, find an augmented path
-        memset(visited, 0, sizeof(visited)); // each node only visit once
-        if (augment(i)) // if found
-            n_match++; // maximum matching ++
+int bipartite_match() {
+    int success_match = 0;
+    for (int cow = 1; cow <= n_stall; cow++)
+        stall_assigned_to[cow] = 0;
+    for (int cow = 1; cow <= n_cow; cow++) {
+        for (int stall = 1; stall <= n_stall; stall++)
+            visited[stall] = false;
+        if (match(cow))
+            success_match++;
     }
+    return success_match;
 }
 ```
 
