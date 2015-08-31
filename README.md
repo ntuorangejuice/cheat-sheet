@@ -1194,7 +1194,9 @@ int main()
 
 ### 2.5 Suffix Array
 
-> build Suffix Array in O(nlog(n))
+#### build Suffix Array 
+
+> O(nlog(n))
 >
 > reference: Competitve Programming 2
 
@@ -1310,8 +1312,8 @@ int main() {
 }
 ```
 
-> pattern match
->
+#### pattern match
+
 > O(mlog(n))
 
 ```c++
