@@ -1194,6 +1194,124 @@ int main()
 
 ### 2.5 Suffix Array
 
+> build Suffix Array in O(nlog(n))
+>
+> reference: Competitve Programming 2
+
+```c++
+#include <iostream>
+#include <stdio.h>
+#include <cstring>
+
+using namespace std;
+
+#define HH 100002
+
+string s;
+int rank_array[HH];
+int rank_array_temp[HH];
+int suffix_array[HH];
+int suffix_array_temp[HH];
+int counter[HH];
+
+void counting_sort(int k) {
+	memset(counter, 0, sizeof(counter));
+
+	int len = s.length();
+	for (int i = 0; i < len; i++) {
+		// i will cover all suffix_array[i]
+		// so i + k will cover all suffix_array[i] + k
+		// so just use i + k instead of suffix_array[i] for counting
+		// the order is not important anyway
+		int old_rank = i + k < len ? rank_array[i + k] : 0;
+		counter[old_rank]++;
+	}
+
+	int accu = 0;
+	int largest_possible_value = max(256, len); // initial rank is based on ascii value
+	for (int i = 0; i < largest_possible_value; i++) {
+		// counter[x]: 2, 1, 0, 0, 2, 0
+		// become    : 0, 2, 3, 3, 3, 5
+		// which stands for the new rank with that old rank x
+		// the meaning changes here !!
+		int count_temp = counter[i];
+		counter[i] = accu;
+		accu += count_temp;
+	}
+
+	for (int i = 0; i < len; i++) {
+		// for each suffix_array[i]
+		// get its new rank using its old rank suffix_array[i] + k
+		// above if i + k >= n, we change it to 0
+		// the same here
+		int old_rank = suffix_array[i] + k < len ? rank_array[suffix_array[i] + k] : 0;
+		// value of counter[old_rank] is the new rank
+		// put suffix_array[i] to its new position == new rank
+		// why ++ ? suppose
+		// counter[x]: 0, 2, 3, 3, 3, 5
+		// gradually it become
+		// counter[x]: 1, 2, 3, 3, 3, 5
+		// counter[x]: 2, 2, 3, 3, 3, 5
+		// counter[x]: 2, 3, 3, 3, 3, 5
+		// ... thus assign each suffix_array[x] distinguished value
+		// even if there keys are the same
+		// but relation between different key keeps
+		// why assign distinguished rank ?
+		// of course... otherwise multiple suffix_array[i] (different suffix) go to same suffix_array[x]
+		// the rank of them are still kept in the rank_array[x]
+		// later will compress the rank 
+		// keeping the order between those with same key
+		// eventually all the rank will be different
+		suffix_array_temp[counter[old_rank]++] = suffix_array[i];
+	}
+	memcpy(suffix_array, suffix_array_temp, sizeof(suffix_array));
+}
+void build_suffix_array() {
+	int len = s.length();
+	for (int i = 0; i < len; i++)
+		rank_array[i] = s[i] - '.'; // initial rank // based on 1st char
+	for (int i = 0; i < len; i++)
+		suffix_array[i] = i; // initialize
+
+	for (int k = 1; k < len; k <<= 1) {
+		// sort based on 2^i portion
+		// finally all will be sorted
+
+		// [0, i + k) is first part
+		// [i + k, i + k + k) is second part
+		// sort second part then first part
+		// leading to a stable_sort (?)
+		// use [i + k, i + k + k) as key first
+		// then use [0, i + k) as key
+		counting_sort(k);
+		counting_sort(0);
+
+		// after spread suffix with same rank into differnt suffix_array[x] slot (consecutive)
+		// compress the rank_array
+		// so that suffix with same second part [i + k, i + k + k) (which is the rank...)
+		// have same rank...
+		int rank = 0;
+		rank_array_temp[suffix_array[0]] = rank;
+		for (int i = 1; i < len; i++) {
+			if (rank_array[suffix_array[i - 1]] != rank_array[suffix_array[i]])
+				rank++;
+			rank_array_temp[suffix_array[i]] = rank;
+		}
+		memcpy(rank_array, rank_array_temp, sizeof(rank_array));
+	}
+
+	for (int i = 0; i < len; i++)
+		cout << "i: " << i << ", suffix " << suffix_array[i] << endl;
+}
+
+int main() {
+	cin >> s;
+	build_suffix_array();
+}
+```
+
+> build Suffix Array in O(n^2log(n)) (?) 别人的- -
+
 ```c++
 #define MAXN  65536
 #define MAXLG 17
