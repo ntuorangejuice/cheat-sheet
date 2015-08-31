@@ -1310,6 +1310,20 @@ int main() {
 }
 ```
 
+> pattern match
+>
+> O(mlog(n))
+
+```c++
+void find_pattern(const string& pattern) {
+	// binary search upper bound & lower bound (?) in the suffix array
+	// to get a matched range
+	// let m = pattern.length()
+	// let n = s.length()
+	// time complexity: O(mlog(n))
+}
+```
+
 #### Longest Common Prefix
 
 ```c++
