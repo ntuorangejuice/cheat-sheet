@@ -1328,14 +1328,62 @@ void find_pattern(const string& pattern) {
 
 #### Longest Common Prefix
 
+> length of common prefix between suffix_array[i-1] and suffix_array[i]
+>
+> let n = s.length()
+>
+> O(n)
+
 ```c++
-int lcp(int x, int y) {
-	int k, ret = 0;
-	if (x == y) return N - x;
-	for (k = stp - 1; k >= 0 && x < N && y < N; k --)
-        if (P[k][x] == P[k][y])
-            x += 1 << k, y += 1 << k, ret += 1 << k;
-	return ret;
+
+//
+// ...
+//
+
+int longest_common_prefix[HH]; // lcp[i] = length of common prefix between sa[i-1] and sa[i]
+int phi[HH]; // phi[sa[i]] = sa[i-1] // naming ? // useless when built
+int permuted_lcp[HH]; // useless when built temp for lcp
+
+void compute_lcp() {
+	// theorem: number of increase/decrese on cur_lcp is O(len)
+	// so time complexity: O(len) for computing lcp
+	int len = s.length();
+	phi[suffix_array[0]] = -1;
+	for (int i = 1; i < len; i++)
+		phi[suffix_array[i]] = suffix_array[i - 1];
+	for (int i = 0, cur_lcp = 0; i < len; i++) {
+		if (phi[i] == 0)
+			permuted_lcp[i] = 0;
+		else {
+			while (s[i + cur_lcp] == s[phi[i] + cur_lcp])
+				cur_lcp++;
+			permuted_lcp[i] = cur_lcp;
+			cur_lcp = max(cur_lcp - 1, 0);
+		}
+	}
+	for (int i = 0; i < len; i++)
+		longest_common_prefix[i] = permuted_lcp[suffix_array[i]];
+}
+```
+
+#### longest repeated substring
+
+> let n = s.length()
+>
+> O(n)
+
+```c++
+void longest_repeated_substring() {
+	int len = s.length();
+	int max_repeated = -1;
+	int i_max = 0;
+	for (int i = 0; i < len; i++) {
+		if (longest_common_prefix[i] > max_repeated) {
+			max_repeated = longest_common_prefix[i];
+			i_max = i;
+		}
+	}
+	cout << "longest repeated substring: " << s.substr(suffix_array[i_max], suffix_array[i_max] + max_repeated) << endl;
 }
 ```
 
