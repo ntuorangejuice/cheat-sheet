@@ -1198,7 +1198,18 @@ int main()
 
 ### 2.5 Suffix Array
 
-#### build Suffix Array 
+```c++
+int main() {
+	cin >> s;
+	build_suffix_array();
+	compute_lcp();
+	longest_repeated_substring();
+
+	longest_common_substring("GATAGACA", "CATA");
+}
+```
+
+#### Build Suffix Array 
 
 > O(nlog(n))
 >
@@ -1213,6 +1224,7 @@ using namespace std;
 
 #define HH 100002
 
+const char base_char = '.';
 string s;
 int rank_array[HH];
 int rank_array_temp[HH];
@@ -1275,7 +1287,7 @@ void counting_sort(int k) {
 void build_suffix_array() {
 	int len = s.length();
 	for (int i = 0; i < len; i++)
-		rank_array[i] = s[i] - '.'; // initial rank // based on 1st char // choose '.' as ending char
+		rank_array[i] = s[i] - base_char; // initial rank // based on 1st char
 	for (int i = 0; i < len; i++)
 		suffix_array[i] = i; // initialize
 
@@ -1299,7 +1311,9 @@ void build_suffix_array() {
 		int rank = 0;
 		rank_array_temp[suffix_array[0]] = rank;
 		for (int i = 1; i < len; i++) {
-			if (rank_array[suffix_array[i - 1]] != rank_array[suffix_array[i]])
+			if (rank_array[suffix_array[i - 1]] != rank_array[suffix_array[i]]
+				||
+				rank_array[suffix_array[i] + k] != rank_array[suffix_array[i - 1] + k])
 				rank++;
 			rank_array_temp[suffix_array[i]] = rank;
 		}
@@ -1307,16 +1321,13 @@ void build_suffix_array() {
 	}
 
 	for (int i = 0; i < len; i++)
-		cout << "i: " << i << ", suffix " << suffix_array[i] << endl;
-}
+		cout << "i: " << i << ", suffix " << suffix_array[i] << " : " << s.substr(suffix_array[i], s.length() - suffix_array[i]) << endl;
 
-int main() {
-	cin >> s;
-	build_suffix_array();
+	cout << endl;
 }
 ```
 
-#### pattern match
+#### Pattern Matching
 
 > O(mlog(n))
 
@@ -1367,10 +1378,14 @@ void compute_lcp() {
 	}
 	for (int i = 0; i < len; i++)
 		longest_common_prefix[i] = permuted_lcp[suffix_array[i]];
+
+	for (int i = 0; i < len; i++)
+		cout << "i: " << i << ", suffix " << suffix_array[i] << " (lcp: " << longest_common_prefix[i] << ") : " << s.substr(suffix_array[i], s.length() - suffix_array[i]) << endl;
+	cout << endl;
 }
 ```
 
-#### longest repeated substring
+#### Longest Repeated Substring
 
 > let n = s.length()
 >
@@ -1380,14 +1395,48 @@ void compute_lcp() {
 void longest_repeated_substring() {
 	int len = s.length();
 	int max_repeated = -1;
-	int i_max = 0;
+	int i_max = -1;
 	for (int i = 0; i < len; i++) {
 		if (longest_common_prefix[i] > max_repeated) {
 			max_repeated = longest_common_prefix[i];
 			i_max = i;
 		}
 	}
-	cout << "longest repeated substring: " << s.substr(suffix_array[i_max], suffix_array[i_max] + max_repeated) << endl;
+	cout << "longest repeated substring: " << s.substr(suffix_array[i_max], max_repeated) << endl;
+}
+```
+
+#### Longest Common Substring
+
+> string a, b (also applies to multiple strings)
+>
+> construct Suffix Array of a.b & find Longest Common Prefix
+>
+> let n = max(a.length(), b.length())
+>
+> O(nlog(n) + n)
+
+```c++
+void longest_common_substring(const string& a, const string& b) {
+	s = a + base_char + b;
+	cout << "concatenated string: " << s << endl;
+	
+	build_suffix_array();
+	compute_lcp();
+
+	int len = s.length();
+	int max_common = -1;
+	int i_max = -1;
+	for (int i = 1; i < len; i++) {
+		int cur_lcp = longest_common_prefix[i];
+		if (cur_lcp > max_common) {
+			if ((suffix_array[i] < a.length()) ^ (suffix_array[i - 1] < a.length())) {
+				max_common = cur_lcp;
+				i_max = i;
+			}
+		}
+	}
+	cout << "longest common prefix: " << s.substr(suffix_array[i_max], max_common) << endl;
 }
 ```
 
