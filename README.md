@@ -74,6 +74,7 @@
   - [2.1 Heap](#21-heap)
   - [2.2 Tree](#22-tree)
     - [2.2.1 Tree Traversal](#221-tree-traversal)
+    - [2.2.2 Lowest Common Ancestor](#222-lowest-common-ancestor)
   - [2.3 Trie / Trie Graph / AC Automaton](#23-trie--trie-graph--ac-automaton)
   - [2.4 Suffix Tree](#24-suffix-tree)
   - [2.5 Suffix Array](#25-suffix-array)
