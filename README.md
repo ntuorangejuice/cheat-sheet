@@ -878,6 +878,12 @@ struct HiHeap {
 
 #### 2.2.1 Tree Traversal
 
+#### 2.2.2 Lowest Common Ancestor
+
+> placeholder
+>
+> important (?)
+
 ### 2.3 Trie / Trie Graph / AC Automaton
 
 > O(NL+M) - NL: total len of words in dict, M: len of article
