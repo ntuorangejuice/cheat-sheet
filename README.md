@@ -210,6 +210,7 @@ int main() {
 #include <map>
 #include <list>
 #include <cassert>
+#include <unordered_map>
 ```
 
 ### 1.2 Strings
