@@ -2613,7 +2613,11 @@ Matrix Matrix::mirror() {
 
 #### 5.3.2 欧几里得算法 / gcd
 
-> see next section
+```c++
+int gcd(int a, int b) {
+    return b == 0 ? a : gcd(b, a % b);
+}
+```
 
 #### 5.3.3 扩展欧几里得算法 
 
