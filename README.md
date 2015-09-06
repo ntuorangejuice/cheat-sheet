@@ -2618,6 +2618,10 @@ Matrix Matrix::mirror() {
 int gcd(int a, int b) {
     return b == 0 ? a : gcd(b, a % b);
 }
+
+int lcm(int a, int b) {
+    return a / gcd(a, b) * b;
+}
 ```
 
 #### 5.3.3 扩展欧几里得算法 
