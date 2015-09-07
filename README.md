@@ -882,9 +882,152 @@ struct HiHeap {
 
 #### 2.2.2 Lowest Common Ancestor
 
-> placeholder
+> Reduction from LCA to RMQ
 >
-> important (?)
+> let n = number of nodes in the tree
+>
+> preprocess: euler tour O(n) + RMQ init O(nlog(n))
+> 
+> query: RMQ O(1)
+
+```c++
+// 
+// 1471. Tree
+// http://acm.timus.ru/problem.aspx?space=1&num=1471
+// Time limit: 2.0 second
+// Memory limit: 64 MB
+// 
+// A weighted tree is given. You must find the distance between two given nodes.
+// 
+// Input
+// The first line contains the number of nodes of the tree n (1 ≤ n ≤ 50000).
+// The nodes are numbered from 0 to n – 1.
+// Each of the next n – 1 lines contains three integers u, v, w,
+// which correspond to an edge with weight w (0 ≤ w ≤ 1000) connecting nodes u and v.
+// The next line contains the number of queries m (1 ≤ m ≤ 75000).
+// In each of the next m lines there are two integers.
+// 
+// Output
+// For each range_minimum_query, output the distance between the nodes with the given numbers.
+// 
+// Sample
+// 
+// input
+// 3
+// 1 0 1
+// 2 0 1
+// 3
+// 0 1
+// 0 2
+// 1 2
+// 
+// output
+// 1
+// 1
+// 2
+
+#include <vector>
+#include <stdio.h>
+#include <string.h>
+#include <iostream>
+#include <queue>
+
+using namespace std;
+
+#define MAX_NODE 50001
+#define MAX_NODE_LOG 17
+
+int n, m;
+vector<int> dis[MAX_NODE];
+vector<int> g[MAX_NODE];
+
+int dis_to_root[MAX_NODE];
+
+int first_visit_time[MAX_NODE];
+int visit[2 * MAX_NODE]; // max possible number of visits to all nodes == 2 * number of nodes - 1
+int t;
+int rmq[2 * MAX_NODE][MAX_NODE_LOG];
+
+int range_minimum_query(int l, int r) {
+    if (l > r)
+        swap(l, r);
+    int j = 0;
+    while ((1 << j) <= r - l)
+        j++;
+    j--;
+
+    // smaller first_visit_time means smaller level
+    if (first_visit_time[rmq[l][j]] < first_visit_time[rmq[r - (1 << j) + 1][j]])
+        return rmq[l][j];
+    return rmq[r - (1 << j) + 1][j];
+}
+
+void euler_tour(int cur) {
+    visit[++t] = cur; // v_t[node] = time // needed in case don't have two child
+    if (first_visit_time[cur] == 0) // if first time
+        first_visit_time[cur] = t; // record time f_v_t[node] = time
+    for (int i = 0; i < g[cur].size(); i++) {
+        int next = g[cur][i];
+        if (first_visit_time[next] != 0) // visited
+            continue;
+
+        dis_to_root[next] = dis_to_root[cur] + dis[cur][i];
+        euler_tour(next);
+        visit[++t] = cur; // every two child_visit_time have one parent_visit_time inserted between
+    }
+}
+
+void init() {
+    euler_tour(0); // let 0 be root
+
+    // preprocess rmq matrix
+    for (int i = 0; i < t; i++)
+        rmq[i][0] = visit[i];
+    for (int j = 1; j < MAX_NODE_LOG; j++)
+        for (int i = 0; i < t; i++)
+            if (i + (1 << j) > t)
+                continue;
+            else {
+                // store the node index with smallest level (which is same as smallest first_visit_time)
+                rmq[i][j] = rmq[i][j - 1];
+                if (first_visit_time[rmq[i][j - 1]] > first_visit_time[rmq[i + (1 << (j - 1))][j - 1]])
+                    rmq[i][j] = rmq[i + (1 << (j - 1))][j-1];
+            }
+}
+
+int main(int argc, char const *argv[]) {
+    scanf("%d", &n);
+    for (int i = 1; i < n; i++) {
+        int x, y, d;
+        scanf("%d %d %d", &x, &y, &d);
+        g[x].push_back(y);
+        g[y].push_back(x);
+        dis[x].push_back(d);
+        dis[y].push_back(d);
+    }
+
+    init();
+
+    scanf("%d", &m);
+    for (int i = 0; i < m; i++) {
+        int x, y;
+        scanf("%d %d", &x, &y);
+        if (x == y)
+            printf("%d\n", 0);
+        else {
+            int lca = range_minimum_query(first_visit_time[x], first_visit_time[y]);
+            int dis_between = dis_to_root[x] + dis_to_root[y] - 2 * dis_to_root[lca];
+            printf("%d\n", dis_between);
+        }
+    }
+}
+```
+
+##### 2.2.2.1 Tarjan's Off-line Algorithm
+
+> placeholder
+> 
+> 
 
 ### 2.3 Trie / Trie Graph / AC Automaton
 
