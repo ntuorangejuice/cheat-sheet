@@ -1026,9 +1026,167 @@ int main(int argc, char const *argv[]) {
 
 ##### 2.2.2.1 Tarjan's Off-line Algorithm
 
-> placeholder
+> let n = number of ndoes of the tree, m = number of query
 > 
-> 
+> O(n + m)
+
+```
+function TarjanOLCA(u)
+     MakeSet(u);
+     u.ancestor := u;
+     for each v in u.children do
+         TarjanOLCA(v);
+         Union(u,v);
+         Find(u).ancestor := u;
+     u.colour := black;
+     for each v such that {u,v} in P do
+         if v.colour == black
+             print "Tarjan's Lowest Common Ancestor of " + u +
+                   " and " + v + " is " + Find(v).ancestor + ".";
+```
+
+> TODO refactor add comments
+
+```c++
+// 
+// 1471. Tree
+// http://acm.timus.ru/problem.aspx?space=1&num=1471
+// Time limit: 2.0 second
+// Memory limit: 64 MB
+// 
+// A weighted tree is given. You must find the distance between two given nodes.
+// 
+// Input
+// The first line contains the number of nodes of the tree n (1 ≤ n ≤ 50000).
+// The nodes are numbered from 0 to n – 1.
+// Each of the next n – 1 lines contains three integers u, v, w,
+// which correspond to an edge with weight w (0 ≤ w ≤ 1000) connecting nodes u and v.
+// The next line contains the number of queries m (1 ≤ m ≤ 75000).
+// In each of the next m lines there are two integers.
+// 
+// Output
+// For each range_minimum_query, output the distance between the nodes with the given numbers.
+// 
+// Sample
+// 
+// input
+// 3
+// 1 0 1
+// 2 0 1
+// 3
+// 0 1
+// 0 2
+// 1 2
+// 
+// output
+// 1
+// 1
+// 2
+ 
+#include <iostream>
+#include <vector>
+#include <string.h>
+ 
+using namespace std;
+ 
+#define MAXHHH 50003
+#define MAXJJJ 75005
+ 
+struct Node {
+    vector<int> next; // edge list
+    vector<int> dist; // edge length
+    vector<int> query; // that node of a query
+    vector<int> lca; // lca of this and that node
+    vector<int> q_i; // index of query in offline query array
+};
+ 
+Node g[MAXHHH];
+int n, m;
+ 
+int father[MAXHHH];
+int find(int x) { // find-union set 
+    if (father[x] == x)
+        return x;
+    return father[x] = find(father[x]);
+}
+void mergeFirstInToSecond(int x, int y) { // find-union set
+    father[find(x)] = find(y);
+}
+
+pair<int, int> q[MAXJJJ]; // query: node a, b
+pair<int, int> q_ans[MAXJJJ]; // record answer's location, first = node index, second = answer index
+int came[MAXHHH];
+void tarjan_lca_dfs(int cur) {
+    // process cur node and all its sub-tree
+    // process all query related to this node and nodes in sub-tree
+    came[cur] = 1;
+    for (unsigned int i = 0; i < g[cur].next.size(); i++) {
+        int next = g[cur].next[i];
+        if (came[next] == 1) // don't go back, it is dfs
+            continue;
+ 
+        tarjan_lca_dfs(next); // process sub-tree
+        mergeFirstInToSecond(cur, next); // order matters
+    }
+ 
+    for (unsigned int i = 0; i < g[cur].query.size(); i++) {
+        int that = g[cur].query[i];
+        if (came[that] == 0)
+            continue;
+ 
+        // lca must be father[that] because this comes from father[that]
+        // and father[that] haven't merge with father[father[that]]
+        g[cur].lca[i] = find(that);
+        q_ans[g[cur].q_i[i]] = make_pair(cur, i); // record position for later usage
+    }
+}
+ 
+int root_dis[MAXHHH];
+void dfs(int cur) {
+    for (unsigned int i = 0; i < g[cur].next.size(); i++) {
+        int next = g[cur].next[i];
+        if (root_dis[next] != -1)
+            continue;
+ 
+        root_dis[next] = g[cur].dist[i] + root_dis[cur];
+        dfs(next);
+    }
+}
+ 
+int main(int argc, char const *argv[]) {
+    cin >> n;
+    for (int i = 1; i < n; i++) {
+        int a, b, c;
+        cin >> a >> b >> c;
+        g[a].next.push_back(b);
+        g[a].dist.push_back(c);
+        g[b].next.push_back(a);
+        g[b].dist.push_back(c);
+        father[i] = i;
+    }
+    cin >> m;
+    for (int i = 0; i < m; i++) { // offline
+        cin >> q[i].first >> q[i].second;
+        g[q[i].first].query.push_back(q[i].second);
+        g[q[i].first].lca.push_back(-1);
+        g[q[i].first].q_i.push_back(i);
+        g[q[i].second].query.push_back(q[i].first);
+        g[q[i].second].lca.push_back(-1);
+        g[q[i].second].q_i.push_back(i);
+        q_ans[i] = make_pair(-1, -1);
+    }
+    
+    memset(root_dis, -1, sizeof(root_dis)); root_dis[0] = 0;
+    dfs(0);
+    tarjan_lca_dfs(0);
+ 
+    for (int i = 0; i < m; i++) {
+        int lca = g[q_ans[i].first].lca[q_ans[i].second];
+        int ans = root_dis[q[i].first] + root_dis[q[i].second] - 2 * root_dis[lca];
+        cout << ans << endl;
+    }
+}
+```
 
 ### 2.3 Trie / Trie Graph / AC Automaton
 
