@@ -162,6 +162,7 @@
     - [7.1.2 Boyer-Moore?](#712-boyer-moore)
     - [7.1.3 Longest palindromic substring (Manacher's algorithm)](#713-longest-palindromic-substring-manachers-algorithm)
   - [7.2 cantor_expansion / reverse_cantor_expansion](#72-cantor_expansion--reverse_cantor_expansion)
+  - [7.3 pass 2-D array](#73-pass-2-d-array)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -3517,4 +3518,36 @@ void reverse_cantor_expansion(int n, long long m) {
         cout << ans[i] << " ";
     cout << "\n";
 }
+```
+
+
+
+### 7.3 pass 2-D array
+
+```c++
+// The parameter is a 2D array
+int array[10][10];
+void passFunc(int a[][10]) {
+    // ...
+}
+passFunc(array);
+
+// The parameter is an array containing pointers
+int *array[10];
+for(int i = 0; i < 10; i++)
+    array[i] = new int[10];
+void passFunc(int *a[10]) {
+    // ...
+}
+passFunc(array);
+
+// The parameter is a pointer to a pointer
+int **array;
+array = new int *[10];
+for(int i = 0; i <10; i++)
+    array[i] = new int[10];
+void passFunc(int **a) {
+    // ...
+}
+passFunc(array);
 ```
