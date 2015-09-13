@@ -2305,7 +2305,7 @@ for (n times of relax)
 
 > Dijkstra is good for graphs non-negative edges.
 
-> O(V^2)
+> O(Vlog(E))
 
 ### 5.4 Bipartite Graph 二分图
 
