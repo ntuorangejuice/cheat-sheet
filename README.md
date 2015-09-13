@@ -256,10 +256,9 @@ gets()
 > Reads characters from the standard input (stdin) and stores them as a C string into str until a newline character or the end-of-file is reached.
 
 ```c++
-char b[10];
-gets(b);
-cout << "[C++] You have input \"" << b << "\""
-     << ", whose length is " << strlen(b) << endl;
+char s[12];
+gets(s);
+cout << "\"" << s << "\"" << ", length: " << strlen(s) << endl;
 ```
 
 Input
@@ -272,7 +271,7 @@ new line
 Output
 
 ```
-You have input "hello world", whose length is 6
+"hello world", length: 11
 ```
 
 ##### Convert to C++ string
@@ -350,20 +349,7 @@ bool binary_search (ForwardIterator first, ForwardIterator last, const T& val, C
 Usage
 
 ```c++
-ForwardIterator lower_bound (ForwardIterator first, ForwardIterator last,
-                             const T& val);
-ForwardIterator lower_bound (ForwardIterator first, ForwardIterator last,
-                             const T& val, Compare comp);
-```
-
-`binary_search` is defined by:
-
-```c++
-template <class ForwardIterator, class T>
-  bool binary_search (ForwardIterator first, ForwardIterator last, const T& val) {
-  first = std::lower_bound(first,last,val);
-  return (first!=last && !(val<*first));
-}
+ForwardIterator lower_bound (ForwardIterator first, ForwardIterator last, const T& val, Compare comp);
 ```
 
 #### 1.3.4 Swap
@@ -381,10 +367,7 @@ void iter_swap (ForwardIterator1 a, ForwardIterator2 b);
 int myints[]={10,20,30,40,50 };              //   myints:  10  20  30  40  50
 std::vector<int> myvector (4,99);            // myvector:  99  99  99  99
 
-std::iter_swap(myints,myvector.begin());     //   myints: [99] 20  30  40  50
-                                             // myvector: [10] 99  99  99
-
-std::iter_swap(myints+3,myvector.begin()+2); //   myints:  99  20  30 [99] 50
+std::iter_swap(myints + 3,myvector.begin() + 2); //   myints:  99  20  30 [99] 50
                                              // myvector:  10  99 [40] 99
 ```
 
@@ -410,7 +393,7 @@ void sort_heap (RandomAccessIterator first, RandomAccessIterator last); Compare 
 
 Self implementation of heap is available in section 2.
 
-Note: Priority queue is more recoomeneded.
+Note: Priority queue is more recommeneded.
 
 
 #### 1.3.6 Sort
@@ -419,12 +402,10 @@ Note: Priority queue is more recoomeneded.
 `stable_sort` preserves the relative order of the elements with equivalent values.
 
 Usage
+
 ```c++
-void sort (RandomAccessIterator first, RandomAccessIterator last);
 void sort (RandomAccessIterator first, RandomAccessIterator last, Compare comp);
-void stable_sort ( RandomAccessIterator first, RandomAccessIterator last );
-void stable_sort ( RandomAccessIterator first, RandomAccessIterator last,
-                   Compare comp );
+void stable_sort ( RandomAccessIterator first, RandomAccessIterator last, Compare comp );
 ```
 
 #### 1.3.7 Compare
@@ -529,7 +510,7 @@ template < class Key,                                     // map::key_type
 
 ##### Commonly used method
 
-```C++
+```
 begin()
 end()
 
@@ -546,7 +527,7 @@ find() // if not found, return end()
 count() // return 1 or 0
 ```
 
-// TODO add more interface
+> TODO add more interface
 
 
 ##### Red-black Tree
