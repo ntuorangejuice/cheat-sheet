@@ -1969,7 +1969,7 @@ void query(int left, int right, long long &sum, int u) {
 
 #### 2.7.3 Range Minimum Query RMQ
 
-> place holder
+> check LCA
 
 ## 3. Methodology
 
