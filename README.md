@@ -2126,8 +2126,7 @@ int find(int x) {
 	return x == parent[x] ? x : parent[x] = find(parent[x]);
 }
 void merge(int x, int y) {
-	if (find(x) != find(y))
-		parent[parent[x]] = parent[y];
+		parent[find(x)] = find(y);
 }
 void init() {
     for (int i = 0; i < n; i++) 
