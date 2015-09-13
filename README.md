@@ -34,7 +34,6 @@
     - [1.1.1 Optional include list](#111-optional-include-list)
   - [1.2 Strings](#12-strings)
     - [1.2.1 C++ String](#121-c-string)
-      - [Input string](#input-string)
       - [read one line](#read-one-line)
       - [Convert to char array](#convert-to-char-array)
     - [1.2.2 C String (Character Array)](#122-c-string-character-array)
@@ -59,7 +58,6 @@
       - [Red-black Tree](#red-black-tree)
       - [Hash Map (Unordered Map)](#hash-map-unordered-map)
       - [Commonly used method](#commonly-used-method-1)
-      - [Deprecated Hash Map](#deprecated-hash-map)
     - [1.4.2 Pair](#142-pair)
     - [1.4.3 Vector](#143-vector)
       - [Constructor](#constructor)
@@ -94,75 +92,75 @@
   - [3.1 Recursive](#31-recursive)
     - [3.1.1 Hanoi](#311-hanoi)
   - [3.2 Dynamic Programming](#32-dynamic-programming)
-      - [7.2.1 树上的](#721-%E6%A0%91%E4%B8%8A%E7%9A%84)
+    - [3.2.1 Longest Increasing Subsequence (LIS)](#321-longest-increasing-subsequence-lis)
   - [3.3 Divide and Conquer](#33-divide-and-conquer)
+    - [3.3.1 binary search](#331-binary-search)
   - [3.4 Search](#34-search)
-    - [3.4.1 binary search](#341-binary-search)
     - [3.4.2 双向 BFS](#342-%E5%8F%8C%E5%90%91-bfs)
     - [3.4.3 从终点开始搜](#343-%E4%BB%8E%E7%BB%88%E7%82%B9%E5%BC%80%E5%A7%8B%E6%90%9C)
     - [3.4.4 迭代加深搜索 (binary increase/decrease)](#344-%E8%BF%AD%E4%BB%A3%E5%8A%A0%E6%B7%B1%E6%90%9C%E7%B4%A2-binary-increasedecrease)
   - [3.5 Brute Force](#35-brute-force)
     - [3.5.1 子集生成](#351-%E5%AD%90%E9%9B%86%E7%94%9F%E6%88%90)
-- [4. Graph](#4-graph)
-  - [4.1 Union-find Set](#41-union-find-set)
-    - [4.1.1 Union-find Set - application](#411-union-find-set---application)
-  - [4.2 Minimium Spanning Tree](#42-minimium-spanning-tree)
-    - [4.2.1 Prim's](#421-prims)
-    - [4.2.2 Kruskal](#422-kruskal)
-  - [4.3 Shortest Path](#43-shortest-path)
-    - [4.3.1 任意两点](#431-%E4%BB%BB%E6%84%8F%E4%B8%A4%E7%82%B9)
-    - [4.3.2 Bellman–Ford](#432-bellman%E2%80%93ford)
-    - [4.3.3 SPFA](#433-spfa)
-    - [4.3.4 Dijkstra](#434-dijkstra)
-  - [4.4 Bipartite Graph 二分图](#44-bipartite-graph-%E4%BA%8C%E5%88%86%E5%9B%BE)
-    - [4.4.1 Hungarian algorithm 匈牙利算法](#441-hungarian-algorithm-%E5%8C%88%E7%89%99%E5%88%A9%E7%AE%97%E6%B3%95)
-  - [4.5 Maximum Flow Problem 最大流](#45-maximum-flow-problem-%E6%9C%80%E5%A4%A7%E6%B5%81)
-    - [4.5.1 Dinic](#451-dinic)
-    - [4.5.2 Minimum-Cost Maximum-Flow](#452-minimum-cost-maximum-flow)
-  - [4.6 强连通分量 图的 割点, 桥, 双连通分支 ``https://www.byvoid.com/blog/biconnect``](#46-%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F-%E5%9B%BE%E7%9A%84-%E5%89%B2%E7%82%B9-%E6%A1%A5-%E5%8F%8C%E8%BF%9E%E9%80%9A%E5%88%86%E6%94%AF-httpswwwbyvoidcomblogbiconnect)
-  - [4.7 Topological Sort / 拓扑排序](#47-topological-sort--%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F)
-  - [4.8 Euler Cycle/Path, Hamilton Cycle/Path](#48-euler-cyclepath-hamilton-cyclepath)
-  - [4.9 find negative (weight) Cycle on a graph](#49-find-negative-weight-cycle-on-a-graph)
-- [5. Number & Mathematics](#5-number-&-mathematics)
-  - [5.1 BigInteger & BigDecimal](#51-biginteger-&-bigdecimal)
-    - [5.1.1 C++ Big Integer](#511-c-big-integer)
-    - [5.1.2 The Java Approach](#512-the-java-approach)
-  - [5.2 Matrix](#52-matrix)
-  - [5.3 Number Theory](#53-number-theory)
-    - [5.3.1 欧拉函数 ?](#531-%E6%AC%A7%E6%8B%89%E5%87%BD%E6%95%B0-)
-    - [5.3.2 欧几里得算法 / gcd](#532-%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95--gcd)
-    - [5.3.3 扩展欧几里得算法](#533-%E6%89%A9%E5%B1%95%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95)
-    - [5.3.4 求解不定方程](#534-%E6%B1%82%E8%A7%A3%E4%B8%8D%E5%AE%9A%E6%96%B9%E7%A8%8B)
-    - [5.3.5 求解模线性方程（线性同余方程）](#535-%E6%B1%82%E8%A7%A3%E6%A8%A1%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%EF%BC%88%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E6%96%B9%E7%A8%8B%EF%BC%89)
-    - [5.3.6 求解模的逆元](#536-%E6%B1%82%E8%A7%A3%E6%A8%A1%E7%9A%84%E9%80%86%E5%85%83)
-    - [5.3.7 中国剩余定理](#537-%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86)
-    - [5.3.8 最小公倍数](#538-%E6%9C%80%E5%B0%8F%E5%85%AC%E5%80%8D%E6%95%B0)
-    - [5.3.9 分解质因数](#539-%E5%88%86%E8%A7%A3%E8%B4%A8%E5%9B%A0%E6%95%B0)
-    - [5.3.10 因数个数](#5310-%E5%9B%A0%E6%95%B0%E4%B8%AA%E6%95%B0)
-    - [5.3.11 素数判定](#5311-%E7%B4%A0%E6%95%B0%E5%88%A4%E5%AE%9A)
-    - [5.3.12 进制转换](#5312-%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2)
-    - [5.3.13 A / C](#5313-a--c)
-    - [5.3.14 质数表](#5314-%E8%B4%A8%E6%95%B0%E8%A1%A8)
-    - [5.3.15 Fast Exponention](#5315-fast-exponention)
-  - [5.4 博弈论](#54-%E5%8D%9A%E5%BC%88%E8%AE%BA)
-- [6. Geometry](#6-geometry)
-  - [6.1 2-Dimension Space](#61-2-dimension-space)
-    - [6.1.1 Template of Point](#611-template-of-point)
-    - [6.1.2 向量点乘 叉乘](#612-%E5%90%91%E9%87%8F%E7%82%B9%E4%B9%98-%E5%8F%89%E4%B9%98)
-    - [6.1.3 dot product](#613-dot-product)
-    - [6.1.4 cross product](#614-cross-product)
-    - [6.1.5 直线公式](#615-%E7%9B%B4%E7%BA%BF%E5%85%AC%E5%BC%8F)
-    - [6.1.6 Convex Hull](#616-convex-hull)
+- [4. String](#4-string)
+  - [4.1 KMP](#41-kmp)
+  - [4.2 Boyer-Moore](#42-boyer-moore)
+  - [4.3 Longest palindromic substring (Manacher's algorithm)](#43-longest-palindromic-substring-manachers-algorithm)
+- [5. Graph](#5-graph)
+  - [5.1 Union-find Set](#51-union-find-set)
+    - [5.1.1 Union-find Set - application](#511-union-find-set---application)
+  - [5.2 Minimium Spanning Tree](#52-minimium-spanning-tree)
+    - [5.2.1 Prim's](#521-prims)
+    - [5.2.2 Kruskal](#522-kruskal)
+  - [5.3 Shortest Path](#53-shortest-path)
+    - [5.3.1 任意两点](#531-%E4%BB%BB%E6%84%8F%E4%B8%A4%E7%82%B9)
+    - [5.3.2 Bellman–Ford](#532-bellman%E2%80%93ford)
+    - [5.3.3 SPFA](#533-spfa)
+    - [5.3.4 Dijkstra](#534-dijkstra)
+  - [5.4 Bipartite Graph 二分图](#54-bipartite-graph-%E4%BA%8C%E5%88%86%E5%9B%BE)
+    - [5.4.1 Hungarian algorithm 匈牙利算法](#541-hungarian-algorithm-%E5%8C%88%E7%89%99%E5%88%A9%E7%AE%97%E6%B3%95)
+  - [5.5 Maximum Flow Problem 最大流](#55-maximum-flow-problem-%E6%9C%80%E5%A4%A7%E6%B5%81)
+    - [5.5.1 Dinic](#551-dinic)
+    - [5.5.2 Minimum-Cost Maximum-Flow](#552-minimum-cost-maximum-flow)
+  - [5.6 强连通分量 图的 割点, 桥, 双连通分支 ``https://www.byvoid.com/blog/biconnect``](#56-%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F-%E5%9B%BE%E7%9A%84-%E5%89%B2%E7%82%B9-%E6%A1%A5-%E5%8F%8C%E8%BF%9E%E9%80%9A%E5%88%86%E6%94%AF-httpswwwbyvoidcomblogbiconnect)
+  - [5.7 Topological Sort / 拓扑排序](#57-topological-sort--%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F)
+  - [5.8 Euler Cycle/Path, Hamilton Cycle/Path](#58-euler-cyclepath-hamilton-cyclepath)
+  - [5.9 find negative (weight) Cycle on a graph](#59-find-negative-weight-cycle-on-a-graph)
+- [6. Number & Mathematics](#6-number-&-mathematics)
+  - [6.1 BigInteger & BigDecimal](#61-biginteger-&-bigdecimal)
+    - [6.1.1 C++ Big Integer](#611-c-big-integer)
+    - [6.1.2 The Java Approach](#612-the-java-approach)
+  - [6.2 Matrix](#62-matrix)
+  - [6.3 Number Theory](#63-number-theory)
+    - [6.3.1 欧拉函数 ?](#631-%E6%AC%A7%E6%8B%89%E5%87%BD%E6%95%B0-)
+    - [6.3.2 欧几里得算法 / gcd](#632-%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95--gcd)
+    - [6.3.3 扩展欧几里得算法](#633-%E6%89%A9%E5%B1%95%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95)
+    - [6.3.4 求解不定方程](#634-%E6%B1%82%E8%A7%A3%E4%B8%8D%E5%AE%9A%E6%96%B9%E7%A8%8B)
+    - [6.3.5 求解模线性方程（线性同余方程）](#635-%E6%B1%82%E8%A7%A3%E6%A8%A1%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%EF%BC%88%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E6%96%B9%E7%A8%8B%EF%BC%89)
+    - [6.3.6 求解模的逆元](#636-%E6%B1%82%E8%A7%A3%E6%A8%A1%E7%9A%84%E9%80%86%E5%85%83)
+    - [6.3.7 中国剩余定理](#637-%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86)
+    - [6.3.8 最小公倍数](#638-%E6%9C%80%E5%B0%8F%E5%85%AC%E5%80%8D%E6%95%B0)
+    - [6.3.9 分解质因数](#639-%E5%88%86%E8%A7%A3%E8%B4%A8%E5%9B%A0%E6%95%B0)
+    - [6.3.10 因数个数](#6310-%E5%9B%A0%E6%95%B0%E4%B8%AA%E6%95%B0)
+    - [6.3.11 素数判定](#6311-%E7%B4%A0%E6%95%B0%E5%88%A4%E5%AE%9A)
+    - [6.3.12 进制转换](#6312-%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2)
+    - [6.3.13 A / C](#6313-a--c)
+    - [6.3.14 质数表](#6314-%E8%B4%A8%E6%95%B0%E8%A1%A8)
+    - [6.3.15 Fast Exponention](#6315-fast-exponention)
+  - [6.4 博弈论](#64-%E5%8D%9A%E5%BC%88%E8%AE%BA)
+- [7. Geometry](#7-geometry)
+  - [7.1 2-Dimension Space](#71-2-dimension-space)
+    - [7.1.1 Template of Point](#711-template-of-point)
+    - [7.1.2 向量点乘 叉乘](#712-%E5%90%91%E9%87%8F%E7%82%B9%E4%B9%98-%E5%8F%89%E4%B9%98)
+    - [7.1.3 dot product](#713-dot-product)
+    - [7.1.4 cross product](#714-cross-product)
+    - [7.1.5 直线公式](#715-%E7%9B%B4%E7%BA%BF%E5%85%AC%E5%BC%8F)
+    - [7.1.6 Convex Hull](#716-convex-hull)
       - [Gift Wrapping](#gift-wrapping)
       - [QuickHull](#quickhull)
       - [Graham scan](#graham-scan)
-- [7. Tricks & Miscellaneous](#7-tricks-&-miscellaneous)
-  - [7.1 String](#71-string)
-    - [7.1.1 KMP](#711-kmp)
-    - [7.1.2 Boyer-Moore?](#712-boyer-moore)
-    - [7.1.3 Longest palindromic substring (Manacher's algorithm)](#713-longest-palindromic-substring-manachers-algorithm)
-  - [7.2 cantor_expansion / reverse_cantor_expansion](#72-cantor_expansion--reverse_cantor_expansion)
-  - [7.3 pass 2-D array](#73-pass-2-d-array)
+- [8. Tricks & Miscellaneous](#8-tricks-&-miscellaneous)
+  - [8.1 cantor_expansion / reverse_cantor_expansion](#81-cantor_expansion--reverse_cantor_expansion)
+  - [8.2 pass 2-D array](#82-pass-2-d-array)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -219,28 +217,6 @@ int main() {
 
 #### 1.2.1 C++ String
 
-##### Input string
-
-get one string with no space and new-line.
-
-```c++
-string a;
-cin >> a;
-cout << "[C++] You have input \"" << a << "\", "
-     << ", whose length is " << a.length() << endl;
-```
-
-Input
-```
-hello world
-new line
-```
-
-Output
-```
-You have input "hello", , whose length is 5
-```
-
 ##### read one line
 
 getline()
@@ -282,25 +258,22 @@ gets()
 ```c++
 char b[10];
 gets(b);
-cout << "[C++] You have input \"" << b << "\", "
+cout << "[C++] You have input \"" << b << "\""
      << ", whose length is " << strlen(b) << endl;
 ```
 
 Input
 
 ```
- world
+hello world
 new line
 ```
 
 Output
 
 ```
-You have input " world", , whose length is 6
+You have input "hello world", whose length is 6
 ```
-
-Note: There is a space in front of "world", which will be part of the string.
-However, using gets() is "unsafe", but we are not to discuss the details here.
 
 ##### Convert to C++ string
 
@@ -618,17 +591,6 @@ template < class Key,                                    // unordered_map::key_t
 ```
 
 // TODO add more interface
-
-
-##### Deprecated Hash Map
-
-```c++
-#include <ext/hash_map>
-__gnu_cxx::hash_map<string, int> months;
-months["january"] = 31;
-months["february"] = 28;
-```
-
 
 #### 1.4.2 Pair
 
@@ -2052,36 +2014,25 @@ void hanoi(int n, char x, char y, char z) { // 将 x 上编号 1 至 n 的圆盘
 
 ### 3.2 Dynamic Programming
 
-##### 7.2.1 树上的
+#### 3.2.1 Longest Increasing Subsequence (LIS)
 
-> 这是什么GUI (Graphical User Interface)
+> O(nlog(n))
+
+```c++
+vector<int> sequence;
+vector<int> lis(sequence.size() + 1, INT_MAX); // [i]: min value in sequence that have LIS = i
+for (int i = 0; i < sequence.size(); i++) {
+    int r = sequence[i];
+    auto ptr = lower_bound(begin(lis), end(lis), r);
+    *ptr = min(*ptr, r);
+}
+```
 
 ### 3.3 Divide and Conquer
 
+#### 3.3.1 binary search
+
 ### 3.4 Search
-
-#### 3.4.1 binary search
-
-```C++
-int up_limit = ;
-int down_limit = ;
-int cur, pre;
-
-while (true) {
-    cur = (down_limit + up_limit) / 2;
-
-    bool ok = search();
-
-    if (ok)
-        up_limit = cur;
-    else
-        down_limit = cur;
-    pre = cur;
-    cur = (down_limit + up_limit) / 2;
-    if (pre == cur)
-        return up_limit;
-}
-```
 
 #### 3.4.2 双向 BFS
 
@@ -2095,9 +2046,99 @@ while (true) {
 
 #### 3.5.1 子集生成
 
-## 4. Graph
+## 4. String
 
-### 4.1 Union-find Set
+### 4.1 KMP
+
+> Match pattern in a string
+> 
+> O(n) = O(len(pattern) + len(string))
+
+```C++
+#define HHH 10003
+
+int ne[HHH]; // next[], if par[i] not matched, jump to i = ne[i]
+int kmp(string& par, string& ori) {
+    ne[0] = -1;
+    for (int p = ne[0], i = 1; i < par.length(); i++) {
+        while (p >= 0 && par[p+1] != par[i])
+            p = ne[p];
+        if (par[p+1] == par[i])
+            p++;
+        ne[i] = p;
+    }
+
+    int match = 0;
+    for (int p = -1, q = 0; q < ori.length(); q++) {
+        while (p >= 0 && par[p+1] != ori[q])
+            p = ne[p];
+        if (par[p+1] == ori[q])
+            p++;
+        if (p + 1 == par.length()) { // match!
+            p = ne[p];
+            match++;
+        }
+    }
+
+    return match; // return number of occurance
+}
+
+int main () {
+    int n; cin >> n;
+    string par, ori;
+    while (cin >> par >> ori)
+        cout << kmp(par, ori) << endl;
+    return 0;
+}
+```
+
+### 4.2 Boyer-Moore
+
+### 4.3 Longest palindromic substring (Manacher's algorithm)
+
+> O(n)
+
+```c++
+int dp[HHH];
+int lengthLongestPalindromSubstring(string& s) {
+    memset(dp, 0, sizeof(dp));
+    int ans = 0;
+    int pivot = 1;
+    int len = s.length() * 2; // _s0_s1_s2 = 2 * length
+    for (int i = 1; i < len; i++) {
+        int pBorder = pivot + dp[pivot];
+        int iBorder = i;
+        if (iBorder < pBorder && 2 * pivot - i > 0) {
+            dp[i] = dp[2*pivot-i];
+            iBorder = min(pBorder, i + dp[i]);
+        }
+
+        if (iBorder >= pBorder) {
+            int j = iBorder + (iBorder % 2 ? 2 : 1);
+            for (; j < len && 2*i-j > 0 && s[j/2] == s[(2*i-j)/2]; j += 2)
+                ;
+            iBorder = j - 2;
+            dp[i] = iBorder - i;
+            pivot = i;
+        }
+        ans = max(ans, dp[i] + 1);
+    }
+
+    return ans;
+}
+
+int main () {
+    int n; cin >> n;
+    string s;
+    while (cin >> s)
+        cout << lengthLongestPalindromSubstring(s) << endl;
+    return 0;
+}
+```
+
+## 5. Graph
+
+### 5.1 Union-find Set
 ```C++
 int parent[HH];
 int find(int x) {
@@ -2112,14 +2153,14 @@ void init() {
         parent[i] = i;
 }
 ```
-#### 4.1.1 Union-find Set - application
+#### 5.1.1 Union-find Set - application
 
 > place holder
 
 
-### 4.2 Minimium Spanning Tree
+### 5.2 Minimium Spanning Tree
 
-#### 4.2.1 Prim's
+#### 5.2.1 Prim's
 
 > graph[][], time complexity: O(V^2)
 
@@ -2206,7 +2247,7 @@ void mst_prim() {
 }
 ```
 
-#### 4.2.2 Kruskal
+#### 5.2.2 Kruskal
 
 > Elog(E) + Elog(V)
 
@@ -2255,9 +2296,9 @@ void solve() {
 ```
 
 
-### 4.3 Shortest Path
+### 5.3 Shortest Path
 
-#### 4.3.1 任意两点
+#### 5.3.1 任意两点
 
 ```
 for (k)
@@ -2266,7 +2307,7 @@ for (k)
         	d(i, j) = min(d(i, j), d(i, k) + d(j, k))
 ```
 
-#### 4.3.2 Bellman–Ford
+#### 5.3.2 Bellman–Ford
 
 > Bellman–Ford algorithm is O(VE).
 > Can be applied to situations when there is a maximun number of vertices in shortest path.
@@ -2277,21 +2318,21 @@ for (n times of relax)
         relax each node
 ```
 
-#### 4.3.3 SPFA
+#### 5.3.3 SPFA
 
-#### 4.3.4 Dijkstra
+#### 5.3.4 Dijkstra
 
 > Dijkstra is good for graphs non-negative edges.
 
 > O(V^2)
 
-### 4.4 Bipartite Graph 二分图
+### 5.4 Bipartite Graph 二分图
 
 > 1. A graph is bipartite if and only if it does not contain an odd cycle.
 > 2. A graph is bipartite if and only if it is 2-colorable, (i.e. its chromatic number is less than or equal to 2).
 > 3. The spectrum of a graph is symmetric if and only if it's a bipartite graph.
 
-#### 4.4.1 Hungarian algorithm 匈牙利算法
+#### 5.4.1 Hungarian algorithm 匈牙利算法
 > O(E * V)
 
 ```C++
@@ -2326,9 +2367,9 @@ int bipartite_match() {
 }
 ```
 
-### 4.5 Maximum Flow Problem 最大流
+### 5.5 Maximum Flow Problem 最大流
 
-#### 4.5.1 Dinic
+#### 5.5.1 Dinic
 ``` C++
 int graph[250][250];
 int level[250];
@@ -2383,7 +2424,7 @@ int dinic(int start, int end) {
 }
 ```
  
-#### 4.5.2 Minimum-Cost Maximum-Flow 
+#### 5.5.2 Minimum-Cost Maximum-Flow 
 
 ```C++
 // have not tested
@@ -2437,7 +2478,7 @@ void min_cost_max_flow() {
 }
 ```
 
-### 4.6 强连通分量 图的 割点, 桥, 双连通分支 ``https://www.byvoid.com/blog/biconnect``
+### 5.6 强连通分量 图的 割点, 桥, 双连通分支 ``https://www.byvoid.com/blog/biconnect``
 
 > [点连通度与边连通度]
 > 
@@ -2602,7 +2643,7 @@ int main() {
 }
 ```
 
-### 4.7 Topological Sort / 拓扑排序
+### 5.7 Topological Sort / 拓扑排序
 
 > Topological Sorting on Directed Acyclic Graph (DAG)
 >
@@ -2656,20 +2697,20 @@ int main() {
 }
 ```
 
-### 4.8 Euler Cycle/Path, Hamilton Cycle/Path
+### 5.8 Euler Cycle/Path, Hamilton Cycle/Path
 
 > place holder
 
-### 4.9 find negative (weight) Cycle on a graph
+### 5.9 find negative (weight) Cycle on a graph
 
 > place holder
 
 
-## 5. Number & Mathematics
+## 6. Number & Mathematics
 
-### 5.1 BigInteger & BigDecimal
+### 6.1 BigInteger & BigDecimal
 
-#### 5.1.1 C++ Big Integer
+#### 6.1.1 C++ Big Integer
 
 ```c++
 const int BASE_LENGTH = 2;
@@ -2838,13 +2879,11 @@ ASSERT(b.ll() == 9999)
 ```
 
 
-#### 5.1.2 The Java Approach 
+#### 6.1.2 The Java Approach 
 
 BigInteger & BigDecimal
 
-> 学长说不可以印这些。
-
-### 5.2 Matrix
+### 6.2 Matrix
 
 ```C++
 operator+
@@ -2911,11 +2950,11 @@ Matrix Matrix::mirror() {
 }
 ```
 
-### 5.3 Number Theory
+### 6.3 Number Theory
 
-#### 5.3.1 欧拉函数 ?
+#### 6.3.1 欧拉函数 ?
 
-#### 5.3.2 欧几里得算法 / gcd
+#### 6.3.2 欧几里得算法 / gcd
 
 ```c++
 int gcd(int a, int b) {
@@ -2927,7 +2966,7 @@ int lcm(int a, int b) {
 }
 ```
 
-#### 5.3.3 扩展欧几里得算法 
+#### 6.3.3 扩展欧几里得算法 
 
 ``http://www.cnblogs.com/frog112111/archive/2012/08/19/2646012.html``
 
@@ -2993,7 +3032,7 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
-#### 5.3.4 求解不定方程
+#### 6.3.4 求解不定方程
 
 > for: p * a + q * b = c
 
@@ -3023,7 +3062,7 @@ int main(int argc, char const *argv[]) {
 // smallest: ansx % (b / gcd(a, b) + b / gcd(a, b)) % (b / gcd(a, b))
 ```
 
-#### 5.3.5 求解模线性方程（线性同余方程）
+#### 6.3.5 求解模线性方程（线性同余方程）
 
 > (a * x) % n = b % n, x = ?
 
@@ -3040,7 +3079,7 @@ int main(int argc, char const *argv[]) {
 ```C++
 ```
 
-#### 5.3.6 求解模的逆元
+#### 6.3.6 求解模的逆元
 
 > (a * x) % n = 1, x = ?
 
@@ -3058,15 +3097,15 @@ int main(int argc, char const *argv[]) {
 // smallest ansx = (ansx % (n / gcd(a, n)) + (n / gcd(a, n))) % (n / gcd(a, n))
 ```
 
-#### 5.3.7 中国剩余定理
+#### 6.3.7 中国剩余定理
 
-#### 5.3.8 最小公倍数
+#### 6.3.8 最小公倍数
 
 ```C++
 a * b / gcd(a, b)
 ```
 
-#### 5.3.9 分解质因数
+#### 6.3.9 分解质因数
 
 ```C++
 long long x;
@@ -3079,14 +3118,14 @@ for (long long factor = 2; x != 1; factor++) {
 }
 ```
 
-#### 5.3.10 因数个数
+#### 6.3.10 因数个数
 
 ```C++
 n = p1 ^ x1 * p2 ^ x2 * ... * pn ^ xn
 total = (x1 + 1) * (x2 + 1) * ... * (xn + 1)
 ```
 
-#### 5.3.11 素数判定
+#### 6.3.11 素数判定
 
 > 大于 3 的质数可以被表示为 6n - 1 或 6n + 1
 
@@ -3102,7 +3141,7 @@ bool is_prime(int n) {
 }
 ```
 
-#### 5.3.12 进制转换
+#### 6.3.12 进制转换
 
 ```C++
 void convert_dec_to_base(int n, const int base) {
@@ -3123,12 +3162,12 @@ int convert_base_to_dec(const int s[], const int len, const int base) {
 }
 ```
 
-#### 5.3.13 A / C
+#### 6.3.13 A / C
 > C(n, k) = C(n-1, k) + C(n-1, k-1)
 > C(n, k) = C(n, n-k)
 
 
-#### 5.3.14 质数表
+#### 6.3.14 质数表
 
 ```C++
 int is_prime[UP_LIMIT + 1];
@@ -3142,7 +3181,7 @@ for (int k = 3; k*k <= UP_LIMIT; k++) // start from 9, end at sqrt
             is_prime[i] = 0;
 ```
 
-#### 5.3.15 Fast Exponention
+#### 6.3.15 Fast Exponention
 
 > To calculate n ^ p % M
 
@@ -3159,15 +3198,15 @@ int power_modulo(int n, int p, int M) {
 }
 ```
 
-### 5.4 博弈论
+### 6.4 博弈论
 
 > place holder
 
-## 6. Geometry
+## 7. Geometry
 
-### 6.1 2-Dimension Space
+### 7.1 2-Dimension Space
 
-#### 6.1.1 Template of Point
+#### 7.1.1 Template of Point
 
 ```C++
 struct point {
@@ -3226,20 +3265,20 @@ struct point {
 };
 ```
 
-#### 6.1.2 向量点乘 叉乘
+#### 7.1.2 向量点乘 叉乘
 
 > a = (x1, y1)
 > b = (x2, y2)
 > i ... |i| = 1, vertical to a-b surface
 
-#### 6.1.3 dot product
+#### 7.1.3 dot product
 > a dot b = x1 * x2 + y1 * y2 = |a| * |b| * cos(angle)
 > 
 > if = 0: 90 degree
 > 
 > a dot b / |b| = a project to b
 
-#### 6.1.4 cross product
+#### 7.1.4 cross product
 > a x b = x1 * y2 - x2 * y1 = |a| * |b| * sin(angle) * i
 > 
 > if < 0: b is at left of a
@@ -3251,11 +3290,11 @@ struct point {
 > a x b = area of 平行四边形
 > a x b x c = area of 平行六面体, c = (x3, y3)
 
-#### 6.1.5 直线公式
+#### 7.1.5 直线公式
 
 > (x, y) = (x1, y1) + k * ((x2, y2) - (x1, y1))
 
-#### 6.1.6 Convex Hull
+#### 7.1.6 Convex Hull
 
 ##### Gift Wrapping
 
@@ -3366,102 +3405,9 @@ int main(int argc, char const *argv[]) {
 
 
 
-## 7. Tricks & Miscellaneous
+## 8. Tricks & Miscellaneous
 
-
-### 7.1 String
-
-#### 7.1.1 KMP
-
-> Match pattern in a string
-> 
-> O(n) = O(len(pattern) + len(string))
-
-```C++
-#define HHH 10003
-
-int ne[HHH]; // next[], if par[i] not matched, jump to i = ne[i]
-int kmp(string& par, string& ori) {
-    ne[0] = -1;
-    for (int p = ne[0], i = 1; i < par.length(); i++) {
-        while (p >= 0 && par[p+1] != par[i])
-            p = ne[p];
-        if (par[p+1] == par[i])
-            p++;
-        ne[i] = p;
-    }
-
-    int match = 0;
-    for (int p = -1, q = 0; q < ori.length(); q++) {
-        while (p >= 0 && par[p+1] != ori[q])
-            p = ne[p];
-        if (par[p+1] == ori[q])
-            p++;
-        if (p + 1 == par.length()) { // match!
-            p = ne[p];
-            match++;
-        }
-    }
-
-    return match; // return number of occurance
-}
-
-int main () {
-    int n; cin >> n;
-    string par, ori;
-    while (cin >> par >> ori)
-        cout << kmp(par, ori) << endl;
-    return 0;
-}
-```
-
-#### 7.1.2 Boyer-Moore?
-
-#### 7.1.3 Longest palindromic substring (Manacher's algorithm)
-
-> O(n)
-
-```c++
-int dp[HHH];
-int lengthLongestPalindromSubstring(string& s) {
-    memset(dp, 0, sizeof(dp));
-    int ans = 0;
-    int pivot = 1;
-    int len = s.length() * 2; // _s0_s1_s2 = 2 * length
-    for (int i = 1; i < len; i++) {
-        int pBorder = pivot + dp[pivot];
-        int iBorder = i;
-        if (iBorder < pBorder && 2 * pivot - i > 0) {
-            dp[i] = dp[2*pivot-i];
-            iBorder = min(pBorder, i + dp[i]);
-        }
-
-        if (iBorder >= pBorder) {
-            int j = iBorder + (iBorder % 2 ? 2 : 1);
-            for (; j < len && 2*i-j > 0 && s[j/2] == s[(2*i-j)/2]; j += 2)
-                ;
-            iBorder = j - 2;
-            dp[i] = iBorder - i;
-            pivot = i;
-        }
-        ans = max(ans, dp[i] + 1);
-    }
-
-    return ans;
-}
-
-int main () {
-    int n; cin >> n;
-    string s;
-    while (cin >> s)
-        cout << lengthLongestPalindromSubstring(s) << endl;
-    return 0;
-}
-```
-
-
-
-### 7.2 cantor_expansion / reverse_cantor_expansion
+### 8.1 cantor_expansion / reverse_cantor_expansion
 
 > for hashing, or ...
 
@@ -3520,9 +3466,7 @@ void reverse_cantor_expansion(int n, long long m) {
 }
 ```
 
-
-
-### 7.3 pass 2-D array
+### 8.2 pass 2-D array
 
 ```c++
 // The parameter is a 2D array
