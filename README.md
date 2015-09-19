@@ -171,16 +171,14 @@
 ```c++
 #include <bits/stdc++.h>
 
-#define DEBUG true
+#define DEBUG false
 #define OJ_DEBUG
 
-#define GET_BIT(n, i) (((n) & (1 << ((i)-1))) >> ((i)-1)) // i start from 1
-#define SET_BIT(n, i) ((n) | (1 << ((i)-1)))
-#define CLR_BIT(n, i) ((n) & ~(1 << ((i)-1)))
-#define SHOW_A(x) {if (DEBUG) cout << __LINE__ << ": " << #x << " = " << x << endl;}
-#define SHOW_B(x, y) {if (DEBUG) cout << __LINE__ << ": " << #x << " = " << x << ", " << #y << " = " << y << endl;}
-#define SHOW_C(x, y, z) {if (DEBUG) cout << __LINE__ << ": " << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;}
-#define REACH_HERE {if (DEBUG) cout << __LINE__ << ": " << "REACH_HERE!" << endl;}
+#define GET_BIT(n, i) (((n) & (1LL << ((i)-1))) >> ((i)-1)) // i start from 1
+#define SET_BIT(n, i) ((n) | (1LL << ((i)-1)))
+#define CLR_BIT(n, i) ((n) & ~(1LL << ((i)-1)))
+#define $(x) {if (DEBUG) {cout << __LINE__ << ": "; {x} cout << endl;}}
+#define _(x) {cout << #x << " = " << x << " ";}
 
 const double E = 1e-8;
 const double PI = acos(-1);
