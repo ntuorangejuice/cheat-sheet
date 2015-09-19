@@ -159,6 +159,7 @@
       - [QuickHull](#quickhull)
       - [Graham scan](#graham-scan)
 - [8. Tricks & Miscellaneous](#8-tricks-&-miscellaneous)
+  - [8.1 Bit Manipulation](#81-bit-manipulation)
   - [8.1 cantor_expansion / reverse_cantor_expansion](#81-cantor_expansion--reverse_cantor_expansion)
   - [8.2 pass 2-D array](#82-pass-2-d-array)
 
@@ -176,10 +177,6 @@
 
 #define $(x) {if (DEBUG) {cout << __LINE__ << ": "; {x} cout << endl;}}
 #define _(x) {cout << #x << " = " << x << " ";}
-
-#define GET_BIT(n, i) (((n) & (1LL << ((i)-1))) >> ((i)-1)) // i start from 1
-#define SET_BIT(n, i) ((n) | (1LL << ((i)-1)))
-#define CLR_BIT(n, i) ((n) & ~(1LL << ((i)-1)))
 
 const double E = 1e-8;
 const double PI = acos(-1);
@@ -3385,6 +3382,14 @@ int main(int argc, char const *argv[]) {
 
 
 ## 8. Tricks & Miscellaneous
+
+### 8.1 Bit Manipulation
+
+```c++
+#define GET_BIT(n, i) (((n) & (1LL << ((i)-1))) >> ((i)-1)) // i start from 1
+#define SET_BIT(n, i) ((n) | (1LL << ((i)-1)))
+#define CLR_BIT(n, i) ((n) & ~(1LL << ((i)-1)))
+```
 
 ### 8.1 cantor_expansion / reverse_cantor_expansion
 
