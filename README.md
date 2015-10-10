@@ -74,14 +74,15 @@
     - [2.2.1 Tree Traversal](#221-tree-traversal)
     - [2.2.2 Lowest Common Ancestor](#222-lowest-common-ancestor)
       - [2.2.2.1 Tarjan's Off-line Algorithm](#2221-tarjans-off-line-algorithm)
+    - [2.2.3 Centroid Decomposition](#223-centroid-decomposition)
   - [2.3 Trie / Trie Graph / AC Automaton](#23-trie--trie-graph--ac-automaton)
   - [2.4 Suffix Tree](#24-suffix-tree)
   - [2.5 Suffix Array](#25-suffix-array)
-    - [Build Suffix Array](#build-suffix-array)
-    - [Pattern Matching](#pattern-matching)
-    - [Longest Common Prefix](#longest-common-prefix)
-    - [Longest Repeated Substring](#longest-repeated-substring)
-    - [Longest Common Substring](#longest-common-substring)
+    - [2.5.1 Build Suffix Array](#251-build-suffix-array)
+    - [2.5.2 Pattern Matching](#252-pattern-matching)
+    - [2.5.3 Longest Common Prefix](#253-longest-common-prefix)
+    - [2.5.4 Longest Repeated Substring](#254-longest-repeated-substring)
+    - [2.5.5 Longest Common Substring](#255-longest-common-substring)
   - [2.6 Binary Indexed Tree](#26-binary-indexed-tree)
   - [2.7 Segment Tree](#27-segment-tree)
     - [2.7.1 Color](#271-color)
@@ -120,7 +121,8 @@
     - [5.4.1 Hungarian algorithm 匈牙利算法](#541-hungarian-algorithm-%E5%8C%88%E7%89%99%E5%88%A9%E7%AE%97%E6%B3%95)
   - [5.5 Maximum Flow Problem 最大流](#55-maximum-flow-problem-%E6%9C%80%E5%A4%A7%E6%B5%81)
     - [5.5.1 Dinic](#551-dinic)
-    - [5.5.2 Minimum-Cost Maximum-Flow](#552-minimum-cost-maximum-flow)
+    - [5.5.2 Improved SAP + Gap Optimization](#552-improved-sap--gap-optimization)
+    - [5.5.3 Minimum-Cost Maximum-Flow](#553-minimum-cost-maximum-flow)
   - [5.6 强连通分量 图的 割点, 桥, 双连通分支 ``https://www.byvoid.com/blog/biconnect``](#56-%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F-%E5%9B%BE%E7%9A%84-%E5%89%B2%E7%82%B9-%E6%A1%A5-%E5%8F%8C%E8%BF%9E%E9%80%9A%E5%88%86%E6%94%AF-httpswwwbyvoidcomblogbiconnect)
   - [5.7 Topological Sort / 拓扑排序](#57-topological-sort--%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F)
   - [5.8 Euler Cycle/Path, Hamilton Cycle/Path](#58-euler-cyclepath-hamilton-cyclepath)
@@ -172,7 +174,7 @@
 #include <bits/stdc++.h>
 
 #define DEBUG true
-#define OJ_DEBUG
+#define LOG
 
 #define GET_BIT(n, i) (((n) & (1 << ((i)-1))) >> ((i)-1)) // i start from 1
 #define SET_BIT(n, i) ((n) | (1 << ((i)-1)))
@@ -1132,6 +1134,14 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
+#### 2.2.3 Centroid Decomposition
+
+> O(NlogN)
+
+```c++
+// - . -
+```
+
 ### 2.3 Trie / Trie Graph / AC Automaton
 
 > O(NL+M) - NL: total len of words in dict, M: len of article
@@ -1464,7 +1474,7 @@ int main() {
 }
 ```
 
-#### Build Suffix Array 
+#### 2.5.1 Build Suffix Array 
 
 > O(nlog(n))
 >
@@ -1582,7 +1592,7 @@ void build_suffix_array() {
 }
 ```
 
-#### Pattern Matching
+#### 2.5.2 Pattern Matching
 
 > O(mlog(n))
 
@@ -1596,7 +1606,7 @@ void find_pattern(const string& pattern) {
 }
 ```
 
-#### Longest Common Prefix
+#### 2.5.3 Longest Common Prefix
 
 > length of common prefix between suffix_array[i-1] and suffix_array[i]
 >
@@ -1640,7 +1650,7 @@ void compute_lcp() {
 }
 ```
 
-#### Longest Repeated Substring
+#### 2.5.4 Longest Repeated Substring
 
 > let n = s.length()
 >
@@ -1661,7 +1671,7 @@ void longest_repeated_substring() {
 }
 ```
 
-#### Longest Common Substring
+#### 2.5.5 Longest Common Substring
 
 > string a, b (also applies to multiple strings)
 >
@@ -2313,7 +2323,97 @@ for (n times of relax)
 > 3. The spectrum of a graph is symmetric if and only if it's a bipartite graph.
 
 #### 5.4.1 Hungarian algorithm 匈牙利算法
+
 > O(E * V)
+
+```c++
+struct Network {
+    struct Edge {
+        int to;
+        int pre_edge;
+        int cap;
+        int flow;
+    };
+
+    #define MAXNODE 405
+    int last[MAXNODE];
+
+    int nv; // total number of vertex, index range: [0, nv)
+    vector<Edge> edge;
+    void init(int _nv) {
+        nv = _nv;
+        edge.clear();
+        fill(last, last + nv, -1);
+    }
+
+    void add_e(int x, int y, int cap, int r_cap = 0) {
+        Edge e = {y, last[x], cap, 0};
+        // Edge e{y, last[x], cap, 0};
+        last[x] = edge.size();
+        // edge.push_back(move(e));
+        edge.push_back(e);
+        
+        Edge r_e = {x, last[y], r_cap, 0};
+        // Edge r_e{x, last[y], r_cap, 0};
+        last[y] = edge.size();
+        // edge.push_back(move(r_e));
+        edge.push_back(r_e);
+    }
+    void show_edge() {
+        for (int i = 0; i < nv; i++) {
+            printf("v [%d]:", i);
+            for (int ie = last[i]; ie != -1; ) {
+                const Edge& e = edge[ie]; 
+                ie = e.pre_edge;
+                printf(" [%d]%d/%d", e.to, e.flow, e.cap);
+            }
+            printf("\n");
+        }
+        printf("\n");
+    }
+
+    // 
+    // bipartite match
+    // O(V * E)
+    int peer[MAXNODE];
+    bool went[MAXNODE];
+    int bipartite_match() {
+        fill(peer, peer + nv, -1);
+        int ans = 0;
+        for (int i = 0; i < nv; i++) {
+            if (last[i] == -1 || peer[i] != -1)
+                continue;
+            fill(went, went + nv, false);
+            if (match(i))
+                ans++;
+        }
+        return ans;
+    }
+    bool match(int cur) {
+        for (int ie = last[cur]; ie != -1; ) {
+            const Edge& e = edge[ie];
+            ie = e.pre_edge;
+            int to = e.to;
+            if (went[to])
+                continue;
+            went[to] = true;
+            if (peer[to] == -1 || match(peer[to])) {
+                peer[to] = cur;
+                peer[cur] = to;
+                return true;
+            }
+        }
+        return false;
+    }
+    void show_peer() {
+        for (int i = 0; i < nv; i++)
+            printf("%d peer-> %d\n", i, peer[i]);
+    }
+    // end of 
+    // bipartite match
+    // 
+};
+```
 
 ```C++
 int n_cow, n_stall;
@@ -2350,6 +2450,115 @@ int bipartite_match() {
 ### 5.5 Maximum Flow Problem 最大流
 
 #### 5.5.1 Dinic
+```c++
+// a convenient class
+
+struct Network {
+    struct Edge {
+        int to;
+        int pre_edge;
+        int cap;
+        int flow;
+    };
+
+    #define MAXNODE 405
+    int last[MAXNODE];
+
+    int nv; // total number of vertex, index range: [0, nv)
+    vector<Edge> edge;
+    void init(int _nv) {
+        nv = _nv;
+        edge.clear();
+        fill(last, last + nv, -1);
+    }
+
+    void add_e(int x, int y, int cap, int r_cap = 0) {
+        Edge e = {y, last[x], cap, 0};
+        // Edge e{y, last[x], cap, 0};
+        last[x] = edge.size();
+        // edge.push_back(move(e));
+        edge.push_back(e);
+        
+        Edge r_e = {x, last[y], r_cap, 0};
+        // Edge r_e{x, last[y], r_cap, 0};
+        last[y] = edge.size();
+        // edge.push_back(move(r_e));
+        edge.push_back(r_e);
+    }
+    void show_edge() {
+        for (int i = 0; i < nv; i++) {
+            printf("v [%d]:", i);
+            for (int ie = last[i]; ie != -1; ) {
+                const Edge& e = edge[ie]; 
+                ie = e.pre_edge;
+                printf(" [%d]%d/%d", e.to, e.flow, e.cap);
+            }
+            printf("\n");
+        }
+        printf("\n");
+    }
+
+    // 
+    // maximum flow
+    // dinic O(V * V * E)
+    int lv[MAXNODE];
+    bool mark_level(int start, int end) {
+        fill(lv, lv + MAXNODE, -1);
+        queue<int> q;
+        lv[start] = 0;
+        q.push(start);
+        while (!q.empty()) {
+            int cur = q.front(); q.pop();
+            for (int ie = last[cur]; ie != -1; ) {
+                const Edge& e = edge[ie]; 
+                ie = e.pre_edge;
+                if (e.cap != e.flow && lv[e.to] == -1) {
+                    lv[e.to] = lv[cur] + 1;
+                    q.push(e.to);
+                }
+            }
+        }
+        return lv[end] != -1;
+    }
+    void show_lv() {
+        for (int i = 0; i < nv; i++) {
+            printf("lv[%d] = %d\n", i, lv[i]);
+        }
+    }
+    int augment(int cur, int end, int min_flow) {
+        if (cur == end)
+            return min_flow;
+
+        int augmented_flow = 0;
+        for (int ie = last[cur]; ie != -1; ) {
+            Edge& e = edge[ie]; 
+            Edge& re = edge[ie ^ 1];
+            ie = e.pre_edge;
+            if (lv[e.to] == lv[cur] + 1 &&
+                e.cap > e.flow &&
+                (augmented_flow = augment(e.to, end, min(e.cap - e.flow, min_flow)))
+            ) {
+                e.flow += augmented_flow;
+                re.flow -= augmented_flow;
+                return augmented_flow;
+            }
+        }
+        return 0;
+    }
+    int dinic(int start, int end) {
+        int total_flow = 0;
+        int flow = 0;
+        while (mark_level(start, end)) // update level
+            while (flow = augment(start, end, INT_MAX)) // eat up all augmented flow
+                total_flow += flow;
+        return total_flow;
+    }
+    // end of
+    // maximum flow - dinic
+    // 
+};
+```
+
 ``` C++
 int graph[250][250];
 int level[250];
@@ -2403,8 +2612,153 @@ int dinic(int start, int end) {
     return ans;
 }
 ```
+
+#### 5.5.2 Improved SAP + Gap Optimization
+
+```c++
+struct Network {
+    struct Edge {
+        int to;
+        int pre_edge;
+        int cap;
+        int flow;
+    };
+
+    #define MAXNODE 405
+    int last[MAXNODE];
+
+    int nv; // total number of vertex, index range: [0, nv)
+    vector<Edge> edge;
+    void init(int _nv) {
+        nv = _nv;
+        edge.clear();
+        fill(last, last + nv, -1);
+    }
+
+    void add_e(int x, int y, int cap, int r_cap = 0) {
+        Edge e = {y, last[x], cap, 0};
+        // Edge e{y, last[x], cap, 0};
+        last[x] = edge.size();
+        // edge.push_back(move(e));
+        edge.push_back(e);
+        
+        Edge r_e = {x, last[y], r_cap, 0};
+        // Edge r_e{x, last[y], r_cap, 0};
+        last[y] = edge.size();
+        // edge.push_back(move(r_e));
+        edge.push_back(r_e);
+    }
+    void show_edge() {
+        for (int i = 0; i < nv; i++) {
+            printf("v [%d]:", i);
+            for (int ie = last[i]; ie != -1; ) {
+                const Edge& e = edge[ie]; 
+                ie = e.pre_edge;
+                printf(" [%d]%d/%d", e.to, e.flow, e.cap);
+            }
+            printf("\n");
+        }
+        printf("\n");
+    }
+    
+    // 
+    // maximum flow
+    // isap + gap O(V * V * E)
+    // a bit faster than dinic
+    int lv[MAXNODE];
+    int lv_count[MAXNODE];
+    int from_edge[MAXNODE];
+    void mark_r_level(int end) {
+        fill(lv, lv + nv, nv);
+        fill(lv_count, lv_count + nv, 0);
+        queue<int> q;
+
+        lv[end] = 0;
+        lv_count[lv[end]]++;
+        q.push(end);
+        while (!q.empty()) {
+            int cur = q.front(); q.pop();
+            for (int ie = last[cur]; ie != -1; ) {
+                const Edge& e = edge[ie]; 
+                ie = e.pre_edge;
+                int to = e.to;
+                if (lv[to] != nv)
+                    continue;
+
+                lv[to] = lv[cur] + 1;
+                lv_count[lv[to]]++;
+                q.push(to);
+            }
+        }
+    }
+    int isap_gap(int start, int end) {
+        mark_r_level(end); // reverse bfs to get level of node
+
+        int total_flow = 0;
+        int cur = start;
+        from_edge[start] = -1;
+        while (lv[start] < nv) {
+            if (cur == end) {
+                int flow = INT_MAX;
+                for (int x = cur; x != start; ) { // backtrack to get min cap along the path
+                    int ie = from_edge[x];
+                    const Edge& e = edge[ie];
+                    flow = min(flow, e.cap - e.flow);
+                    x = edge[ie ^ 1].to;
+                }
+                
+                for ( ; cur != start; ) { // update the cap along the path
+                    int ie = from_edge[cur];
+                    Edge& e = edge[ie];
+                    Edge& re = edge[ie ^ 1];
+                    e.flow += flow;
+                    re.flow -= flow;
+                    cur = re.to;
+                }
+                total_flow += flow;
+            }
+
+            bool found = false;
+            for (int ie = last[cur]; ie != -1; ) { // find the next vertex
+                const Edge& e = edge[ie]; 
+                if (e.cap != e.flow && lv[cur] == lv[e.to] + 1) {
+                    cur = e.to;
+                    from_edge[cur] = ie; // record the edge from which we comes
+                    found = true;
+                    break;
+                }
+                ie = e.pre_edge;
+            }
+            
+            if (found)
+                continue;
+
+            lv_count[lv[cur]]--;
+            if (lv_count[lv[cur]] == 0)
+                break;
+            int min_lv = nv;
+            for (int ie = last[cur]; ie != -1; ) { // find the min level around cur vertex
+                const Edge& e = edge[ie]; 
+                ie = e.pre_edge;
+
+                if (e.cap != e.flow)
+                    min_lv = min(min_lv, lv[e.to]);
+            }
+
+            lv[cur] = min_lv + 1; // raise level of cur vertex by 1
+            lv_count[lv[cur]]++;
+            if (cur != start)
+                cur = edge[from_edge[cur] ^ 1].to; // revert one step
+        }
+        return total_flow;
+    }
+    // end of 
+    // maximum flow - isap + gap
+    // 
+};
+```
  
-#### 5.5.2 Minimum-Cost Maximum-Flow 
+#### 5.5.3 Minimum-Cost Maximum-Flow 
 
 ```C++
 // have not tested
@@ -2457,6 +2811,7 @@ void min_cost_max_flow() {
     cout << flow_sum << " " << cost_sum << endl;
 }
 ```
+
 
 ### 5.6 强连通分量 图的 割点, 桥, 双连通分支 ``https://www.byvoid.com/blog/biconnect``
 
