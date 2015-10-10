@@ -161,6 +161,7 @@
       - [QuickHull](#quickhull)
       - [Graham scan](#graham-scan)
 - [8. Tricks & Miscellaneous](#8-tricks-&-miscellaneous)
+  - [8.1 Bit Manipulation](#81-bit-manipulation)
   - [8.1 cantor_expansion / reverse_cantor_expansion](#81-cantor_expansion--reverse_cantor_expansion)
   - [8.2 pass 2-D array](#82-pass-2-d-array)
 
@@ -173,16 +174,11 @@
 ```c++
 #include <bits/stdc++.h>
 
-#define DEBUG true
-#define LOG
+#define DEBUG false
+#define OJ_DEBUG
 
-#define GET_BIT(n, i) (((n) & (1 << ((i)-1))) >> ((i)-1)) // i start from 1
-#define SET_BIT(n, i) ((n) | (1 << ((i)-1)))
-#define CLR_BIT(n, i) ((n) & ~(1 << ((i)-1)))
-#define SHOW_A(x) {if (DEBUG) cout << __LINE__ << ": " << #x << " = " << x << endl;}
-#define SHOW_B(x, y) {if (DEBUG) cout << __LINE__ << ": " << #x << " = " << x << ", " << #y << " = " << y << endl;}
-#define SHOW_C(x, y, z) {if (DEBUG) cout << __LINE__ << ": " << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;}
-#define REACH_HERE {if (DEBUG) cout << __LINE__ << ": " << "REACH_HERE!" << endl;}
+#define $(x) {if (DEBUG) {cout << __LINE__ << ": "; {x} cout << endl;}}
+#define _(x) {cout << #x << " = " << x << " ";}
 
 const double E = 1e-8;
 const double PI = acos(-1);
@@ -3741,6 +3737,14 @@ int main(int argc, char const *argv[]) {
 
 
 ## 8. Tricks & Miscellaneous
+
+### 8.1 Bit Manipulation
+
+```c++
+#define GET_BIT(n, i) (((n) & (1LL << ((i)-1))) >> ((i)-1)) // i start from 1
+#define SET_BIT(n, i) ((n) | (1LL << ((i)-1)))
+#define CLR_BIT(n, i) ((n) & ~(1LL << ((i)-1)))
+```
 
 ### 8.1 cantor_expansion / reverse_cantor_expansion
 
