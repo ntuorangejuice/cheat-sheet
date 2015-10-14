@@ -3497,6 +3497,19 @@ int convert_base_to_dec(const int s[], const int len, const int base) {
 > C(n, k) = C(n-1, k) + C(n-1, k-1)
 > C(n, k) = C(n, n-k)
 
+```c++
+#define MAXN 1002
+#define MOD 1000000007
+long long choose[MAXN][MAXN];
+
+void init_choose_n_k() {
+    for (int i = 1; i < MAXN; i++) {
+        choose[i][i] = choose[i][0] = 1;
+        for (int j = 1; j < i; j++)
+            choose[i][j] = (choose[i-1][j-1] + choose[i-1][j]) % MOD;
+    }
+}
+```
 
 #### 6.3.14 质数表
 
