@@ -896,15 +896,18 @@ int rmq[2 * MAX_NODE][MAX_NODE_LOG];
 int range_minimum_query(int l, int r) {
     if (l > r)
         swap(l, r);
-    int j = 0;
-    while ((1 << j) <= r - l)
+    
+    int lr = r - l + 1;
+    int j = 1;
+    while ((1 << j) < lr)
         j++;
     j--;
 
     // smaller first_visit_time means smaller level
-    if (first_visit_time[rmq[l][j]] < first_visit_time[rmq[r - (1 << j) + 1][j]])
+    int l_second = r - (1 << j) + 1;
+    if (first_visit_time[rmq[l][j]] < first_visit_time[rmq[l_second][j]])
         return rmq[l][j];
-    return rmq[r - (1 << j) + 1][j];
+    return rmq[l_second][j];
 }
 
 void euler_tour(int cur) {
@@ -941,8 +944,6 @@ void init() {
 }
 
 int get_lca(int x, int y) {
-    if (x == y)
-        return x;
     return range_minimum_query(first_visit_time[x], first_visit_time[y]);
 }
 
