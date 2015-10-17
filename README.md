@@ -834,6 +834,10 @@ struct HiHeap {
 > query: RMQ O(1)
 
 ```c++
+// lowest common ancestor LCA
+// --> range minimun range_minimum_query
+// preprocess: O(3 * nlog(n))
+// range_minimum_query: O(1)
 // 
 // 1471. Tree
 // http://acm.timus.ru/problem.aspx?space=1&num=1471
@@ -841,7 +845,6 @@ struct HiHeap {
 // Memory limit: 64 MB
 // 
 // A weighted tree is given. You must find the distance between two given nodes.
-// 
 // Input
 // The first line contains the number of nodes of the tree n (1 ≤ n ≤ 50000).
 // The nodes are numbered from 0 to n – 1.
@@ -849,7 +852,6 @@ struct HiHeap {
 // which correspond to an edge with weight w (0 ≤ w ≤ 1000) connecting nodes u and v.
 // The next line contains the number of queries m (1 ≤ m ≤ 75000).
 // In each of the next m lines there are two integers.
-// 
 // Output
 // For each range_minimum_query, output the distance between the nodes with the given numbers.
 // 
@@ -938,6 +940,12 @@ void init() {
             }
 }
 
+int get_lca(int x, int y) {
+    if (x == y)
+        return x;
+    return range_minimum_query(first_visit_time[x], first_visit_time[y]);
+}
+
 int main(int argc, char const *argv[]) {
     scanf("%d", &n);
     for (int i = 1; i < n; i++) {
@@ -955,13 +963,9 @@ int main(int argc, char const *argv[]) {
     for (int i = 0; i < m; i++) {
         int x, y;
         scanf("%d %d", &x, &y);
-        if (x == y)
-            printf("%d\n", 0);
-        else {
-            int lca = range_minimum_query(first_visit_time[x], first_visit_time[y]);
-            int dis_between = dis_to_root[x] + dis_to_root[y] - 2 * dis_to_root[lca];
-            printf("%d\n", dis_between);
-        }
+        int lca = get_lca(x, y);
+        int dis_between = dis_to_root[x] + dis_to_root[y] - 2 * dis_to_root[lca];
+        printf("%d\n", dis_between);
     }
 }
 ```
