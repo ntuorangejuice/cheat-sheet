@@ -1326,7 +1326,7 @@ node tree[MAX_N];  // tree[0] is not used.
 int range_minimun_query(int left, int right) {
     // calculate log(right)
     if (left > right) swap(left, right);
-    int log_right = 0;
+    int log_right = 1;
     while ((1 << log_right) <= right - left) log_right ++;
     log_right --;
     // return the minimum from the lower level RMQ.
