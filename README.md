@@ -884,10 +884,9 @@ inline long long mod_it(long long it) {
 struct Result {
 	long long x;
 	long long k;
-	Result operator+(const Result& r) {
-		Result temp = {x + r.x, k + r.k};
-		return temp;
-	}
+  Result operator+(const Result& r) {
+    return (Result){x + r.x, k + r.k};
+  }
 	void operator+=(const Result& r) {
 		x += r.x;
 		k += r.k;
