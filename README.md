@@ -3379,6 +3379,76 @@ int main() {
 >
 > time complexity `O(N)`
 
+```c++
+struct Graph {
+    struct Edge {
+        int to;
+    };
+
+    const static int MAXNODE = 3 * 1e5 + 2;
+    vector<int> g[MAXNODE];
+    vector<Edge> edge;
+    int n;
+    void init(int nn) {
+        n = nn;
+        for (int i = 0; i <= n; i++)
+            g[i].clear();
+        edge.clear();
+    }
+
+    void add_e(int x, int y) {
+        Edge e = {y};
+        g[x].push_back(edge.size());
+        edge.push_back(e);
+    }
+
+    void show() {
+    	for (int i = 0; i <= n; i++) {
+    		printf("%d:", i);
+    		for (int ie : g[i])
+    			printf(" %d", edge[ie].to);
+    		printf("\n");
+    	}
+    	printf("\n");
+    }
+
+    // 
+	// Node index ~ [0, N)
+	// matters for topological sort
+	// 
+    int in_order[MAXNODE];
+    void init_in_order() {
+    	fill_n(in_order, n + 1, 0);
+    	for (int i = 0; i < n; i++)
+    		for (int ie : g[i])
+    			in_order[edge[ie].to]++;
+    }
+    bool topological_sort(vector<int>& result) {
+    	init_in_order();
+    	queue<int> q;
+    	for (int i = 0; i < n; i++)
+    		if (in_order[i] == 0)
+    			q.push(i);
+    	while (q.size()) {
+    		int cur = q.front(); q.pop();
+    		result.push_back(cur);
+    		for (int ie : g[cur]) {
+    			const Edge& e = edge[ie];
+    			in_order[e.to]--;
+    			if (in_order[e.to] == 0)
+    				q.push(e.to);
+    		}
+    	}
+    	return result.size() == n;
+    }
+    void show_order() {
+    	for (int i = 0; i < n; i++)
+    		printf("in_order[%d] = %d\n", i, in_order[i]);
+    }
+};
+```
+
+
 ``` c++
 #define NN 100000
 
