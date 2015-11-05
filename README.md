@@ -832,17 +832,12 @@ struct HiHeap {
 
 ```c++
 // 
-// CodeForces 396C - On Changing Tree
+// CodeForces 593D
 // 
-// Accepted
+// sol 1 - path must < 64 - not straightforward
+// sol 2 - Heavy-Light Decomposition + Segment Tree + Math - not straightforward
 // 
-// sol 1 - Heavy-Light Decomposition + Segment Tree - not straightforward
-// sol 2 - DFS on Tree + 2 Segment Tree - not straightforward
-// 
-// 
-// Heavy-Light Decomposition
-// http://blog.anudeep2011.com/heavy-light-decomposition/
-// 
+// floor( floor(A / B) / C) = floor(A / (B * C))
 // 
 
 #include <stdio.h>
@@ -863,268 +858,347 @@ struct HiHeap {
 
 #define SHOW(...) {;}
 #define REACH_HERE {;}
+#define LOG(s, ...) {;}
+#define LOGLN(s, ...) {;}
 
-#undef HHHDEBUG
+// #undef HHHDEBUG
 #ifdef HHHDEBUG
 #include "template.h"
 #endif
 
 using namespace std;
 
-const int MOD = 1000000007;
+int len(unsigned long long x) {
+	if (x == 0)
+		return 1;
 
-inline long long mod_it(long long it) {
-	it %= MOD;
-	while (it < 0)
-		it += MOD;
-	it %= MOD;
-	return it;
+	int ret = 0;
+	while (x > 0) {
+		ret++;
+		x /= 10;
+	}
+	return ret;
 }
 
-struct Result {
-	long long x;
-	long long k;
-  Result operator+(const Result& r) {
-    return (Result){x + r.x, k + r.k};
-  }
-	void operator+=(const Result& r) {
-		x += r.x;
-		k += r.k;
-	}
-};
+unsigned long long will_boom(unsigned long long a, unsigned long long b) {
+    if (a == ULLONG_MAX || b == ULLONG_MAX)
+        return ULLONG_MAX;
+    
+	int la = len(a);
+	int lb = len(b);
+	if (la - 1 + lb - 1 + 1 > 20)
+		return ULLONG_MAX;
+	return a * b;
+}
 
 struct SegmentTree {
-	struct Node {
-		int l;
-		int r;
-		long long x;
-		long long k;
-		// bool lazy;
-	};
+    struct Node {
+        int l;
+        int r;
+        unsigned long long accu;
+    };
 
-	int r_most;
-	vector<Node> node;
-	void init(int rm) {
-		r_most = rm;
-		node.resize((r_most + 1) * 4);
-		Node& root = node[1];
-		root.l = 0;
-		root.r = r_most;
-		root.x = 0;
-		root.k = 0;
-		for (int i = 2; i < node.size(); i++) {
-			Node& cur = node[i];
-			cur.x = 0;
-			cur.k = 0;
+    int r_most;
+    vector<Node> node;
+    void init(int rm) {
+        r_most = rm;
 
-			const Node& par = node[i / 2];
-			if (par.l == par.r)
-				continue;
-			int m = (par.l + par.r) / 2;
-			if (i & 1) {
-				cur.l = m + 1;
-				cur.r = par.r;
-			}
-			else {
-				cur.l = par.l;
-				cur.r = m;
-			}
-		}
+        int tree_range = r_most + 1;
+        if (tree_range <= 0)
+            return ;
 
-		SHOW("init")
-		show();
-	}
+        int tree_size = 1;
+        while (tree_size <= tree_range)
+            tree_size <<= 1;
+        if (__builtin_popcount(tree_range) != 1) // count number of '1' bits
+            tree_size <<= 1;
 
-	void show() {
-		SHOW("SegmentTree")
-		for (int i = 1; i < node.size(); i++) {
-			Node& cur = node[i];
-			SHOW(i, cur.l, cur.r, cur.x, cur.k)
-		}
-	}
+        node.resize(tree_size);
 
-	void update(int l, int r, long long x, long long k, int i = 1) {
-		Node& cur = node[i];
-		if (cur.l == cur.r) {
-			cur.x = mod_it(cur.x + x);
-			cur.k = mod_it(cur.k + k);
-			return ;
-		}
+        Node& root = node[1];
+        root.l = 0;
+        root.r = r_most;
+        root.accu = 1;
+        for (int i = 2; i < node.size(); i++) {
+            Node& cur = node[i];
+            cur.accu = 1;
 
-		int curm = (cur.l + cur.r) / 2;
+            const Node& par = node[i / 2];
+            if (par.l == par.r)
+                continue;
+            int m = (par.l + par.r) / 2;
+            if (i & 1) {
+                cur.l = m + 1;
+                cur.r = par.r;
+            }
+            else {
+                cur.l = par.l;
+                cur.r = m;
+            }
+        }
 
-		int il = i * 2;
-		int ir = il + 1;
+        // SHOW("init")
+        // show();
+    }
 
-		if (l <= cur.l && cur.r <= r) {
-			cur.x = mod_it(cur.x + x);
-			cur.k = mod_it(cur.k + k);
-			return ;
-		}
+    void show() {
+        SHOW("SegmentTree", r_most)
+        for (int i = 1; i < node.size(); i++) {
+            Node& cur = node[i];
+            SHOW(i, cur.l, cur.r, cur.accu)
+        }
+    }
 
-		long long mmx = mod_it(x - mod_it(curm + 1 - l) * mod_it(k));
-		if (l > curm && l <= cur.r)
-			update(l, r, x, k, ir);
-		if (l <= curm && curm < r)
-			update(curm + 1, r, mmx, k, ir);
-		if (l <= curm && r >= cur.l)
-			update(l, r, x, k, il);
-	}
+    void update(int l, int r, unsigned long long new_y, int i = 1) {
+        Node& cur = node[i];
 
-	Result query(int l, int i = 1) {
-		Node& cur = node[i];
-		if (cur.l == cur.r)
-			return (Result){cur.x, cur.k};
-		
-		long long sub = mod_it(mod_it(l - cur.l) * mod_it(cur.k));
-		Result ans = {mod_it(cur.x - sub), cur.k};
+        if (cur.l == cur.r) {
+        	cur.accu = new_y;
+        	return ;
+        }
 
-		int m = (cur.l + cur.r) / 2;
-		int il = i * 2;
-		int ir = il + 1;
-		if (l <= m)
-			ans += query(l, il);
-		else
-			ans += query(l, ir);
+        int m = (cur.l + cur.r) / 2;
+        int il = i * 2;
+        int ir = il + 1;
 
-		ans.x = mod_it(ans.x);
-		ans.k = mod_it(ans.k);
-		return ans;
-	}
+        if (l <= m)
+        	update(l, r, new_y, il);
+        else
+        	update(l, r, new_y, ir);
+
+        cur.accu = will_boom(node[il].accu, node[ir].accu);
+    }
+
+    unsigned long long query(int l, int r, int i = 1) {
+        if (l > r)
+            return 1;
+
+        Node& cur = node[i];
+        if (l <= cur.l && cur.r <= r)
+        	return cur.accu;
+
+        if (r < cur.l || cur.r < l) {
+        	REACH_HERE
+        	return -1;
+        }
+
+        int m = (cur.l + cur.r) / 2;
+        int il = i * 2;
+        int ir = il + 1;
+
+        unsigned long long ans = 1;
+        if (l <= m) {
+        	unsigned long long temp_l = query(l, r, il);
+            ans = will_boom(ans, temp_l);
+        }
+        
+        if (m < r) {
+        	unsigned long long temp_r = query(l, r, ir);
+            ans = will_boom(ans, temp_r);
+        }
+
+        return ans;
+    }
 };
 
 struct Graph {
-	struct Edge {
-		int to;
-	};
+    map<pair<int, int>, int> node_edge;
 
-	const static int MAXNODE = 300002;
-	vector<int> g[MAXNODE];
-	vector<Edge> edge;
-	int n;
-	void init(int nn) {
-		n = nn;
-		for (int i = 0; i <= n; i++)
-			g[i].clear();
-		edge.clear();
-	}
+    struct Edge {
+    	int from;
+        int to;
+        unsigned long long y;
+    };
 
-	void add_e(int x, int y) {
-		Edge e = {y};
-		g[x].push_back(edge.size());
-		edge.push_back(e);
-	}
+    const static int MAXNODE = 200005;
+    vector<int> g[MAXNODE];
+    vector<Edge> edge;
+    int n;
+    void init(int nn) {
+        n = nn;
+        for (int i = 0; i <= n; i++)
+            g[i].clear();
+        edge.clear();
+    }
 
-	int parent[MAXNODE];
-	int size[MAXNODE];
-	int size_parent(int cur) {
-		int& s = size[cur] = 1;
-		for (int i = 0; i < g[cur].size(); i++) {
-			int ie = g[cur][i];
-			const Edge& e = edge[ie];
-			int nx = e.to;
-			parent[nx] = cur;
-			s += size_parent(nx);
-		}
-		return s;
-	}
-	void show_size_parent() {
-		for (int i = 0; i <= n; i++)
-			printf("node %d: size %d, parent %d\n", i, size[i], parent[i]);
-	}
+    void add_e(int x, int y, unsigned long long val_y) {
+    	Edge e1 = {x, y, val_y};
+        g[x].push_back(edge.size());
+        node_edge[make_pair(x, y)] = edge.size();
+        edge.push_back(e1);
 
-	struct Chain {
-		int head;
-		int len;
-	};
-	vector<Chain> chain;
-	int chain_total;
-	int chain_no[MAXNODE]; // chain_no[node] == chain_index
-	int chain_pos[MAXNODE]; // chain_pos[node] == x'th node in the chain // 0 based
-	void hld(int cur) {
-		if (chain_total == chain.size()) {
-			Chain c = {cur, 0};
-			chain.push_back(c);
-		}
+        Edge e2 = {y, x, val_y};
+        g[y].push_back(edge.size());
+        node_edge[make_pair(y, x)] = edge.size();
+        edge.push_back(e2);
 
-		chain_no[cur] = chain_total;
-		chain_pos[cur] = chain[chain_total].len;
-		chain[chain_total].len++; // 0 based, add later
+        // LOGLN("add edge %d - %d = %llu", x, y, val_y);
+    }
 
-		if (g[cur].size() == 0)
-			return ;
+    int parent[MAXNODE];
+    int size[MAXNODE];
+    int size_parent(int cur) {
+        int& s = size[cur] = 1;
+        for (int i = 0; i < g[cur].size(); i++) {
+            int ie = g[cur][i];
+            const Edge& e = edge[ie];
+            int nx = e.to;
+            if (nx != parent[cur]) {
+                parent[nx] = cur;
+                s += size_parent(nx);    
+            }
+        }
+        return s;
+    }
+    void show_size_parent() {
+        for (int i = 0; i <= n; i++)
+            printf("node %d: size %d, parent %d\n", i, size[i], parent[i]);
+    }
 
-		int heavy = edge[g[cur][0]].to;
-		for (int i = 0; i < g[cur].size(); i++) {
-			int ie = g[cur][i];
-			const Edge& e = edge[ie];
-			int nx = e.to;
-			if (size[nx] > size[heavy])
-				heavy = nx;
-		}
+    struct Chain {
+        int head;
+        int head_depth;
+        int len;
+    };
+    vector<Chain> chain;
+    int chain_total;
+    int chain_no[MAXNODE]; // chain_no[node] == chain_index
+    int chain_pos[MAXNODE]; // chain_pos[node] == x'th node in the chain // 0 based
+    void hld(int cur, int depth) {
+        if (chain_total == chain.size()) {
+            Chain c = {cur, depth, 0};
+            chain.push_back(c);
+        }
 
-		hld(heavy);
-		for (int i = 0; i < g[cur].size(); i++) {
-			int ie = g[cur][i];
-			const Edge& e = edge[ie];
-			int nx = e.to;
-			if (nx == heavy)
-				continue;
-			chain_total++;
-			hld(nx);
-		}
-	}
+        chain_no[cur] = chain_total;
+        chain_pos[cur] = chain[chain_total].len;
+        chain[chain_total].len++; // 0 based, add later
 
-	void heavy_light_decomposition() {
-		parent[1] = -1;
-		assert(n == size_parent(1));
+        if (depth != 0 && g[cur].size() - 1 == 0) 
+            return ;
 
-		chain_total = 0;
-		chain.clear();
+        int heavy = edge[g[cur][0]].to;
+        for (int i = 0; i < g[cur].size(); i++) {
+            int ie = g[cur][i];
+            const Edge& e = edge[ie];
+            int nx = e.to;
+            if (heavy == parent[cur] || (nx != parent[cur] && size[nx] > size[heavy]))
+                heavy = nx;
+        }
 
-		hld(1);
-		chain_total++;
-	}
-	void show_hld() {
-		printf("chain_total = %d\n", chain_total);
-		for (int i = 0; i <= chain_total; i++)
-			printf("chain %d: len %d, head %d\n", i, chain[i].len, chain[i].head);
-		for (int i = 0; i <= n; i++)
-			printf("node %d: chain %d, pos %d\n", i, chain_no[i], chain_pos[i]);
-	}
+        hld(heavy, depth + 1);
+        for (int i = 0; i < g[cur].size(); i++) {
+            int ie = g[cur][i];
+            const Edge& e = edge[ie];
+            int nx = e.to;
+            if (nx != parent[cur] && nx != heavy) {
+                chain_total++;
+                hld(nx, depth + 1);
+            }
+        }
+    }
 
-	vector<SegmentTree> st;
-	void init_sol() {
-		st.resize(chain_total);
-		for (int i = 0; i < st.size(); i++)
-			st[i].init(chain[i].len - 1);
-	}
+    void heavy_light_decomposition() {
+        parent[1] = -1;
+        assert(n == size_parent(1));
+        
+        chain_total = 0;
+        chain.clear();
 
-	void update(int v, int x, int k) {
-		int cn = chain_no[v];
-		int cp = chain_pos[v];
-		int cl = chain[cn].len;
-		st[cn].update(cp, cl - 1, x, k);
-	}
+        hld(1, 0);
+        chain_total++;
+    }
+    void show_hld() {
+        printf("chain_total = %d\n", chain_total);
+        for (int i = 0; i <= chain_total; i++)
+            printf("chain %d: len %d, head %d, head depth %d\n", i, chain[i].len, chain[i].head, chain[i].head_depth);
+        for (int i = 0; i <= n; i++)
+            printf("node %d: chain %d, pos %d\n", i, chain_no[i], chain_pos[i]);
+    }
 
-	int query(int v) {
-		long long ans = 0;
-		int d = 0;
-		do {
-			int cn = chain_no[v];
-			int cp = chain_pos[v];
-			Result temp = st[cn].query(cp);
+    vector<SegmentTree> st;
+    void init_sol() {
+        st.resize(chain_total);
+        for (int i = 0; i < st.size(); i++)
+            st[i].init(chain[i].len - 2);
+        
+        for (int i = 0; i < edge.size(); i += 2) {
+        	const Edge& e = edge[i];
+	        int cn1 = chain_no[e.from];
+	        int cn2 = chain_no[e.to];
 
-			long long temp_ans = temp.x - mod_it(mod_it(temp.k) * mod_it(d));
-			temp_ans = mod_it(temp_ans);
-			ans += temp_ans;
-			ans = mod_it(ans);
-			d += chain_pos[v] + 1;
-			v = chain[cn].head;
-			v = parent[v];
-		} while (v != -1);
-		return ans;
-	}
+	        if (cn1 != cn2)
+	        	;
+	        else {
+	        	int cp1 = chain_pos[e.from];
+		        int cp2 = chain_pos[e.to];
+		        if (cp1 > cp2)
+		        	swap(cp1, cp2);
+		        st[cn1].update(cp1, cp2 - 1, e.y);
+	        }
+        }
+        
+        // for (int i = 0; i < chain_total; i++)
+        // 	st[i].show();
+    }
+
+    void update(int p, unsigned long long c) {
+        p *= 2;
+    	Edge& e = edge[p];
+        e.y = edge[p + 1].y = c;
+
+        int cn1 = chain_no[e.from];
+        int cn2 = chain_no[e.to];
+        if (cn1 == cn2) {
+            int cp1 = chain_pos[e.from];
+            int cp2 = chain_pos[e.to];
+            if (cp1 > cp2)
+                swap(cp1, cp2);
+            st[cn1].update(cp1, cp2 - 1, c);	
+        }
+    }
+
+    unsigned long long query(int a, int b, unsigned long long y) {
+        unsigned long long accu = 1;
+        while (true) {
+        	int cn1 = chain_no[a];
+        	int cn2 = chain_no[b];
+
+            if (chain[cn1].head_depth < chain[cn2].head_depth)
+                swap(a, b), swap(cn1, cn2);
+
+        	if (cn1 == cn2) {
+        		int cp1 = chain_pos[a];
+        		int cp2 = chain_pos[b];
+        		if (cp1 > cp2)
+        			swap(cp1, cp2);
+        		unsigned long long temp = st[cn1].query(cp1, cp2 - 1);
+        		accu = will_boom(accu, temp);
+        		break;
+        	}
+
+
+        	if (a != chain[cn1].head) {
+        		int ha = chain[cn1].head;
+                int cp1 = chain_pos[ha];
+                int cp2 = chain_pos[a];
+                if (cp1 > cp2)
+                    swap(cp1, cp2);
+        		unsigned long long temp = st[cn1].query(cp1, cp2 - 1);
+        		accu = will_boom(accu, temp);
+        		a = ha;
+        	}
+            
+            int pa = parent[a];
+            unsigned long long temp = edge[node_edge[make_pair(a, pa)]].y;
+            accu = will_boom(temp, accu);
+            a = parent[a];
+        }
+
+        if (accu == 0) // no idea why would be 0
+            return 0;
+        return y / accu;
+    }
 };
 
 int n;
@@ -1132,29 +1206,35 @@ int m;
 Graph g;
 
 int main() {
-	scanf("%d", &n);
+	scanf("%d %d", &n, &m);
     g.init(n);
-    for (int i = 2; i <= n; i++) {
-    	int x;
-    	scanf("%d", &x);
-    	g.add_e(x, i);
+    for (int i = 1; i < n; i++) {
+    	int x, y;
+        unsigned long long val_y;
+        scanf("%d %d %llu", &x, &y, &val_y);
+        g.add_e(x, y, val_y);
     }
 
     g.heavy_light_decomposition();
+    // g.show_hld();
+    g.init_sol(); 
 
-	g.init_sol();    
-	scanf("%d", &m);
     for (int i = 0; i < m; i++) {
-    	int op, v, x, k;
-    	scanf("%d", &op);
-    	if (op == 1) {
-    		scanf("%d %d %d", &v, &x, &k);
-    		g.update(v, x, k);
-    	}
-    	else {
-    		scanf("%d", &v);
-    		printf("%d\n", g.query(v));
-    	}
+        int op;
+        scanf("%d", &op);
+        if (op == 1) {
+        	int a, b;
+        	unsigned long long y;
+            scanf("%d %d %llu", &a, &b, &y);
+            unsigned long long ans = g.query(a, b, y);
+            printf("%llu\n", ans);
+        }
+        else {
+        	int p;
+        	unsigned long long c;
+            scanf("%d %llu", &p, &c);
+            g.update(p - 1, c);
+        }
     }
 }
 ```
