@@ -86,6 +86,7 @@
     - [2.5.5 Longest Common Substring](#255-longest-common-substring)
   - [2.6 Binary Indexed Tree](#26-binary-indexed-tree)
   - [2.7 Segment Tree](#27-segment-tree)
+    - [2.7.0 Range Update & Range Query](#270-range-update-&-range-query)
     - [2.7.1 Color](#271-color)
     - [2.7.2 Range Sum & Range Replace](#272-range-sum-&-range-replace)
     - [2.7.3 Range Minimum Query RMQ](#273-range-minimum-query-rmq)
@@ -2267,7 +2268,292 @@ int main() {
 
 ### 2.7 Segment Tree
 
-> place holder : simple version
+#### 2.7.0 Range Update & Range Query
+
+> with lazy propagation
+> 
+> build O(N)
+> 
+> query O(log(N))
+> 
+> update O(log(N))
+
+```c++
+// 
+// CodeForces 243D	Cubes
+// 
+// dynamic programming + segment tree + math - O(N*N*log(N)) - not straightforward
+// 
+// struct SegmentTree is slow, use with caution
+// 
+// 
+
+#include <stdio.h>
+#include <sstream>
+#include <iomanip>
+#include <cstring>
+#include <cmath>
+#include <algorithm>
+#include <climits>
+#include <vector>
+#include <stack>
+#include <queue>
+#include <set>
+// #include <unordered_set>
+#include <map>
+// #include <unordered_map>
+#include <cassert>
+
+#define SHOW(...) {;}
+#define REACH_HERE {;}
+#define PRINT(s, ...) {;}
+#define PRINTLN(s, ...) {;}
+
+// #undef HHHDEBUG
+#ifdef HHHDEBUG
+#include "template.h"
+#endif
+
+using namespace std;
+
+struct SegmentTree {
+	struct Op {
+		int h;
+	};
+    struct Node {
+        int l;
+        int r;
+        
+        int h;
+
+        bool lazy;
+        Op op;
+    };
+    
+    vector<Node> node;
+    void init(int l, int r) {
+        int tree_range = r - l + 1;
+        if (tree_range <= 0)
+            return ;
+
+        int tree_size = 1;
+        while (tree_size <= tree_range)
+            tree_size <<= 1;
+        if (__builtin_popcount(tree_range) != 1) // count number of '1' bits
+            tree_size <<= 1;
+
+        node.resize(tree_size);
+
+        Node& root = node[1];
+        root.l = l, root.r = r;
+        root.h = root.op.h = 0;
+        for (int i = 2; i < node.size(); i++) {
+            Node& cur = node[i];
+            cur.h = 0;
+
+            const Node& par = node[i / 2];
+            if (par.l == par.r)
+            	cur.l = cur.r = -1;
+            else {
+	            int m = (par.l + par.r) / 2;
+	            if (i % 2)
+	                cur.l = m + 1, cur.r = par.r;
+	            else
+	                cur.l = par.l, cur.r = m;
+            }
+        }
+    }
+
+	int query(int xl, int xr, int i = 1) {
+		Node& cur = node[i];
+		if (cur.l == cur.r)
+			return cur.h;
+
+		if (xl <= cur.l && cur.r <= xr)
+			return cur.h;
+
+		int lci = i * 2;
+		const Node& lc = node[lci];
+		int rci = lci + 1;
+		const Node& rc = node[rci];
+		if (cur.lazy) {
+			update(lc.l, lc.r, cur.op.h, lci);
+			update(rc.l, rc.r, cur.op.h, rci);
+			cur.lazy = false;
+		}
+
+		int ret = INT_MAX;
+		if (xl <= lc.r) {
+			int temp = query(xl, xr, lci);
+			if (ret > temp)
+				ret = temp;
+		}
+		if (rc.l <= xr) {
+			int temp = query(xl, xr, rci);
+			if (ret > temp)
+				ret = temp;
+		}
+		return ret;
+	}
+
+	void update(int xl, int xr, int xh, int i = 1) {
+		Node& cur = node[i];
+		if (cur.l == cur.r) {
+			if (cur.h < xh)
+				cur.h = xh;
+			return ;
+		}
+
+		if (xl <= cur.l && cur.r <= xr) {
+			if (cur.h < xh) {
+				cur.h = xh;
+			}
+			if (cur.lazy) {
+				if (cur.op.h < xh)
+					cur.op.h = xh;
+			}
+			else {
+				cur.op.h = xh;
+				cur.lazy = true;
+			}
+			return ;
+		}
+
+		int lci = i * 2;
+		const Node& lc = node[lci];
+		int rci = lci + 1;
+		const Node& rc = node[rci];
+		if (cur.lazy) {
+			update(lc.l, lc.r, cur.op.h, lci);
+			update(rc.l, rc.r, cur.op.h, rci);
+			cur.lazy = false;
+		}
+
+		if (xl <= lc.r)
+			update(xl, xr, xh, lci);
+		if (rc.l <= xr)
+			update(xl, xr, xh, rci);
+
+		cur.h = min(lc.h, rc.h);
+	}
+};
+
+struct Hall {
+	int h;
+	int proj_index[2];
+};
+
+const int HH = 1002;
+
+int n;
+int vx;
+int vy;
+Hall hall[HH][HH];
+
+long long ans;
+
+int init_project() {
+	int xx[] = {0, 1};
+	int yy[] = {1, 0};
+	double EPS = 1e-7;
+
+	struct Proj {
+		int i;
+		int j;
+		double x;
+		int k;
+	};
+	vector<Proj> projection;
+	projection.reserve(n * n * 2);
+
+	auto get_x = [](double x, double y) -> double {
+		return vx == 0 ? x : x - y / vy * vx;
+	};
+
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < n; j++)
+			for (int k = 0; k < 2; k++)
+				projection.push_back((Proj){i, j, get_x(i + xx[k], j + yy[k]), k});
+
+	sort(begin(projection), end(projection), [](const Proj& a, const Proj& b) {
+		return a.x < b.x;
+	});
+
+	int n_seg = 0;
+	hall[projection[0].i][projection[0].j].proj_index[projection[0].k] = 0;
+	for (int i = 1; i < projection.size(); i++) {
+		if (abs(projection[i].x - projection[i - 1].x) > EPS)
+			n_seg++;
+		hall[projection[i].i][projection[i].j].proj_index[projection[i].k] = n_seg;
+	}
+	return n_seg;
+}
+
+void rotate() {
+	// if vy < 0
+	// flip left right
+	if (vy < 0) {
+	    for (int i = 0; i < n; i++) {
+	    	int l = 0;
+	    	int r = n - 1;
+	    	while (l < r) {
+	    		swap(hall[i][l].h, hall[i][r].h);
+	    		l++;
+	    		r--;
+	    	}
+	    }
+	    vy = -vy;
+	}
+
+	// if vx <= 0
+	// flip diagonal
+	if (vx < 0 || vy == 0) {
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < i; j++)
+				swap(hall[i][j].h, hall[j][i].h);
+		swap(vx, vy);
+	}
+
+	// if vy < 0
+	// flip left right
+	if (vy < 0) {
+	    for (int i = 0; i < n; i++) {
+	    	int l = 0;
+	    	int r = n - 1;
+	    	while (l < r) {
+	    		swap(hall[i][l].h, hall[i][r].h);
+	    		l++;
+	    		r--;
+	    	}
+	    }
+	    vy = -vy;
+	}
+}
+
+SegmentTree st;
+
+int main() {
+	scanf("%d %d %d", &n, &vx, &vy);
+    for (int i = 0; i < n; i++)
+    	for (int j = 0; j < n; j++)
+    		scanf("%d", &hall[i][j].h);
+
+    rotate();
+    int len = init_project();
+
+	st.init(0, len - 1);
+
+	for (int j = 0; j < n; j++) {
+	    for (int i = 0; i < n; i++) {
+    		const Hall& h = hall[i][j];
+    		int min_height = st.query(h.proj_index[0], h.proj_index[1] - 1);
+    		ans += max(0, h.h - min_height);
+    		st.update(h.proj_index[0], h.proj_index[1] - 1, h.h);
+    	}
+    }
+    printf("%lld\n", ans);
+}
+```
 
 #### 2.7.1 Color
 
