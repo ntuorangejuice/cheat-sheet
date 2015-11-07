@@ -86,9 +86,9 @@
     - [2.5.5 Longest Common Substring](#255-longest-common-substring)
   - [2.6 Binary Indexed Tree](#26-binary-indexed-tree)
   - [2.7 Segment Tree](#27-segment-tree)
-    - [2.7.0 Range Update & Range Query](#270-range-update-&-range-query)
+    - [2.7.0 Range Update + Range Query](#270-range-update--range-query)
     - [2.7.1 Color](#271-color)
-    - [2.7.2 Range Sum & Range Replace](#272-range-sum-&-range-replace)
+    - [2.7.2 Range Sum + Range Replace](#272-range-sum--range-replace)
     - [2.7.3 Range Minimum Query RMQ](#273-range-minimum-query-rmq)
 - [3. Methodology](#3-methodology)
   - [3.0 Greedy](#30-greedy)
@@ -129,8 +129,8 @@
   - [5.7 Topological Sort / 拓扑排序](#57-topological-sort--%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F)
   - [5.8 Euler Cycle/Path, Hamilton Cycle/Path](#58-euler-cyclepath-hamilton-cyclepath)
   - [5.9 find negative (weight) Cycle on a graph](#59-find-negative-weight-cycle-on-a-graph)
-- [6. Number & Mathematics](#6-number-&-mathematics)
-  - [6.1 BigInteger & BigDecimal](#61-biginteger-&-bigdecimal)
+- [6. Number + Mathematics](#6-number--mathematics)
+  - [6.1 BigInteger + BigDecimal](#61-biginteger--bigdecimal)
     - [6.1.1 C++ Big Integer](#611-c-big-integer)
     - [6.1.2 The Java Approach](#612-the-java-approach)
   - [6.2 Matrix](#62-matrix)
@@ -162,7 +162,7 @@
       - [Gift Wrapping](#gift-wrapping)
       - [QuickHull](#quickhull)
       - [Graham scan](#graham-scan)
-- [8. Tricks & Miscellaneous](#8-tricks-&-miscellaneous)
+- [8. Tricks + Miscellaneous](#8-tricks--miscellaneous)
   - [8.1 Bit Manipulation](#81-bit-manipulation)
   - [8.1 cantor_expansion / reverse_cantor_expansion](#81-cantor_expansion--reverse_cantor_expansion)
   - [8.2 pass 2-D array](#82-pass-2-d-array)
@@ -2268,7 +2268,7 @@ int main() {
 
 ### 2.7 Segment Tree
 
-#### 2.7.0 Range Update & Range Query
+#### 2.7.0 Range Update + Range Query
 
 > with lazy propagation
 > 
@@ -2662,7 +2662,7 @@ int main() {
 }
 ```
 
-#### 2.7.2 Range Sum & Range Replace
+#### 2.7.2 Range Sum + Range Replace
 
 ```c++
 const int MAX = 30005;
@@ -3872,9 +3872,9 @@ int main() {
 > place holder
 
 
-## 6. Number & Mathematics
+## 6. Number + Mathematics
 
-### 6.1 BigInteger & BigDecimal
+### 6.1 BigInteger + BigDecimal
 
 #### 6.1.1 C++ Big Integer
 
@@ -4584,7 +4584,7 @@ int main(int argc, char const *argv[]) {
 
 
 
-## 8. Tricks & Miscellaneous
+## 8. Tricks + Miscellaneous
 
 ### 8.1 Bit Manipulation
 
