@@ -3104,6 +3104,42 @@ void dijkstra(int s) {
 }
 ```
 
+If you want to write compare operator().
+
+```c++
+struct cmp {
+    bool operator()(pair<int, int> a, pair<int, int> b) {
+        return a.first > b.first;
+    }
+};
+
+void dijkstra(int s) {
+    priority_queue<pair<int, int>, vector<pair<int, int>>, cmp> q;
+    q.push(make_pair(0, s));
+    dist[s] = 0;
+    while (q.size()) {
+        int cur = q.top().second;
+        q.pop();
+        if (done[cur]) continue;
+        done[cur] = true;
+        SHOW(cur, dist[cur])
+        for (int next : children[cur]) {
+            if (!done[next] && dist[next] > dist[cur] + edge[cur][next]) {
+                dist[next] = dist[cur] + edge[cur][next];
+                q.push(make_pair(dist[next], next));
+            }
+        }
+    }
+    for (int i = 0; i < n; i++) {
+        if (i != s) {
+            if (dist[i] == MAX_DIST) dist[i] = -1;
+            cout << dist[i] << " ";
+        }
+    }
+    cout << endl;
+}
+```
+
 ### 5.4 Bipartite Graph 二分图
 
 > 1. A graph is bipartite if and only if it does not contain an odd cycle.
