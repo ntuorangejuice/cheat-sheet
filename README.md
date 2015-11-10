@@ -3075,7 +3075,34 @@ for (n times of relax)
 
 > Dijkstra is good for graphs non-negative edges.
 
-> O(Vlog(E))
+> O(Vlog(E)) (?)
+
+```c++
+void dijkstra(int s) {
+    map<int, queue<int>> m;
+    dist[s] = 0;
+    m[0].push(s);
+    while (m.size()) {
+        if (!m.begin()->second.size()) {
+            m.erase(m.begin());
+            continue;
+        }
+        int cur = m.begin()->second.front();
+        m.begin()->second.pop();
+        if (done[cur]) continue;
+        done[cur] = true;
+        SHOW(cur, dist[cur])
+        for (int next : children[cur]) {
+            if (!done[next] && dist[next] > dist[cur] + edge[cur][next]) {
+                dist[next] = dist[cur] + edge[cur][next];
+                prev[next] = cur;
+                m[dist[next]].push(next);
+            }
+        }
+    }
+    cout << endl;
+}
+```
 
 ### 5.4 Bipartite Graph 二分图
 
