@@ -3127,16 +3127,10 @@ void dijkstra(int s) {
             if (!done[next] && dist[next] > dist[cur] + edge[cur][next]) {
                 dist[next] = dist[cur] + edge[cur][next];
                 q.push(make_pair(dist[next], next));
+                prev[next] = cur;
             }
         }
     }
-    for (int i = 0; i < n; i++) {
-        if (i != s) {
-            if (dist[i] == MAX_DIST) dist[i] = -1;
-            cout << dist[i] << " ";
-        }
-    }
-    cout << endl;
 }
 ```
 
