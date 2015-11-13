@@ -1615,7 +1615,302 @@ int main(int argc, char const *argv[]) {
 > O(NlogN)
 
 ```c++
-// - . -
+// 
+// https://threads-iiith.quora.com/Centroid-Decomposition-of-a-Tree
+// 
+// 
+// centroid decomposition O(NlogN)
+// 
+// codeforces 342E
+// 
+// E. Xenia and Tree
+// time limit per test5 seconds
+// memory limit per test256 megabytes
+// inputstandard input
+// outputstandard output
+// Xenia the programmer has a tree consisting of n nodes. 
+// We will consider the tree nodes indexed from 1 to n. 
+// We will also consider the first node to be initially painted red, 
+// and the other nodes — to be painted blue.
+// 
+// The distance between two tree nodes v and u is the number of edges in the shortest path between v and u.
+// 
+// Xenia needs to learn how to quickly execute queries of two types:
+// 
+// paint a specified blue node in red;
+// calculate which red node is the closest to the given one and print the shortest distance to the closest red node.
+// Your task is to write a program which will execute the described queries.
+// 
+// Input
+// The first line contains two integers n and m (2 ≤ n ≤ 105, 1 ≤ m ≤ 105) — the number of nodes in the tree and the number of queries. 
+// Next n - 1 lines contain the tree edges, the i-th line contains a pair of integers ai, bi (1 ≤ ai, bi ≤ n, ai ≠ bi) — an edge of the tree.
+// 
+// Next m lines contain queries. Each query is specified as a pair of integers ti, vi (1 ≤ ti ≤ 2, 1 ≤ vi ≤ n). 
+// If ti = 1, then as a reply to the query we need to paint a blue node vi in red. 
+// If ti = 2, then we should reply to the query by printing the shortest distance from some red node to node vi.
+// 
+// It is guaranteed that the given graph is a tree and that all queries are correct.
+// 
+// Output
+// For each second type query print the reply in a single line.
+// 
+
+#include <stdio.h>
+#include <cstring>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+const int MAX_NODE = 1 + (int)1e5 * 1;
+const int DOUBLE_MAX_NODE = 2 * MAX_NODE;
+const int INF = 2000000;
+const int MAX_NODE_LOG = 19;
+
+int n;
+int m;
+vector<int> g[MAX_NODE];
+
+// for query distance between two node
+int dis_to_root[MAX_NODE];
+
+int first_visit_time[MAX_NODE];
+int visit[DOUBLE_MAX_NODE]; // max possible number of visits to all nodes == 2 * number of nodes - 1
+int visit_counter;
+int rmq[DOUBLE_MAX_NODE][MAX_NODE_LOG];
+
+int range_minimum_query(int l, int r) {
+    if (l > r)
+        swap(l, r);
+
+    int interval_len = r - l;
+    // 
+    // get log_2(interval_len) of first_half (faster than use log(r - l) / log(2))
+    // 
+    int first_half = 0;
+    while ((1 << first_half) <= interval_len)
+        first_half++;
+    first_half--;
+
+    int second_half = r - (1 << first_half) + 1;
+    if (first_visit_time[rmq[l][first_half]] < first_visit_time[rmq[second_half][first_half]])
+        return rmq[l][first_half];
+    return rmq[second_half][first_half];
+}
+
+int dist(int x, int y) {
+    if (x == y)
+        return 0;
+    int lca = range_minimum_query(first_visit_time[x], first_visit_time[y]);
+    int dis_between = dis_to_root[x] + dis_to_root[y] - 2 * dis_to_root[lca];
+    return dis_between;
+}
+
+void euler_tour(int cur) {
+    visit[++visit_counter] = cur; // v_t[node] = time // needed in case don't have two child
+    if (first_visit_time[cur] == 0) // if first time
+        first_visit_time[cur] = visit_counter; // record time f_v_t[node] = time
+    for (int i = 0; i < g[cur].size(); i++) {
+        int next = g[cur][i];
+        if (first_visit_time[next] == 0) {
+	        dis_to_root[next] = dis_to_root[cur] + 1; // len(edge) == 1
+	        euler_tour(next);
+	        visit[++visit_counter] = cur; // every two child_visit_time have one parent_visit_time inserted between
+        }
+    }
+}
+
+void build_lca() {
+    euler_tour(1); // let 1 be root
+
+    // preprocess rmq matrix
+    for (int i = 0; i < visit_counter; i++)
+        rmq[i][0] = visit[i];
+    for (int j = 1; j < MAX_NODE_LOG; j++)
+        for (int i = 0; i < visit_counter; i++) {
+            if (i + (1 << j) > visit_counter)
+                break;
+            rmq[i][j] = rmq[i][j - 1];
+            if (first_visit_time[rmq[i][j - 1]] > first_visit_time[rmq[i + (1 << (j - 1))][j - 1]])
+                rmq[i][j] = rmq[i + (1 << (j - 1))][j-1];
+        }
+}
+
+int min_dist[MAX_NODE]; // distance to nearest festival city
+int centroid[MAX_NODE]; // index of upper level centroid node
+
+// 
+// to go to one festival city
+// we must pass some centroid node
+// 
+// to update
+// we update the distance from festival city to all direct upper level centroid node
+// 
+// to query
+// from one city to festival city
+// we must pass some centroid node
+// we only need to check all direct upper level centroid node of the query city
+// (if pass other centroid node, the distance will be longer)
+// 
+
+void query(int city) {
+	int ans = min_dist[city];
+	int cur = city;
+	while (cur != 0) { // check until top level of centroid tree
+		int d = dist(cur, city) + min_dist[cur];
+		if (ans > d)
+			ans = d;
+		cur = centroid[cur];
+	}
+	printf("%d\n", ans);
+}
+
+void update(int city) {
+	int cur = city;
+	while (cur != 0) { // update until top level of centroid tree
+		int d = dist(cur, city);
+		if (min_dist[cur] > d)
+			min_dist[cur] = d;
+		cur = centroid[cur];
+	}
+}
+
+int subtree_size[MAX_NODE];
+// int s_lazy[MAX_NODE];
+int parent[MAX_NODE];
+
+int compute_subtree(int cur) {
+	int& size = subtree_size[cur];
+	for (int i = 0; i < g[cur].size(); i++) {
+		int next = g[cur][i];
+		if (!parent[next]) {
+			parent[next] = cur;
+			size += compute_subtree(next);
+		}
+	}
+	return size;
+}
+
+bool deleted[MAX_NODE];
+void centroid_decomposite(int cur, int from, int tree_size) {
+	int half_size = tree_size / 2;
+
+	// 
+	// if subtree of cur is too small
+	// the centroid must at parent side
+	// 
+	while (cur != parent[cur] && subtree_size[cur] <= half_size)
+		cur = parent[cur];
+
+	// 
+	// check all child of cur
+	// if one child is too large
+	// the centroid must at that part
+	// until all child is small
+	// 
+	while (1) {
+		int candidate = cur;
+		for (int i = 0; i < g[cur].size(); i++) {
+			int next = g[cur][i];
+			if (!deleted[next] && next != parent[cur])
+				if (subtree_size[next] > half_size)
+					candidate = next;
+		}
+		if (candidate == cur)
+			break;
+		cur = candidate;
+	}
+
+	deleted[cur] = true;
+	centroid[cur] = from;
+	int temp = parent[cur];
+	while (temp != parent[temp]) { // update all the subtree_size of parent
+		subtree_size[temp] -= subtree_size[cur];
+		temp = parent[temp];
+	}
+
+	for (int i = 0; i < g[cur].size(); i++) {
+		int next = g[cur][i];
+		if (!deleted[next]) {
+			int next_tree; // size of next level centroid tree
+			if (next == parent[cur])
+				next_tree = tree_size - subtree_size[cur];
+			else {
+				next_tree = subtree_size[next];
+				parent[next] = next; // decomposite the tree
+			}
+			if (next_tree == 1)
+				centroid[next] = cur; // don't need to go into it
+			else
+				centroid_decomposite(next, cur, next_tree);
+		}
+	}
+}
+
+void init_tree() {
+	// 
+	// store the tree in adjacent list
+	// 
+	for (int i = 1; i < n; i++) {
+		int a, b;
+		scanf("%d %d", &a, &b);
+		g[a].push_back(b);
+		g[b].push_back(a);
+	}
+	// 
+	// for query distance between two node
+	// 
+	build_lca();
+
+	// 
+	// for centroid decomposition
+	// 
+	// compute size of all subtree
+	// and 
+	// get parent of each node
+	// 
+	fill(subtree_size, subtree_size + n + 1, 1); // initialized each to be 1 (itself)
+	parent[1] = 1;
+	compute_subtree(1);
+
+	// 
+	// do centroid decomposite
+	// so each centroid tree split parent tree into even size
+	// so can traverse from each node to root in log(n) time
+	// 
+	centroid_decomposite(1, 0, n);
+
+	// 
+	// initialize all the distance to INF = 200000 (a random big value > N)
+	// 
+	fill(min_dist, min_dist + n + 1, INF);
+}
+
+
+// 
+// time complexity
+// preprocess O(nlog(n))
+// query O(log(n))
+// update O(log(n))
+// overall O(nlog(n) + mlog(n))
+// 
+int main() {
+	scanf("%d %d", &n, &m);
+	init_tree();
+
+	// 
+	// initially 1 is festive city
+	// 
+	update(1);
+	int q, c;
+	while (m--) {
+		scanf("%d %d", &q, &c);
+		if (q == 1)
+			update(c);
+		else
+			query(c);
+	}
+}
 ```
 
 ### 2.3 Trie / Trie Graph / AC Automaton
