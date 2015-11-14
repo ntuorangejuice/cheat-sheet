@@ -71,7 +71,8 @@
 - [2. Advanced Data Structures](#2-advanced-data-structures)
   - [2.1 Heap](#21-heap)
   - [2.2 Tree](#22-tree)
-    - [2.2.1 Tree Traversal](#221-tree-traversal)
+    - [2.2.0 Tree Traversal](#220-tree-traversal)
+    - [2.2.1 Pointer Jumping](#221-pointer-jumping)
     - [2.2.2 Heavy-Light Decomposition](#222-heavy-light-decomposition)
     - [2.2.3 Lowest Common Ancestor](#223-lowest-common-ancestor)
       - [2.2.3.1 Tarjan's Off-line Algorithm](#2231-tarjans-off-line-algorithm)
@@ -823,7 +824,55 @@ struct HiHeap {
 
 ### 2.2 Tree
 
-#### 2.2.1 Tree Traversal
+#### 2.2.0 Tree Traversal
+
+#### 2.2.1 Pointer Jumping
+
+> Initialize: O(Nlog(N))
+> 
+> Query: O(Nlog(N))
+
+```c++
+#define MAX_NODE 100030
+#define MAX_NODE_LOG 20
+
+#define TREE_ROOT 0
+vector<int> g[MAX_NODE];
+vector<int> parent_jump[MAX_NODE];
+vector<int> path;
+
+void init_jump(int cur = TREE_ROOT) {
+	int d = 1;
+	while (true) {
+		int index = path.size() - d;
+		if (index < 0)
+			break;
+		parent_jump[cur].push_back(path[index]);
+		d <<= 1;
+	}
+	path.push_back(cur);
+
+    for (int i = 0; i < g[cur].size(); i++) {
+        int nx = g[cur][i];
+        if (cur == TREE_ROOT || nx != parent_jump[cur][0]) {
+            init_jump(nx);
+        }
+    }
+    path.pop_back();
+}
+
+int go_up(int cur, int dis) {
+	int mask = 1;
+	int index = 0;
+	while (mask <= dis) {
+		if (dis & mask)
+			cur = parent_jump[cur][index];
+		mask <<= 1;
+		index++;
+	}
+	return cur;
+}
+```
 
 #### 2.2.2 Heavy-Light Decomposition
 
