@@ -1198,13 +1198,14 @@ struct Graph {
     }
 
     void heavy_light_decomposition() {
-        parent[1] = -1;
-        assert(n == size_parent(1));
+        int root = 1;
+        parent[root] = -1;
+        assert(n == size_parent(root));
         
         chain_total = 0;
         chain.clear();
 
-        hld(1, 0);
+        hld(root, 0);
         chain_total++;
     }
     void show_hld() {
@@ -1226,9 +1227,7 @@ struct Graph {
 	        int cn1 = chain_no[e.from];
 	        int cn2 = chain_no[e.to];
 
-	        if (cn1 != cn2)
-	        	;
-	        else {
+	        if (cn1 == cn2) {
 	        	int cp1 = chain_pos[e.from];
 		        int cp2 = chain_pos[e.to];
 		        if (cp1 > cp2)

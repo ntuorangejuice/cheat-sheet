@@ -930,176 +930,6 @@ int go_up(int cur, int dis) {
 > Overhead: O(log(N))
 
 ```c++
-// 
-// CodeForces 593D
-// 
-// sol 1 - path must < 64 - not straightforward
-// sol 2 - Heavy-Light Decomposition + Segment Tree + Math - not straightforward
-// 
-// floor( floor(A / B) / C) = floor(A / (B * C))
-// 
-
-#include <stdio.h>
-#include <sstream>
-#include <iomanip>
-#include <cstring>
-#include <cmath>
-#include <algorithm>
-#include <climits>
-#include <vector>
-#include <stack>
-#include <queue>
-#include <set>
-// #include <unordered_set>
-#include <map>
-// #include <unordered_map>
-#include <cassert>
-
-#define SHOW(...) {;}
-#define REACH_HERE {;}
-#define LOG(s, ...) {;}
-#define LOGLN(s, ...) {;}
-
-// #undef HHHDEBUG
-#ifdef HHHDEBUG
-#include "template.h"
-#endif
-
-using namespace std;
-
-int len(unsigned long long x) {
-	if (x == 0)
-		return 1;
-
-	int ret = 0;
-	while (x > 0) {
-		ret++;
-		x /= 10;
-	}
-	return ret;
-}
-
-unsigned long long will_boom(unsigned long long a, unsigned long long b) {
-    if (a == ULLONG_MAX || b == ULLONG_MAX)
-        return ULLONG_MAX;
-    
-	int la = len(a);
-	int lb = len(b);
-	if (la - 1 + lb - 1 + 1 > 20)
-		return ULLONG_MAX;
-	return a * b;
-}
-
-struct SegmentTree {
-    struct Node {
-        int l;
-        int r;
-        unsigned long long accu;
-    };
-
-    int r_most;
-    vector<Node> node;
-    void init(int rm) {
-        r_most = rm;
-
-        int tree_range = r_most + 1;
-        if (tree_range <= 0)
-            return ;
-
-        int tree_size = 1;
-        while (tree_size <= tree_range)
-            tree_size <<= 1;
-        if (__builtin_popcount(tree_range) != 1) // count number of '1' bits
-            tree_size <<= 1;
-
-        node.resize(tree_size);
-
-        Node& root = node[1];
-        root.l = 0;
-        root.r = r_most;
-        root.accu = 1;
-        for (int i = 2; i < node.size(); i++) {
-            Node& cur = node[i];
-            cur.accu = 1;
-
-            const Node& par = node[i / 2];
-            if (par.l == par.r)
-                continue;
-            int m = (par.l + par.r) / 2;
-            if (i & 1) {
-                cur.l = m + 1;
-                cur.r = par.r;
-            }
-            else {
-                cur.l = par.l;
-                cur.r = m;
-            }
-        }
-
-        // SHOW("init")
-        // show();
-    }
-
-    void show() {
-        SHOW("SegmentTree", r_most)
-        for (int i = 1; i < node.size(); i++) {
-            Node& cur = node[i];
-            SHOW(i, cur.l, cur.r, cur.accu)
-        }
-    }
-
-    void update(int l, int r, unsigned long long new_y, int i = 1) {
-        Node& cur = node[i];
-
-        if (cur.l == cur.r) {
-        	cur.accu = new_y;
-        	return ;
-        }
-
-        int m = (cur.l + cur.r) / 2;
-        int il = i * 2;
-        int ir = il + 1;
-
-        if (l <= m)
-        	update(l, r, new_y, il);
-        else
-        	update(l, r, new_y, ir);
-
-        cur.accu = will_boom(node[il].accu, node[ir].accu);
-    }
-
-    unsigned long long query(int l, int r, int i = 1) {
-        if (l > r)
-            return 1;
-
-        Node& cur = node[i];
-        if (l <= cur.l && cur.r <= r)
-        	return cur.accu;
-
-        if (r < cur.l || cur.r < l) {
-        	REACH_HERE
-        	return -1;
-        }
-
-        int m = (cur.l + cur.r) / 2;
-        int il = i * 2;
-        int ir = il + 1;
-
-        unsigned long long ans = 1;
-        if (l <= m) {
-        	unsigned long long temp_l = query(l, r, il);
-            ans = will_boom(ans, temp_l);
-        }
-        
-        if (m < r) {
-        	unsigned long long temp_r = query(l, r, ir);
-            ans = will_boom(ans, temp_r);
-        }
-
-        return ans;
-    }
-};
-
 struct Graph {
     map<pair<int, int>, int> node_edge;
 
@@ -1226,9 +1056,7 @@ struct Graph {
 	        int cn1 = chain_no[e.from];
 	        int cn2 = chain_no[e.to];
 
-	        if (cn1 != cn2)
-	        	;
-	        else {
+	        if (cn1 == cn2) {
 	        	int cp1 = chain_pos[e.from];
 		        int cp2 = chain_pos[e.to];
 		        if (cp1 > cp2)
@@ -1239,64 +1067,6 @@ struct Graph {
         
         // for (int i = 0; i < chain_total; i++)
         // 	st[i].show();
-    }
-
-    void update(int p, unsigned long long c) {
-        p *= 2;
-    	Edge& e = edge[p];
-        e.y = edge[p + 1].y = c;
-
-        int cn1 = chain_no[e.from];
-        int cn2 = chain_no[e.to];
-        if (cn1 == cn2) {
-            int cp1 = chain_pos[e.from];
-            int cp2 = chain_pos[e.to];
-            if (cp1 > cp2)
-                swap(cp1, cp2);
-            st[cn1].update(cp1, cp2 - 1, c);	
-        }
-    }
-
-    unsigned long long query(int a, int b, unsigned long long y) {
-        unsigned long long accu = 1;
-        while (true) {
-        	int cn1 = chain_no[a];
-        	int cn2 = chain_no[b];
-
-            if (chain[cn1].head_depth < chain[cn2].head_depth)
-                swap(a, b), swap(cn1, cn2);
-
-        	if (cn1 == cn2) {
-        		int cp1 = chain_pos[a];
-        		int cp2 = chain_pos[b];
-        		if (cp1 > cp2)
-        			swap(cp1, cp2);
-        		unsigned long long temp = st[cn1].query(cp1, cp2 - 1);
-        		accu = will_boom(accu, temp);
-        		break;
-        	}
-
-
-        	if (a != chain[cn1].head) {
-        		int ha = chain[cn1].head;
-                int cp1 = chain_pos[ha];
-                int cp2 = chain_pos[a];
-                if (cp1 > cp2)
-                    swap(cp1, cp2);
-        		unsigned long long temp = st[cn1].query(cp1, cp2 - 1);
-        		accu = will_boom(accu, temp);
-        		a = ha;
-        	}
-            
-            int pa = parent[a];
-            unsigned long long temp = edge[node_edge[make_pair(a, pa)]].y;
-            accu = will_boom(temp, accu);
-            a = parent[a];
-        }
-
-        if (accu == 0) // no idea why would be 0
-            return 0;
-        return y / accu;
     }
 };
 
@@ -1316,25 +1086,7 @@ int main() {
 
     g.heavy_light_decomposition();
     // g.show_hld();
-    g.init_sol(); 
-
-    for (int i = 0; i < m; i++) {
-        int op;
-        scanf("%d", &op);
-        if (op == 1) {
-        	int a, b;
-        	unsigned long long y;
-            scanf("%d %d %llu", &a, &b, &y);
-            unsigned long long ans = g.query(a, b, y);
-            printf("%llu\n", ans);
-        }
-        else {
-        	int p;
-        	unsigned long long c;
-            scanf("%d %llu", &p, &c);
-            g.update(p - 1, c);
-        }
-    }
+    g.init_sol();
 }
 ```
 
