@@ -492,69 +492,6 @@ void stack::pop();
 #include <queue>
 ```
 
-```C++
-// constructor
-priority_queue<int> my_priority_queue;
-priority_queue<int, vector<int>, greater<int> > two_priority_queue; // if use greater<int>, must have vector<int>
-priority_queue<My_type, vector<My_type>, Comparator_class> my_priority_queue (my_data.begin(), my_data.end()); // use Comparator_class as comparator, use vector<My_type> as container, copy my_data into my_priority_queue
-
-bool priority_queue::empty() const; // return true if empty, false if not
-size_type priority_queue::size() const; // return size of queue
-const_reference priority_queue::top() const; // returns a constant reference to the top element
-void priority_queue::push(const value_type& val); // inserts a new element, initialize to val
-void priority_queue::pop(); // removes the element on top
-```
-```C++
-struct My_type {
-    int weight;
-    int other;
-};
-
-struct My_class_for_compare {
-    public:
-        bool operator() (My_type a, My_type b) {
-            return a.weight < b.weight;
-        }
-};
-
-vector<My_type> my_vector = {(My_type){2, 789}, (My_type){1, 127}, (My_type){3, 456}};
-
-priority_queue<My_type, vector<My_type>, My_class_for_compare> one_priority_queue (my_vector.begin(), my_vector.end());
-one_priority_queue.push((My_type){4, 483});
-while (one_priority_queue.size() != 0) {
-    My_type temp = one_priority_queue.top();
-    one_priority_queue.pop();
-    SHOW_B(temp.weight, temp.other);
-}
-
-vector<int> my_int = {2, 3, 1};
-
-priority_queue<int, vector<int>, greater<int> > two_priority_queue (my_int.begin(), my_int.end());
-while (two_priority_queue.size() != 0) {
-    SHOW_A(two_priority_queue.top());
-    two_priority_queue.pop();
-}
-
-priority_queue<int> three_priority_queue (my_int.begin(), my_int.end());
-while (three_priority_queue.size() != 0) {
-    SHOW_A(three_priority_queue.top());
-    three_priority_queue.pop();
-}
-
-
-// output
-// temp.weight = 4, temp.other = 483
-// temp.weight = 3, temp.other = 456
-// temp.weight = 2, temp.other = 789
-// temp.weight = 1, temp.other = 127
-// two_priority_queue.top() = 1
-// two_priority_queue.top() = 2
-// two_priority_queue.top() = 3
-// three_priority_queue.top() = 3
-// three_priority_queue.top() = 2
-// three_priority_queue.top() = 1
-```
-
 ## 2. Advanced Data Structures
 
 ### 2.1 Heap
