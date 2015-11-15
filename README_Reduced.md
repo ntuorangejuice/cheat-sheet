@@ -216,79 +216,18 @@ int main() {
 
 ### 1.2 Strings
 
-#### 1.2.1 C++ String
-
-##### read one line
-
-getline()
-
 ```C++
 string a;
 getline(cin, a);
 cout << a << endl;
-```
-
-Input
-
-```
-Hello World!!!
-```
-
-Output
-
-```
-Hello World!!!
-```
-
-##### Convert to char array
-
-```C++
-string cppstr = "this is a string";
 char target[1024];
 strcpy(target, cppstr.c_str());
-```
-
-#### 1.2.2 C String (Character Array)
-
-##### Input C String
-
-gets()
-
-> Reads characters from the standard input (stdin) and stores them as a C string into str until a newline character or the end-of-file is reached.
-
-```c++
 char s[12];
-gets(s);
-cout << "\"" << s << "\"" << ", length: " << strlen(s) << endl;
-```
-
-Input
-
-```
-hello world
-new line
-```
-
-Output
-
-```
-"hello world", length: 11
-```
-
-##### Convert to C++ string
-
-```c++
-char arrstr[] = "this is a string";
+gets(s);   // till new line or EOF.
 string target = string(arr);
 ```
 
 ### 1.3 STL Algorithm
-
-> Include the algorithm library if you do not use the solution template.
-
-```C++
-#include <algorithm>
-```
 
 #### 1.3.1 Permutation
 
@@ -296,94 +235,32 @@ Usage
 ```c++
 bool next_permutation (BidirectionalIterator first, BidirectionalIterator last);
 bool next_permutation (BidirectionalIterator first, BidirectionalIterator last, Compare comp);
-```
-
-Example
-
-```C++
-// next_permutation example
-#include <iostream>     // std::cout
-#include <algorithm>    // std::next_permutation, std::sort
-
-int main () {
-  int myints[] = {1,2,3};
-
-  std::sort (myints,myints+3);
-
-  std::cout << "The 3! possible permutations with 3 elements:\n";
-  do {
+do {
     std::cout << myints[0] << ' ' << myints[1] << ' ' << myints[2] << '\n';
-  } while ( std::next_permutation(myints,myints+3) );
-
-  std::cout << "After loop: " << myints[0] << ' ' << myints[1] << ' ' << myints[2] << '\n';
-
-  return 0;
-}
+} while ( std::next_permutation(myints,myints+3) );
 ```
 
-Output
-
-```
-The 3! possible permutations with 3 elements:
-1 2 3
-1 3 2
-2 1 3
-2 3 1
-3 1 2
-3 2 1
-After loop: 1 2 3
-```
-
-#### 1.3.2 Binary Search
-
-Usage
+#### 1.3.2 Binary Search & Lower Bound
 
 ```C++
 bool binary_search (ForwardIterator first, ForwardIterator last, const T& val, Compare comp);
 // return true if found, false if not
-```
-
-#### 1.3.3 Lower Bound
-
-> Returns an iterator pointing to the first element in the range [first,last) which does not compare less than val.
-
-Usage
-
-```c++
 ForwardIterator lower_bound (ForwardIterator first, ForwardIterator last, const T& val, Compare comp);
 ```
 
 #### 1.3.4 Swap
-
-Usage
 
 ```c++
 void swap (T& a, T& b);
 void iter_swap (ForwardIterator1 a, ForwardIterator2 b);
 ```
 
-`iter_swap` example
-
-```C++
-int myints[]={10,20,30,40,50 };              //   myints:  10  20  30  40  50
-std::vector<int> myvector (4,99);            // myvector:  99  99  99  99
-
-std::iter_swap(myints + 3,myvector.begin() + 2); //   myints:  99  20  30 [99] 50
-                                             // myvector:  10  99 [40] 99
-```
-
 #### 1.3.5 Heap
-
-// not completed
-
-// TODO add method and example to maintain the size of vector
 
 * make_heap: Rearranges the elements in the range [first,last) in such a way that they form a heap. The element with the highest value is always pointed by first.
 * pop_heap: Rearranges the elements in the heap range [first,last) in such a way that the part considered a heap is shortened by one: The element with the highest value is moved to (last-1).
 * push_heap: Given a heap in the range [first,last-1), this function extends the range considered a heap to [first,last) by placing the value in (last-1) into its corresponding location within it.
 * sort_heap: Sorts the elements in the heap range [first,last) into ascending order.
-
-Usage
 
 ```c++
 void make_heap (RandomAccessIterator first, RandomAccessIterator last, Compare comp);
@@ -399,10 +276,6 @@ Note: Priority queue is more recommeneded.
 
 #### 1.3.6 Sort
 
-> Sorts the elements in the range [first,last) into ascending order.
-`stable_sort` preserves the relative order of the elements with equivalent values.
-
-Usage
 
 ```c++
 void sort (RandomAccessIterator first, RandomAccessIterator last, Compare comp);
@@ -420,9 +293,7 @@ set<T, decltype(cmp)> a_set_with_customized_comparator(cmp);
 
 ##### Compare function
 
-> Binary function that accepts two elements in the range as arguments, and returns a value convertible to bool. It should returns true if the first element is considered to be "smaller" than the second one.
-
-Using by `sort`, `make_heap` and etc.
+> Using by `sort`, `make_heap` and etc.
 
 ```c++
 bool myfunction (int i,int j) { return (i<j); }
@@ -436,30 +307,8 @@ Member function
 ```c++
 struct Edge {
    int from, to, weight;
-	bool operator<(Edge that) const {
+	bool operator<(Edge that) const {  // or (const Edge& that)
         return weight > that.weight;
-    }
-};
-```
-
-verbal version
-
-```c++
-struct Edge {
-   int from, to, weight;
-	bool operator<(const Edge& that) const {
-        return this->weight > that.weight;
-    }
-};
-```
-
-Non-member function
-
-```c++
-struct Edge {
-    int from, to, weight;
-    friend bool operator<(Edge a, Edge b) {
-        return a.weight > b.weight;
     }
 };
 ```
@@ -489,11 +338,7 @@ Used by `priority_queue `.
 
 ### 1.4 STL Containers
 
-A container is a holder object that stores a collection of other objects (its elements). They are implemented as class templates, which allows a great flexibility in the types supported as elements.
-
 #### 1.4.1 Map
-
-> Maps are associative containers that store elements formed by a combination of a key value and a mapped value, following a specific order.
 
 ```c++
 #include <map>
@@ -527,24 +372,6 @@ clear()
 find() // if not found, return end()
 count() // return 1 or 0
 ```
-
-> TODO add more interface
-
-
-##### Red-black Tree
-
-C++ map is implemented as a red-black tree.
-
-A red–black tree is a data structure which is a type of self-balancing binary search tree.
-
-In addition to the requirements imposed on a binary search tree the following must be satisfied by a red–black tree:
-
-1. A node is either red or black.
-2. The root is black. (This rule is sometimes omitted. Since the root can always be changed from red to black, but not necessarily vice-versa, this rule has little effect on analysis.)
-3. All leaves (NIL) are black. (All leaves are same color as the root.)
-4. Every red node must have two black child nodes.
-5. Every path from a given node to any of its descendant leaves contains the same number of black nodes.
-
 
 ##### Hash Map (Unordered Map)
 
