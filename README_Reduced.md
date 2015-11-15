@@ -488,8 +488,18 @@ void stack::pop();
 
 #### 1.4.8 Priority Queue
 
-``` c++
+```C++
 #include <queue>
+// constructor
+priority_queue<int> my_priority_queue;
+priority_queue<int, vector<int>, greater<int> > two_priority_queue; // if use greater<int>, must have vector<int>
+priority_queue<My_type, vector<My_type>, Comparator_class> my_priority_queue (my_data.begin(), my_data.end()); // use Comparator_class as comparator, use vector<My_type> as container, copy my_data into my_priority_queue
+
+bool priority_queue::empty() const; // return true if empty, false if not
+size_type priority_queue::size() const; // return size of queue
+const_reference priority_queue::top() const; // returns a constant reference to the top element
+void priority_queue::push(const value_type& val); // inserts a new element, initialize to val
+void priority_queue::pop(); // removes the element on top
 ```
 
 ## 2. Advanced Data Structures
