@@ -830,7 +830,7 @@ struct HiHeap {
 
 > Initialize: O(Nlog(N))
 > 
-> Query: O(Nlog(N))
+> Query: O(log(N))
 
 ```c++
 #define MAX_NODE 100030
