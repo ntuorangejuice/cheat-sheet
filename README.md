@@ -872,6 +872,55 @@ int go_up(int cur, int dis) {
 	}
 	return cur;
 }
+=======
+#### 2.2.0 Tree Traversal
+
+#### 2.2.1 Pointer Jumping
+
+> Initialize: O(Nlog(N))
+> 
+> Query: O(Nlog(N))
+
+```c++
+#define MAX_NODE 100030
+#define MAX_NODE_LOG 20
+
+#define TREE_ROOT 0
+vector<int> g[MAX_NODE];
+vector<int> parent_jump[MAX_NODE];
+vector<int> path;
+
+void init_jump(int cur = TREE_ROOT) {
+	int d = 1;
+	while (true) {
+		int index = path.size() - d;
+		if (index < 0)
+			break;
+		parent_jump[cur].push_back(path[index]);
+		d <<= 1;
+	}
+	path.push_back(cur);
+
+    for (int i = 0; i < g[cur].size(); i++) {
+        int nx = g[cur][i];
+        if (cur == TREE_ROOT || nx != parent_jump[cur][0]) {
+            init_jump(nx);
+        }
+    }
+    path.pop_back();
+}
+
+int go_up(int cur, int dis) {
+	int mask = 1;
+	int index = 0;
+	while (mask <= dis) {
+		if (dis & mask)
+			cur = parent_jump[cur][index];
+		mask <<= 1;
+		index++;
+	}
+	return cur;
+}
 ```
 
 #### 2.2.2 Heavy-Light Decomposition
@@ -1959,6 +2008,73 @@ int main() {
 		else
 			query(c);
 	}
+}
+```
+Key functions
+
+```C++
+int dfs_size(int cur, int from) {
+    int total = 1;
+    for (int child : tree[cur].children) {
+        if (child == from) continue;
+        total += dfs_size(child, cur);
+    }
+    tree[cur].size = total;
+    return total;
+}
+
+void find_centroid(int cur, int from) {
+    #ifdef DEBUG
+        cout << "find centroid for " << cur << " from " << from << endl;
+    #endif
+    // SHOW(cur)
+    // finish condition
+    if (tree[cur].size == 1) {
+        tree[cur].c_parent = from;
+    }
+    // check if current node is centroid.
+    int max_child_size = 0, max_child;
+    for (int child : tree[cur].children) {
+        // if (child == from) continue;
+        if (tree[child].c_parent != -1) continue;
+        if (tree[child].size > max_child_size) {
+            max_child_size = tree[child].size;
+            max_child = child;
+        }
+    }
+    if (max_child_size > tree[cur].size / 2) {
+        // move root
+        tree[max_child].size = tree[cur].size;
+        tree[cur].size -= max_child_size;
+        find_centroid(max_child, from);
+    } else {
+        // cur is centroid
+        tree[cur].c_parent = from;
+        if (from == 0) ctree_root = cur;
+        for (int child : tree[cur].children) {
+            // if (child == from) continue;
+            if (tree[child].c_parent != -1) continue;
+            find_centroid(child, cur);
+        }
+    }
+}
+
+void color(int cur) {
+    int parent = cur;
+    while (parent) {
+        tree[parent].closest = min(tree[parent].closest, distance(cur, parent));
+        parent = tree[parent].c_parent;
+    }
+}
+
+int query(int cur) {
+    int ans = MAX_N;
+    int parent = cur;
+    while (parent) {
+        ans = min(ans, tree[parent].closest + distance(cur, parent));
+        parent = tree[parent].c_parent;
+    }
+    return ans;
 }
 ```
 
