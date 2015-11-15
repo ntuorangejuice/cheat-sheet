@@ -1961,6 +1961,73 @@ int main() {
 	}
 }
 ```
+Key functions
+
+```C++
+int dfs_size(int cur, int from) {
+    int total = 1;
+    for (int child : tree[cur].children) {
+        if (child == from) continue;
+        total += dfs_size(child, cur);
+    }
+    tree[cur].size = total;
+    return total;
+}
+
+void find_centroid(int cur, int from) {
+    #ifdef DEBUG
+        cout << "find centroid for " << cur << " from " << from << endl;
+    #endif
+    // SHOW(cur)
+    // finish condition
+    if (tree[cur].size == 1) {
+        tree[cur].c_parent = from;
+    }
+    // check if current node is centroid.
+    int max_child_size = 0, max_child;
+    for (int child : tree[cur].children) {
+        // if (child == from) continue;
+        if (tree[child].c_parent != -1) continue;
+        if (tree[child].size > max_child_size) {
+            max_child_size = tree[child].size;
+            max_child = child;
+        }
+    }
+    if (max_child_size > tree[cur].size / 2) {
+        // move root
+        tree[max_child].size = tree[cur].size;
+        tree[cur].size -= max_child_size;
+        find_centroid(max_child, from);
+    } else {
+        // cur is centroid
+        tree[cur].c_parent = from;
+        if (from == 0) ctree_root = cur;
+        for (int child : tree[cur].children) {
+            // if (child == from) continue;
+            if (tree[child].c_parent != -1) continue;
+            find_centroid(child, cur);
+        }
+    }
+}
+
+void color(int cur) {
+    int parent = cur;
+    while (parent) {
+        tree[parent].closest = min(tree[parent].closest, distance(cur, parent));
+        parent = tree[parent].c_parent;
+    }
+}
+
+int query(int cur) {
+    int ans = MAX_N;
+    int parent = cur;
+    while (parent) {
+        ans = min(ans, tree[parent].closest + distance(cur, parent));
+        parent = tree[parent].c_parent;
+    }
+    return ans;
+}
+```
 
 ### 2.3 Trie / Trie Graph / AC Automaton
 
