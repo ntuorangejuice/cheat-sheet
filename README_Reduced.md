@@ -31,7 +31,6 @@
 
 - [1. Basic](#1-basic)
   - [1.1 C++ Solution Template](#11-c-solution-template)
-    - [1.1.1 Optional include list](#111-optional-include-list)
   - [1.2 Strings](#12-strings)
     - [1.2.1 C++ String](#121-c-string)
       - [read one line](#read-one-line)
@@ -69,7 +68,6 @@
     - [1.4.7 Stack](#147-stack)
     - [1.4.8 Priority Queue](#148-priority-queue)
 - [2. Advanced Data Structures](#2-advanced-data-structures)
-  - [2.1 Heap](#21-heap)
   - [2.2 Tree](#22-tree)
     - [2.2.0 Tree Traversal](#220-tree-traversal)
     - [2.2.1 Pointer Jumping](#221-pointer-jumping)
@@ -88,8 +86,6 @@
   - [2.6 Binary Indexed Tree](#26-binary-indexed-tree)
   - [2.7 Segment Tree](#27-segment-tree)
     - [2.7.0 Range Update + Range Query](#270-range-update--range-query)
-    - [2.7.1 Color](#271-color)
-    - [2.7.2 Range Sum + Range Replace](#272-range-sum--range-replace)
     - [2.7.3 Range Minimum Query RMQ](#273-range-minimum-query-rmq)
 - [3. Methodology](#3-methodology)
   - [3.0 Greedy](#30-greedy)
@@ -194,40 +190,81 @@ int main() {
 }
 ```
 
-#### 1.1.1 Optional include list
-
-> Use it when there is no `bits/stdc++.h`
-
-```c++
-#include <iostream>
-#include <cstring>
-#include <cmath>
-#include <algorithm>
-#include <climits>
-#include <stack>
-#include <queue>
-#include <vector>
-#include <set>
-#include <map>
-#include <list>
-#include <cassert>
-#include <unordered_map>
-```
-
 ### 1.2 Strings
+
+#### 1.2.1 C++ String
+
+##### read one line
+
+getline()
 
 ```C++
 string a;
 getline(cin, a);
 cout << a << endl;
+```
+
+Input
+
+```
+Hello World!!!
+```
+
+Output
+
+```
+Hello World!!!
+```
+
+##### Convert to char array
+
+```C++
+string cppstr = "this is a string";
 char target[1024];
 strcpy(target, cppstr.c_str());
+```
+
+#### 1.2.2 C String (Character Array)
+
+##### Input C String
+
+gets()
+
+> Reads characters from the standard input (stdin) and stores them as a C string into str until a newline character or the end-of-file is reached.
+
+```c++
 char s[12];
-gets(s);   // till new line or EOF.
+gets(s);
+cout << "\"" << s << "\"" << ", length: " << strlen(s) << endl;
+```
+
+Input
+
+```
+hello world
+new line
+```
+
+Output
+
+```
+"hello world", length: 11
+```
+
+##### Convert to C++ string
+
+```c++
+char arrstr[] = "this is a string";
 string target = string(arr);
 ```
 
 ### 1.3 STL Algorithm
+
+> Include the algorithm library if you do not use the solution template.
+
+```C++
+#include <algorithm>
+```
 
 #### 1.3.1 Permutation
 
@@ -235,32 +272,94 @@ Usage
 ```c++
 bool next_permutation (BidirectionalIterator first, BidirectionalIterator last);
 bool next_permutation (BidirectionalIterator first, BidirectionalIterator last, Compare comp);
-do {
-    std::cout << myints[0] << ' ' << myints[1] << ' ' << myints[2] << '\n';
-} while ( std::next_permutation(myints,myints+3) );
 ```
 
-#### 1.3.2 Binary Search & Lower Bound
+Example
+
+```C++
+// next_permutation example
+#include <iostream>     // std::cout
+#include <algorithm>    // std::next_permutation, std::sort
+
+int main () {
+  int myints[] = {1,2,3};
+
+  std::sort (myints,myints+3);
+
+  std::cout << "The 3! possible permutations with 3 elements:\n";
+  do {
+    std::cout << myints[0] << ' ' << myints[1] << ' ' << myints[2] << '\n';
+  } while ( std::next_permutation(myints,myints+3) );
+
+  std::cout << "After loop: " << myints[0] << ' ' << myints[1] << ' ' << myints[2] << '\n';
+
+  return 0;
+}
+```
+
+Output
+
+```
+The 3! possible permutations with 3 elements:
+1 2 3
+1 3 2
+2 1 3
+2 3 1
+3 1 2
+3 2 1
+After loop: 1 2 3
+```
+
+#### 1.3.2 Binary Search
+
+Usage
 
 ```C++
 bool binary_search (ForwardIterator first, ForwardIterator last, const T& val, Compare comp);
 // return true if found, false if not
+```
+
+#### 1.3.3 Lower Bound
+
+> Returns an iterator pointing to the first element in the range [first,last) which does not compare less than val.
+
+Usage
+
+```c++
 ForwardIterator lower_bound (ForwardIterator first, ForwardIterator last, const T& val, Compare comp);
 ```
 
 #### 1.3.4 Swap
+
+Usage
 
 ```c++
 void swap (T& a, T& b);
 void iter_swap (ForwardIterator1 a, ForwardIterator2 b);
 ```
 
+`iter_swap` example
+
+```C++
+int myints[]={10,20,30,40,50 };              //   myints:  10  20  30  40  50
+std::vector<int> myvector (4,99);            // myvector:  99  99  99  99
+
+std::iter_swap(myints + 3,myvector.begin() + 2); //   myints:  99  20  30 [99] 50
+                                             // myvector:  10  99 [40] 99
+```
+
 #### 1.3.5 Heap
+
+// not completed
+
+// TODO add method and example to maintain the size of vector
 
 * make_heap: Rearranges the elements in the range [first,last) in such a way that they form a heap. The element with the highest value is always pointed by first.
 * pop_heap: Rearranges the elements in the heap range [first,last) in such a way that the part considered a heap is shortened by one: The element with the highest value is moved to (last-1).
 * push_heap: Given a heap in the range [first,last-1), this function extends the range considered a heap to [first,last) by placing the value in (last-1) into its corresponding location within it.
 * sort_heap: Sorts the elements in the heap range [first,last) into ascending order.
+
+Usage
 
 ```c++
 void make_heap (RandomAccessIterator first, RandomAccessIterator last, Compare comp);
@@ -276,6 +375,10 @@ Note: Priority queue is more recommeneded.
 
 #### 1.3.6 Sort
 
+> Sorts the elements in the range [first,last) into ascending order.
+`stable_sort` preserves the relative order of the elements with equivalent values.
+
+Usage
 
 ```c++
 void sort (RandomAccessIterator first, RandomAccessIterator last, Compare comp);
@@ -293,7 +396,9 @@ set<T, decltype(cmp)> a_set_with_customized_comparator(cmp);
 
 ##### Compare function
 
-> Using by `sort`, `make_heap` and etc.
+> Binary function that accepts two elements in the range as arguments, and returns a value convertible to bool. It should returns true if the first element is considered to be "smaller" than the second one.
+
+Using by `sort`, `make_heap` and etc.
 
 ```c++
 bool myfunction (int i,int j) { return (i<j); }
@@ -307,8 +412,30 @@ Member function
 ```c++
 struct Edge {
    int from, to, weight;
-	bool operator<(Edge that) const {  // or (const Edge& that)
+	bool operator<(Edge that) const {
         return weight > that.weight;
+    }
+};
+```
+
+verbal version
+
+```c++
+struct Edge {
+   int from, to, weight;
+	bool operator<(const Edge& that) const {
+        return this->weight > that.weight;
+    }
+};
+```
+
+Non-member function
+
+```c++
+struct Edge {
+    int from, to, weight;
+    friend bool operator<(Edge a, Edge b) {
+        return a.weight > b.weight;
     }
 };
 ```
@@ -338,7 +465,11 @@ Used by `priority_queue `.
 
 ### 1.4 STL Containers
 
+A container is a holder object that stores a collection of other objects (its elements). They are implemented as class templates, which allows a great flexibility in the types supported as elements.
+
 #### 1.4.1 Map
+
+> Maps are associative containers that store elements formed by a combination of a key value and a mapped value, following a specific order.
 
 ```c++
 #include <map>
@@ -372,6 +503,24 @@ clear()
 find() // if not found, return end()
 count() // return 1 or 0
 ```
+
+> TODO add more interface
+
+
+##### Red-black Tree
+
+C++ map is implemented as a red-black tree.
+
+A red–black tree is a data structure which is a type of self-balancing binary search tree.
+
+In addition to the requirements imposed on a binary search tree the following must be satisfied by a red–black tree:
+
+1. A node is either red or black.
+2. The root is black. (This rule is sometimes omitted. Since the root can always be changed from red to black, but not necessarily vice-versa, this rule has little effect on analysis.)
+3. All leaves (NIL) are black. (All leaves are same color as the root.)
+4. Every red node must have two black child nodes.
+5. Every path from a given node to any of its descendant leaves contains the same number of black nodes.
+
 
 ##### Hash Map (Unordered Map)
 
@@ -488,8 +637,11 @@ void stack::pop();
 
 #### 1.4.8 Priority Queue
 
-```C++
+``` c++
 #include <queue>
+```
+
+```C++
 // constructor
 priority_queue<int> my_priority_queue;
 priority_queue<int, vector<int>, greater<int> > two_priority_queue; // if use greater<int>, must have vector<int>
@@ -501,152 +653,61 @@ const_reference priority_queue::top() const; // returns a constant reference to 
 void priority_queue::push(const value_type& val); // inserts a new element, initialize to val
 void priority_queue::pop(); // removes the element on top
 ```
+```C++
+struct My_type {
+    int weight;
+    int other;
+};
+
+struct My_class_for_compare {
+    public:
+        bool operator() (My_type a, My_type b) {
+            return a.weight < b.weight;
+        }
+};
+
+vector<My_type> my_vector = {(My_type){2, 789}, (My_type){1, 127}, (My_type){3, 456}};
+
+priority_queue<My_type, vector<My_type>, My_class_for_compare> one_priority_queue (my_vector.begin(), my_vector.end());
+one_priority_queue.push((My_type){4, 483});
+while (one_priority_queue.size() != 0) {
+    My_type temp = one_priority_queue.top();
+    one_priority_queue.pop();
+    SHOW_B(temp.weight, temp.other);
+}
+
+vector<int> my_int = {2, 3, 1};
+
+priority_queue<int, vector<int>, greater<int> > two_priority_queue (my_int.begin(), my_int.end());
+while (two_priority_queue.size() != 0) {
+    SHOW_A(two_priority_queue.top());
+    two_priority_queue.pop();
+}
+
+priority_queue<int> three_priority_queue (my_int.begin(), my_int.end());
+while (three_priority_queue.size() != 0) {
+    SHOW_A(three_priority_queue.top());
+    three_priority_queue.pop();
+}
+
+
+// output
+// temp.weight = 4, temp.other = 483
+// temp.weight = 3, temp.other = 456
+// temp.weight = 2, temp.other = 789
+// temp.weight = 1, temp.other = 127
+// two_priority_queue.top() = 1
+// two_priority_queue.top() = 2
+// two_priority_queue.top() = 3
+// three_priority_queue.top() = 3
+// three_priority_queue.top() = 2
+// three_priority_queue.top() = 1
+```
 
 ## 2. Advanced Data Structures
 
-### 2.1 Heap
-
-TODO make it general
-
-```c++
-struct HiHeap {
-    // a max-heap
-    int _size_;
-    int _max_size_;
-    int* value;
-
-    HiHeap(int max_size) : _max_size_(max_size) {
-        _size_ = 0;
-        value = new int[_max_size_+1];
-    }
-
-    ~HiHeap() {
-        delete[] value;
-    }
-    
-    void clear() {
-        _size_ = 0;
-        _max_size_ = -1;
-        delete[] value;
-    }
-
-    int top() {
-        return value[1];
-    }
-
-    bool push(int var) {
-        if (_size_ == _max_size_)
-            return false;
-        _size_++;
-        value[_size_] = var;
-        adjust_up(_size_);
-        return true;
-    }
-
-    bool pop() {
-        if (_size_ == 0)
-            return false;
-        swap(value[1], value[_size_]);
-        _size_--;
-        adjust_down(1);
-    }
-
-    void adjust_it(int cur) {
-        adjust_up(cur);
-        adjust_down(cur);
-    }
-
-    void adjust_down(int cur) {
-        int left = cur * 2;
-        int right= cur * 2 + 1;
-
-        if (left > _size_)
-            return ;
-        if (right > _size_)
-            right = left;
-        
-        int max_one = cur;
-        if (value[max_one] < value[left])
-            max_one = left;
-        if (value[max_one] < value[right])
-            max_one = right;
-
-        if (max_one == cur)
-            return ;
-        
-        swap(value[max_one], value[cur]);
-        adjust_down(max_one);
-    }
-
-    void adjust_up(int cur) {
-        if (cur == 1)
-            return ;
-        
-        int father = cur / 2;
-        if (value[cur] <= value[father])
-            return ;
-        
-        swap(value[cur], value[father]);
-        adjust_up(father);
-    }
-
-    int size() {
-        return _size_;
-    }
-};
-```
-
 ### 2.2 Tree
 
-#### 2.2.0 Tree Traversal
-
-#### 2.2.1 Pointer Jumping
-
-> Initialize: O(Nlog(N))
-> 
-> Query: O(log(N))
-
-```c++
-#define MAX_NODE 100030
-#define MAX_NODE_LOG 20
-
-#define TREE_ROOT 0
-vector<int> g[MAX_NODE];
-vector<int> parent_jump[MAX_NODE];
-vector<int> path;
-
-void init_jump(int cur = TREE_ROOT) {
-	int d = 1;
-	while (true) {
-		int index = path.size() - d;
-		if (index < 0)
-			break;
-		parent_jump[cur].push_back(path[index]);
-		d <<= 1;
-	}
-	path.push_back(cur);
-
-    for (int i = 0; i < g[cur].size(); i++) {
-        int nx = g[cur][i];
-        if (cur == TREE_ROOT || nx != parent_jump[cur][0]) {
-            init_jump(nx);
-        }
-    }
-    path.pop_back();
-}
-
-int go_up(int cur, int dis) {
-	int mask = 1;
-	int index = 0;
-	while (mask <= dis) {
-		if (dis & mask)
-			cur = parent_jump[cur][index];
-		mask <<= 1;
-		index++;
-	}
-	return cur;
-}
-=======
 #### 2.2.0 Tree Traversal
 
 #### 2.2.1 Pointer Jumping
@@ -2079,59 +2140,22 @@ int main() {
 > update O(log(N))
 
 ```c++
-// 
-// CodeForces 243D	Cubes
-// 
-// dynamic programming + segment tree + math - O(N*N*log(N)) - not straightforward
-// 
-// struct SegmentTree is slow, use with caution
-// 
-// 
-
-#include <stdio.h>
-#include <sstream>
-#include <iomanip>
-#include <cstring>
-#include <cmath>
-#include <algorithm>
-#include <climits>
-#include <vector>
-#include <stack>
-#include <queue>
-#include <set>
-// #include <unordered_set>
-#include <map>
-// #include <unordered_map>
-#include <cassert>
-
-#define SHOW(...) {;}
-#define REACH_HERE {;}
-#define PRINT(s, ...) {;}
-#define PRINTLN(s, ...) {;}
-
-// #undef HHHDEBUG
-#ifdef HHHDEBUG
-#include "template.h"
-#endif
-
-using namespace std;
-
 struct SegmentTree {
-	struct Op {
-		int h;
-	};
-    struct Node {
-        int l;
-        int r;
-        
+    struct Op { // store lazy operation
         int h;
+    };
+    struct Node {
+        int l; // [l, ]
+        int r; // [, r]
+        
+        int h; // value
 
         bool lazy;
         Op op;
     };
     
     vector<Node> node;
-    void init(int l, int r) {
+    void init(int l, int r) { // [l, r]
         int tree_range = r - l + 1;
         if (tree_range <= 0)
             return ;
@@ -2142,7 +2166,7 @@ struct SegmentTree {
         if (__builtin_popcount(tree_range) != 1) // count number of '1' bits
             tree_size <<= 1;
 
-        node.resize(tree_size);
+        node.resize(tree_size); // (tree_range, tree_size): (001001, 100000) (001000, 010000)
 
         Node& root = node[1];
         root.l = l, root.r = r;
@@ -2151,396 +2175,134 @@ struct SegmentTree {
             Node& cur = node[i];
             cur.h = 0;
 
-            const Node& par = node[i / 2];
-            if (par.l == par.r)
-            	cur.l = cur.r = -1;
+            const Node& par = node[i / 2]; // parent node
+            if (par.l == par.r) // if parent is end node, skip
+                cur.l = cur.r = -1;
             else {
-	            int m = (par.l + par.r) / 2;
-	            if (i % 2)
-	                cur.l = m + 1, cur.r = par.r;
-	            else
-	                cur.l = par.l, cur.r = m;
+                int m = (par.l + par.r) / 2;
+                if (i % 2)
+                    cur.l = m + 1, cur.r = par.r;
+                else
+                    cur.l = par.l, cur.r = m;
             }
         }
     }
 
-	int query(int xl, int xr, int i = 1) {
-		Node& cur = node[i];
-		if (cur.l == cur.r)
-			return cur.h;
+    int query(int xl, int xr, int i = 1) { // query [xl, xr]
+        Node& cur = node[i];
+        if (cur.l == cur.r) // if end node
+            return cur.h;
 
-		if (xl <= cur.l && cur.r <= xr)
-			return cur.h;
+        if (xl <= cur.l && cur.r <= xr) // if query cover the node
+            return cur.h;
 
-		int lci = i * 2;
-		const Node& lc = node[lci];
-		int rci = lci + 1;
-		const Node& rc = node[rci];
-		if (cur.lazy) {
-			update(lc.l, lc.r, cur.op.h, lci);
-			update(rc.l, rc.r, cur.op.h, rci);
-			cur.lazy = false;
-		}
-
-		int ret = INT_MAX;
-		if (xl <= lc.r) {
-			int temp = query(xl, xr, lci);
-			if (ret > temp)
-				ret = temp;
-		}
-		if (rc.l <= xr) {
-			int temp = query(xl, xr, rci);
-			if (ret > temp)
-				ret = temp;
-		}
-		return ret;
-	}
-
-	void update(int xl, int xr, int xh, int i = 1) {
-		Node& cur = node[i];
-		if (cur.l == cur.r) {
-			if (cur.h < xh)
-				cur.h = xh;
-			return ;
-		}
-
-		if (xl <= cur.l && cur.r <= xr) {
-			if (cur.h < xh) {
-				cur.h = xh;
-			}
-			if (cur.lazy) {
-				if (cur.op.h < xh)
-					cur.op.h = xh;
-			}
-			else {
-				cur.op.h = xh;
-				cur.lazy = true;
-			}
-			return ;
-		}
-
-		int lci = i * 2;
-		const Node& lc = node[lci];
-		int rci = lci + 1;
-		const Node& rc = node[rci];
-		if (cur.lazy) {
-			update(lc.l, lc.r, cur.op.h, lci);
-			update(rc.l, rc.r, cur.op.h, rci);
-			cur.lazy = false;
-		}
-
-		if (xl <= lc.r)
-			update(xl, xr, xh, lci);
-		if (rc.l <= xr)
-			update(xl, xr, xh, rci);
-
-		cur.h = min(lc.h, rc.h);
-	}
-};
-
-struct Hall {
-	int h;
-	int proj_index[2];
-};
-
-const int HH = 1002;
-
-int n;
-int vx;
-int vy;
-Hall hall[HH][HH];
-
-long long ans;
-
-int init_project() {
-	int xx[] = {0, 1};
-	int yy[] = {1, 0};
-	double EPS = 1e-7;
-
-	struct Proj {
-		int i;
-		int j;
-		double x;
-		int k;
-	};
-	vector<Proj> projection;
-	projection.reserve(n * n * 2);
-
-	auto get_x = [](double x, double y) -> double {
-		return vx == 0 ? x : x - y / vy * vx;
-	};
-
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < n; j++)
-			for (int k = 0; k < 2; k++)
-				projection.push_back((Proj){i, j, get_x(i + xx[k], j + yy[k]), k});
-
-	sort(begin(projection), end(projection), [](const Proj& a, const Proj& b) {
-		return a.x < b.x;
-	});
-
-	int n_seg = 0;
-	hall[projection[0].i][projection[0].j].proj_index[projection[0].k] = 0;
-	for (int i = 1; i < projection.size(); i++) {
-		if (abs(projection[i].x - projection[i - 1].x) > EPS)
-			n_seg++;
-		hall[projection[i].i][projection[i].j].proj_index[projection[i].k] = n_seg;
-	}
-	return n_seg;
-}
-
-void rotate() {
-	// if vy < 0
-	// flip left right
-	if (vy < 0) {
-	    for (int i = 0; i < n; i++) {
-	    	int l = 0;
-	    	int r = n - 1;
-	    	while (l < r) {
-	    		swap(hall[i][l].h, hall[i][r].h);
-	    		l++;
-	    		r--;
-	    	}
-	    }
-	    vy = -vy;
-	}
-
-	// if vx <= 0
-	// flip diagonal
-	if (vx < 0 || vy == 0) {
-		for (int i = 0; i < n; i++)
-			for (int j = 0; j < i; j++)
-				swap(hall[i][j].h, hall[j][i].h);
-		swap(vx, vy);
-	}
-
-	// if vy < 0
-	// flip left right
-	if (vy < 0) {
-	    for (int i = 0; i < n; i++) {
-	    	int l = 0;
-	    	int r = n - 1;
-	    	while (l < r) {
-	    		swap(hall[i][l].h, hall[i][r].h);
-	    		l++;
-	    		r--;
-	    	}
-	    }
-	    vy = -vy;
-	}
-}
-
-SegmentTree st;
-
-int main() {
-	scanf("%d %d %d", &n, &vx, &vy);
-    for (int i = 0; i < n; i++)
-    	for (int j = 0; j < n; j++)
-    		scanf("%d", &hall[i][j].h);
-
-    rotate();
-    int len = init_project();
-
-	st.init(0, len - 1);
-
-	for (int j = 0; j < n; j++) {
-	    for (int i = 0; i < n; i++) {
-    		const Hall& h = hall[i][j];
-    		int min_height = st.query(h.proj_index[0], h.proj_index[1] - 1);
-    		ans += max(0, h.h - min_height);
-    		st.update(h.proj_index[0], h.proj_index[1] - 1, h.h);
-    	}
-    }
-    printf("%lld\n", ans);
-}
-```
-
-#### 2.7.1 Color
-
-```c++
-const int MAX = 100000;
-
-struct node {
-    int left, right;
-    int color;
-    bool cover;
-};
-
-node nodes[3*MAX];
-
-void build_tree(int left, int right, int u) {
-    nodes[u].left = left;
-    nodes[u].right = right;
-    nodes[u].color = 1;
-    nodes[u].cover = true;
-    if (left == right) return;
-    int mid = (left + right)/2;
-    build_tree(left, mid, 2*u);
-    build_tree(mid+1, right, 2*u + 1);
-}
-
-void get_down(int u) {
-    int value = nodes[u].color;
-    nodes[u].cover = false;
-    nodes[2*u].color = value;
-    nodes[2*u].cover = true;
-    nodes[2*u + 1].color = value;
-    nodes[2*u + 1].cover = true;
-}
-
-void update(int left, int right, int value, int u) {
-    if (left <= nodes[u].left && nodes[u].right <= right) {
-        nodes[u].color = value;
-        nodes[u].cover = true;
-        return;
-    }
-    if (nodes[u].color == value) return;  // optimize purpose
-    //SHOW(u);
-    if (nodes[u].cover) get_down(u);
-    if (left <= nodes[2*u].right) {
-        update(left, right, value, 2*u);
-    }
-    if (right >= nodes[2*u+1].left) {
-        update(left, right, value, 2*u + 1);
-    }
-    nodes[u].color = nodes[2*u].color | nodes[2*u+1].color;
-}
-
-void query(int left, int right, int &sum, int u) {
-    if (nodes[u].cover) {
-        sum |= nodes[u].color;
-        return;
-    }
-    if (left <= nodes[u].left && nodes[u].right <= right) {
-        sum |= nodes[u].color;
-        return;
-    }
-    if (left <= nodes[2*u].right) {
-        query(left, right, sum, 2*u);
-    }
-    if (right >= nodes[2*u+1].left) {
-        query(left, right, sum, 2*u + 1);
-    }
-}
-
-// Usage
-// build_tree(1, L, 1);
-// update(a, b, new_color, 1);
-// query(a, b, sum_as_reference, 1);
-
-// only for this question
-int bit_count(int sum) {
-    int ans = 0;
-    while (sum) {
-        if (sum%2) ans++;
-        sum = sum >> 1;
-    }
-    return ans;
-}
-
-int main() {
-    int L, T, O;
-    cin >> L >> T >> O;
-    build_tree(1, L, 1);
-    while (O--) {
-        char op;
-        int a, b, c;
-        cin >> op;
-        if (op == 'C') {
-            cin >> a >> b >> c;
-            if (a > b) swap(a, b);
-            update(a, b, 1<<(c-1), 1);
-        } else {
-            cin >> a >> b;
-            if (a > b) swap(a, b);
-            int sum = 0;
-            query(a, b, sum, 1);
-            cout << bit_count(sum) << endl;
+        int lci = i * 2;
+        const Node& lc = node[lci];
+        int rci = lci + 1;
+        const Node& rc = node[rci];
+        if (cur.lazy) { // if have lazy operation, push down
+            update(lc.l, lc.r, cur.op.h, lci);
+            update(rc.l, rc.r, cur.op.h, rci);
+            cur.lazy = false;
         }
+
+        int ret = INT_MAX;
+        if (xl <= lc.r) { // if query cover left child
+            int temp = query(xl, xr, lci);
+            if (ret > temp)
+                ret = temp;
+        }
+        if (rc.l <= xr) { // if query cover right child
+            int temp = query(xl, xr, rci);
+            if (ret > temp)
+                ret = temp;
+        }
+        return ret;
     }
-    return 0;
-}
-```
 
-#### 2.7.2 Range Sum + Range Replace
+    void update(int xl, int xr, int xh, int i = 1) { // update [xl, xr] value xh
+        Node& cur = node[i];
+        if (cur.l == cur.r) { // if end node
+            if (cur.h < xh)
+                cur.h = xh;
+            return ;
+        }
 
-```c++
-const int MAX = 30005;
+        if (xl <= cur.l && cur.r <= xr) { // if query cover the node
+            if (cur.h < xh) { // update node value 
+                cur.h = xh;
+            }
+            if (cur.lazy) { // update the lazy operation // slow if push down now
+                if (cur.op.h < xh)
+                    cur.op.h = xh;
+            }
+            else { // store lazy operation
+                cur.op.h = xh;
+                cur.lazy = true;
+            }
+            return ;
+        }
 
-struct node {
-    int left, right;
-    long long sum;
-    int lazy;
-    bool dirty;
+        int lci = i * 2;
+        const Node& lc = node[lci];
+        int rci = lci + 1;
+        const Node& rc = node[rci];
+        if (cur.lazy) { // if have lazy operation, push down
+            update(lc.l, lc.r, cur.op.h, lci);
+            update(rc.l, rc.r, cur.op.h, rci);
+            cur.lazy = false;
+        }
+
+        if (xl <= lc.r) // if update cover left node
+            update(xl, xr, xh, lci);
+        if (rc.l <= xr) // if update cover right node
+            update(xl, xr, xh, rci);
+
+        cur.h = min(lc.h, rc.h); // reduce two children 
+    }
 };
-
-node nodes[4*MAX];
-
-void build_tree(int left, int right, int u) {
-    nodes[u].left = left;
-    nodes[u].right = right;
-    nodes[u].sum = 0;
-    nodes[u].lazy = 0;
-    nodes[u].dirty = false;
-    if (left == right) return;
-    int mid = (left + right)/2;
-    build_tree(left, mid, 2*u);
-    build_tree(mid+1, right, 2*u + 1);
-}
-
-void get_down(int u) {
-    if (!nodes[u].dirty) return;
-    nodes[2*u].sum = (long long) nodes[u].lazy * (nodes[2*u].right - nodes[2*u].left + 1);
-    // if update not replace use +=
-    nodes[2*u].lazy = nodes[u].lazy;
-    nodes[2*u].dirty = true;
-    nodes[2*u + 1].sum = (long long) nodes[u].lazy * (nodes[2*u + 1].right - nodes[2*u + 1].left + 1);
-    nodes[2*u + 1].lazy = nodes[u].lazy;
-    nodes[2*u + 1].dirty = true;
-    nodes[u].dirty = false;
-}
-
-void update(int left, int right, int value, int u) {
-    if (left <= nodes[u].left && nodes[u].right <= right) {
-        nodes[u].sum = (long long)value * (nodes[u].right - nodes[u].left + 1);
-        // if update not replace use +=
-        nodes[u].lazy = value;
-        nodes[u].dirty = true;
-        return;
-    }
-    get_down(u);
-    if (left <= nodes[2*u].right) {
-        update(left, right, value, 2*u);
-    }
-    if (right >= nodes[2*u+1].left) {
-        update(left, right, value, 2*u + 1);
-    }
-    nodes[u].sum = nodes[2*u].sum + nodes[2*u+1].sum;
-}
-
-void query(int left, int right, long long &sum, int u) {
-    if (left <= nodes[u].left && nodes[u].right <= right) {
-        sum += nodes[u].sum;
-        return;
-    }
-    get_down(u);
-    if (left <= nodes[2*u].right) {
-        query(left, right, sum, 2*u);
-    }
-    if (right >= nodes[2*u+1].left) {
-        query(left, right, sum, 2*u + 1);
-    }
-}
-
-// Usage
-// build_tree(1, L, 1);
-// update(a, b, new_value, 1);
-// query(a, b, sum_as_reference, 1);
 ```
 
 #### 2.7.3 Range Minimum Query RMQ
 
-> check LCA
+```c++
+struct RMQ { // not tested
+    const static int MAXLENGTH = 2 * 1e5 + 3;
+    const static int LOG_MAXLENGTH = 20;
+    int rmq[MAXLENGTH][LOG_MAXLENGTH];
+
+    int* arr;
+
+    void init(int* x, int len) {
+        arr = x;
+
+        for (int i = 0; i < len; i++)
+            rmq[i][0] = arr[i];
+        for (int j = 1; j < LOG_MAXLENGTH; j++)
+            for (int i = 0; i < len; i++) {
+                if (i + (1 << j) > len)
+                    break;
+                rmq[i][j] = rmq[i][j - 1];
+                rmq[i][j] = min(rmq[i][j - 1], rmq[i + (1 << (j - 1))][j-1]);
+            }
+    }
+
+    int range_minimum_query(int l, int r) {
+        if (l > r)
+            swap(l, r);
+
+        int interval_len = r - l; // less 1
+
+        int first_half = 1;
+        while ((1 << first_half) <= interval_len)
+            first_half++;
+        first_half--;
+
+        int second_half = r - (1 << first_half) + 1;
+        return min(rmq[l][first_half], rmq[second_half][first_half]);
+    }
+};
+```
 
 ## 3. Methodology
 
