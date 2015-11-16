@@ -1346,6 +1346,8 @@ int main() {
 > preprocess: euler tour O(n) + RMQ init O(nlog(n))
 > 
 > query: RMQ O(1)
+> 
+> [tutorial](https://www.topcoder.com/community/data-science/data-science-tutorials/range-minimum-query-and-lowest-common-ancestor/)
 
 ```c++
 // lowest common ancestor LCA
@@ -1388,99 +1390,151 @@ int main() {
 #include <vector>
 #include <stdio.h>
 #include <string.h>
-#include <iostream>
-#include <queue>
+#include <cmath>
 
 using namespace std;
 
-#define MAX_NODE 50001
-#define MAX_NODE_LOG 17
+struct Graph {
+    struct Edge {
+        int to;
+        int len;
+    };
 
-int n, m;
-vector<int> dis[MAX_NODE];
-vector<int> g[MAX_NODE];
+    const static int MAXNODE = 1 * 1e5 + 2;
 
-int dis_to_root[MAX_NODE];
+    vector<int> g[MAXNODE];
+    vector<Edge> edge;
+    int n;
 
-int first_visit_time[MAX_NODE];
-int visit[2 * MAX_NODE]; // max possible number of visits to all nodes == 2 * number of nodes - 1
-int t;
-int rmq[2 * MAX_NODE][MAX_NODE_LOG];
+    int root = 0;
 
-int range_minimum_query(int l, int r) {
-    if (l > r)
-        swap(l, r);
-    
-    int lr = r - l + 1;
-    int j = 1;
-    while ((1 << j) < lr)
-        j++;
-    j--;
-
-    // smaller first_visit_time means smaller level
-    int l_second = r - (1 << j) + 1;
-    if (first_visit_time[rmq[l][j]] < first_visit_time[rmq[l_second][j]])
-        return rmq[l][j];
-    return rmq[l_second][j];
-}
-
-void euler_tour(int cur) {
-    visit[++t] = cur; // v_t[node] = time // needed in case don't have two child
-    if (first_visit_time[cur] == 0) // if first time
-        first_visit_time[cur] = t; // record time f_v_t[node] = time
-    for (int i = 0; i < g[cur].size(); i++) {
-        int next = g[cur][i];
-        if (first_visit_time[next] != 0) // visited
-            continue;
-
-        dis_to_root[next] = dis_to_root[cur] + dis[cur][i];
-        euler_tour(next);
-        visit[++t] = cur; // every two child_visit_time have one parent_visit_time inserted between
+    void init(int nn, int m=0) {
+        n = nn;
+        for (int i = 0; i <= n; i++)
+            g[i].clear();
+        edge.clear();
+        m *= 2;
+        edge.reserve(m); // may speedup // add_e too slow
     }
-}
 
-void init() {
-    euler_tour(0); // let 0 be root
+    void add_e(int x, int y, int len) {
+        g[x].push_back(edge.size());
+        edge.push_back((Edge){y, len});
 
-    // preprocess rmq matrix
-    for (int i = 0; i < t; i++)
-        rmq[i][0] = visit[i];
-    for (int j = 1; j < MAX_NODE_LOG; j++)
-        for (int i = 0; i < t; i++)
-            if (i + (1 << j) > t)
-                continue;
-            else {
-                // store the node index with smallest level (which is same as smallest first_visit_time)
+        g[y].push_back(edge.size());
+        edge.push_back((Edge){x, len});
+    }
+
+    void show() {
+        for (int i = 0; i <= n; i++) {
+            printf("%d:", i);
+            for (int ie : g[i])
+                printf(" %d", edge[ie].to);
+            printf("\n");
+        }
+        printf("\n");
+    }
+
+    // 
+    // --- start of LCA ---
+    // 
+    vector<int> dis_to_root;
+    vector<int> first_visit_time; // max possible number of visits to all nodes == 2 * number of nodes - 1
+    vector<int> visit;
+    int visit_counter;
+    vector<vector<int>> rmq;
+
+    int range_minimum_query(int l, int r) { // query [l, r]
+        if (l > r)
+            swap(l, r);
+
+        int interval_len = r - l; // less 1
+
+        int first_half = 1;
+        while ((1 << first_half) <= interval_len)
+            first_half++;
+        first_half--;
+
+        int second_half = r - (1 << first_half) + 1;
+        if (first_visit_time[rmq[l][first_half]] < first_visit_time[rmq[second_half][first_half]])
+            return rmq[l][first_half];
+        return rmq[second_half][first_half];
+    }
+
+    int get_lca(int x, int y) {
+        return range_minimum_query(first_visit_time[x], first_visit_time[y]);
+    }
+
+    int dist(int x, int y) {
+        int lca = get_lca(x, y);
+        return dis_to_root[x] + dis_to_root[y] - 2 * dis_to_root[lca];
+    }
+
+    void euler_tour(int cur) {
+        visit[++visit_counter] = cur; // v_t[node] = time // needed in case don't have two child
+        if (first_visit_time[cur] == 0) // if first time
+            first_visit_time[cur] = visit_counter; // record time f_v_t[node] = time
+        for (int ie : g[cur]) {
+            const Edge& e = edge[ie];
+            int nx = e.to;
+            int len = e.len;
+            if (first_visit_time[nx] == 0) {
+                dis_to_root[nx] = dis_to_root[cur] + len;
+                euler_tour(nx);
+                visit[++visit_counter] = cur; // every two child_visit_time have one parent_visit_time inserted between
+            }
+        }
+    }
+
+    void build_lca() { // O(Nlog(N)) 
+        int one_n = n + 1;
+        int two_n = 2 * one_n;
+        vector<int>(one_n, 0).swap(dis_to_root);
+        vector<int>(one_n, 0).swap(first_visit_time);
+        vector<int>(two_n, 0).swap(visit);
+
+        int LOG_MAXLENGTH = log2(two_n) + 2;
+        vector<vector<int>>(two_n, vector<int>(LOG_MAXLENGTH)).swap(rmq);
+
+        visit_counter = 0;
+        euler_tour(root);
+
+        for (int i = 0; i < visit_counter; i++)
+            rmq[i][0] = visit[i];
+
+        for (int j = 1; j < LOG_MAXLENGTH; j++)
+            for (int i = 0; i < visit_counter; i++) {
+                if (i + (1 << j) > visit_counter)
+                    break;
                 rmq[i][j] = rmq[i][j - 1];
                 if (first_visit_time[rmq[i][j - 1]] > first_visit_time[rmq[i + (1 << (j - 1))][j - 1]])
                     rmq[i][j] = rmq[i + (1 << (j - 1))][j-1];
             }
-}
+    }
+    // 
+    // --- end of LCA ---
+    // 
+};
 
-int get_lca(int x, int y) {
-    return range_minimum_query(first_visit_time[x], first_visit_time[y]);
-}
+int n, m;
+Graph g;
 
 int main(int argc, char const *argv[]) {
     scanf("%d", &n);
+    g.init(n, n);
     for (int i = 1; i < n; i++) {
         int x, y, d;
         scanf("%d %d %d", &x, &y, &d);
-        g[x].push_back(y);
-        g[y].push_back(x);
-        dis[x].push_back(d);
-        dis[y].push_back(d);
+        g.add_e(x, y, d);
     }
 
-    init();
+    g.build_lca();
 
     scanf("%d", &m);
     for (int i = 0; i < m; i++) {
         int x, y;
         scanf("%d %d", &x, &y);
-        int lca = get_lca(x, y);
-        int dis_between = dis_to_root[x] + dis_to_root[y] - 2 * dis_to_root[lca];
-        printf("%d\n", dis_between);
+        printf("%d\n", g.dist(x, y));
     }
 }
 ```
@@ -1752,263 +1806,136 @@ int main(int argc, char const *argv[]) {
 // For each second type query print the reply in a single line.
 // 
 
-#include <stdio.h>
-#include <cstring>
-#include <algorithm>
-#include <vector>
+struct Graph {
+    struct Edge {
+        int to;
+    };
 
-using namespace std;
+    const static int MAXNODE = 1 * 1e5 + 2;
 
-const int MAX_NODE = 1 + (int)1e5 * 1;
-const int DOUBLE_MAX_NODE = 2 * MAX_NODE;
-const int INF = 2000000;
-const int MAX_NODE_LOG = 19;
+    vector<int> g[MAXNODE];
+    vector<Edge> edge;
+    int n;
 
-int n;
-int m;
-vector<int> g[MAX_NODE];
+    int root = 1;
 
-// for query distance between two node
-int dis_to_root[MAX_NODE];
-
-int first_visit_time[MAX_NODE];
-int visit[DOUBLE_MAX_NODE]; // max possible number of visits to all nodes == 2 * number of nodes - 1
-int visit_counter;
-int rmq[DOUBLE_MAX_NODE][MAX_NODE_LOG];
-
-int range_minimum_query(int l, int r) {
-    if (l > r)
-        swap(l, r);
-
-    int interval_len = r - l;
-    // 
-    // get log_2(interval_len) of first_half (faster than use log(r - l) / log(2))
-    // 
-    int first_half = 0;
-    while ((1 << first_half) <= interval_len)
-        first_half++;
-    first_half--;
-
-    int second_half = r - (1 << first_half) + 1;
-    if (first_visit_time[rmq[l][first_half]] < first_visit_time[rmq[second_half][first_half]])
-        return rmq[l][first_half];
-    return rmq[second_half][first_half];
-}
-
-int dist(int x, int y) {
-    if (x == y)
-        return 0;
-    int lca = range_minimum_query(first_visit_time[x], first_visit_time[y]);
-    int dis_between = dis_to_root[x] + dis_to_root[y] - 2 * dis_to_root[lca];
-    return dis_between;
-}
-
-void euler_tour(int cur) {
-    visit[++visit_counter] = cur; // v_t[node] = time // needed in case don't have two child
-    if (first_visit_time[cur] == 0) // if first time
-        first_visit_time[cur] = visit_counter; // record time f_v_t[node] = time
-    for (int i = 0; i < g[cur].size(); i++) {
-        int next = g[cur][i];
-        if (first_visit_time[next] == 0) {
-	        dis_to_root[next] = dis_to_root[cur] + 1; // len(edge) == 1
-	        euler_tour(next);
-	        visit[++visit_counter] = cur; // every two child_visit_time have one parent_visit_time inserted between
-        }
+    void init(int nn, int m=0) {
+        n = nn;
+        for (int i = 0; i <= n; i++)
+            g[i].clear();
+        edge.clear();
+        m *= 2;
+        edge.reserve(m); // may speedup // add_e too slow
     }
-}
 
-void build_lca() {
-    euler_tour(1); // let 1 be root
+    void add_e(int x, int y) {
+        g[x].push_back(edge.size());
+        edge.push_back((Edge){y});
 
-    // preprocess rmq matrix
-    for (int i = 0; i < visit_counter; i++)
-        rmq[i][0] = visit[i];
-    for (int j = 1; j < MAX_NODE_LOG; j++)
-        for (int i = 0; i < visit_counter; i++) {
-            if (i + (1 << j) > visit_counter)
-                break;
-            rmq[i][j] = rmq[i][j - 1];
-            if (first_visit_time[rmq[i][j - 1]] > first_visit_time[rmq[i + (1 << (j - 1))][j - 1]])
-                rmq[i][j] = rmq[i + (1 << (j - 1))][j-1];
+        g[y].push_back(edge.size());
+        edge.push_back((Edge){x});
+    }
+
+    void show() {
+        for (int i = 0; i <= n; i++) {
+            printf("%d:", i);
+            for (int ie : g[i])
+                printf(" %d", edge[ie].to);
+            printf("\n");
         }
-}
+        printf("\n");
+    }
 
-int min_dist[MAX_NODE]; // distance to nearest festival city
-int centroid[MAX_NODE]; // index of upper level centroid node
+    // 
+    // --- start of centroid decomposition --- 
+    // 
+	vector<int> centroid; // index of upper level centroid node
 
-// 
-// to go to one festival city
-// we must pass some centroid node
-// 
-// to update
-// we update the distance from festival city to all direct upper level centroid node
-// 
-// to query
-// from one city to festival city
-// we must pass some centroid node
-// we only need to check all direct upper level centroid node of the query city
-// (if pass other centroid node, the distance will be longer)
-// 
-
-void query(int city) {
-	int ans = min_dist[city];
-	int cur = city;
-	while (cur != 0) { // check until top level of centroid tree
-		int d = dist(cur, city) + min_dist[cur];
-		if (ans > d)
-			ans = d;
-		cur = centroid[cur];
-	}
-	printf("%d\n", ans);
-}
-
-void update(int city) {
-	int cur = city;
-	while (cur != 0) { // update until top level of centroid tree
-		int d = dist(cur, city);
-		if (min_dist[cur] > d)
-			min_dist[cur] = d;
-		cur = centroid[cur];
-	}
-}
-
-int subtree_size[MAX_NODE];
-// int s_lazy[MAX_NODE];
-int parent[MAX_NODE];
-
-int compute_subtree(int cur) {
-	int& size = subtree_size[cur];
-	for (int i = 0; i < g[cur].size(); i++) {
-		int next = g[cur][i];
-		if (!parent[next]) {
-			parent[next] = cur;
-			size += compute_subtree(next);
-		}
-	}
-	return size;
-}
-
-bool deleted[MAX_NODE];
-void centroid_decomposite(int cur, int from, int tree_size) {
-	int half_size = tree_size / 2;
-
-	// 
-	// if subtree of cur is too small
-	// the centroid must at parent side
-	// 
-	while (cur != parent[cur] && subtree_size[cur] <= half_size)
-		cur = parent[cur];
-
-	// 
-	// check all child of cur
-	// if one child is too large
-	// the centroid must at that part
-	// until all child is small
-	// 
-	while (1) {
-		int candidate = cur;
-		for (int i = 0; i < g[cur].size(); i++) {
-			int next = g[cur][i];
-			if (!deleted[next] && next != parent[cur])
-				if (subtree_size[next] > half_size)
-					candidate = next;
-		}
-		if (candidate == cur)
-			break;
-		cur = candidate;
-	}
-
-	deleted[cur] = true;
-	centroid[cur] = from;
-	int temp = parent[cur];
-	while (temp != parent[temp]) { // update all the subtree_size of parent
-		subtree_size[temp] -= subtree_size[cur];
-		temp = parent[temp];
-	}
-
-	for (int i = 0; i < g[cur].size(); i++) {
-		int next = g[cur][i];
-		if (!deleted[next]) {
-			int next_tree; // size of next level centroid tree
-			if (next == parent[cur])
-				next_tree = tree_size - subtree_size[cur];
-			else {
-				next_tree = subtree_size[next];
-				parent[next] = next; // decomposite the tree
+	vector<int> subtree_size;
+	vector<int> parent;
+	
+	vector<bool> deleted;
+	int compute_subtree(int cur) {
+		int& size = subtree_size[cur];
+		for (int ie : g[cur]) {
+			const Edge& e = edge[ie];
+			int nx = e.to;
+			if (parent[nx] == -1) {
+				parent[nx] = cur;
+				size += compute_subtree(nx);
 			}
-			if (next_tree == 1)
-				centroid[next] = cur; // don't need to go into it
-			else
-				centroid_decomposite(next, cur, next_tree);
+		}
+		return size;
+	}
+
+	void centroid_decomposite(int cur, int from, int tree_size) { // O(Nlog(N)) 
+		int half_size = tree_size / 2;
+
+		while (subtree_size[cur] <= half_size) // go up until centroid is in subtree
+			cur = parent[cur];
+
+		while (1) {
+			int candidate = cur;
+			for (int ie : g[cur]) { // go down if centroid is in subtree
+				const Edge& e = edge[ie];
+				int nx = e.to;
+				if (!deleted[nx] && nx != parent[cur]) {
+					if (subtree_size[nx] > half_size) {
+						SHOW(cur, nx, subtree_size[nx], candidate)
+						candidate = nx;
+					}
+				}
+			}
+			if (candidate == cur)
+				break;
+			cur = candidate;
+		}
+
+		deleted[cur] = true;
+		centroid[cur] = from;
+
+		int temp = parent[cur];
+		int cur_size = subtree_size[cur];
+		while (!deleted[temp] && temp != parent[temp]) { // update all the subtree_size of parent
+			subtree_size[temp] -= cur_size;
+			temp = parent[temp];
+		}
+
+		for (int ie : g[cur]) { // decomposite parent and children
+			const Edge& e = edge[ie];
+			int nx = e.to;
+			if (!deleted[nx]) {
+				int nx_tree_size; // size of next level centroid tree
+				if (nx == parent[cur])
+					nx_tree_size = tree_size - cur_size;
+				else
+					nx_tree_size = subtree_size[nx];
+
+				if (nx_tree_size == 1)
+					centroid[nx] = cur; // don't need to go into it
+				else
+					centroid_decomposite(nx, cur, nx_tree_size);
+			}
 		}
 	}
-}
 
-void init_tree() {
-	// 
-	// store the tree in adjacent list
-	// 
-	for (int i = 1; i < n; i++) {
-		int a, b;
-		scanf("%d %d", &a, &b);
-		g[a].push_back(b);
-		g[b].push_back(a);
+	void centroid_decomposite() {
+		vector<int>(n + 1, -1).swap(centroid);
+		vector<int>(n + 1, 1).swap(subtree_size); // initialized each to be 1 (itself)
+		vector<int>(n + 1, -1).swap(parent);
+		vector<bool>(n + 1, false).swap(deleted);
+		
+		parent[root] = root;
+		compute_subtree(root);
+
+		centroid_decomposite(root, -1, n);
 	}
-	// 
-	// for query distance between two node
-	// 
-	build_lca();
-
-	// 
-	// for centroid decomposition
-	// 
-	// compute size of all subtree
-	// and 
-	// get parent of each node
-	// 
-	fill(subtree_size, subtree_size + n + 1, 1); // initialized each to be 1 (itself)
-	parent[1] = 1;
-	compute_subtree(1);
-
-	// 
-	// do centroid decomposite
-	// so each centroid tree split parent tree into even size
-	// so can traverse from each node to root in log(n) time
-	// 
-	centroid_decomposite(1, 0, n);
-
-	// 
-	// initialize all the distance to INF = 200000 (a random big value > N)
-	// 
-	fill(min_dist, min_dist + n + 1, INF);
-}
-
-
-// 
-// time complexity
-// preprocess O(nlog(n))
-// query O(log(n))
-// update O(log(n))
-// overall O(nlog(n) + mlog(n))
-// 
-int main() {
-	scanf("%d %d", &n, &m);
-	init_tree();
-
-	// 
-	// initially 1 is festive city
-	// 
-	update(1);
-	int q, c;
-	while (m--) {
-		scanf("%d %d", &q, &c);
-		if (q == 1)
-			update(c);
-		else
-			query(c);
-	}
-}
+    // 
+    // --- end of centroid decomposition --- 
+    // 
+};
 ```
+
 Key functions
 
 ```C++
