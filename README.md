@@ -4771,9 +4771,107 @@ int power_modulo(int n, int p, int M) {
 }
 ```
 
-### 6.4 博弈论
+### 6.4 Game Theory 博弈论
 
-> place holder
+#### 6.4.1 Impartial Combinatorial Game
+
+> In combinatorial game theory, an impartial game is a game in which the allowable moves depend only on the position and not on which of the two players is currently moving, and where the payoffs are symmetric. In other words, the only difference between player 1 and player 2 is that player 1 goes first.
+
+> Impartial games can be analyzed using the Sprague–Grundy theorem.
+
+> Impartial games include Nim, Sprouts, Kayles, Quarto, Cram, Chomp, and poset games. Go and chess are not impartial, as each player can only place or move pieces of their own color. Games like ZÈRTZ and Chameleon are also not impartial, since although they are played with shared pieces, the payoffs are not necessarily symmetric for any given position.
+
+> A game that is not impartial is called a partisan game.
+> 
+> [source: wiki](https://en.wikipedia.org/wiki/Impartial_game)
+> 
+> [tutorial: topcoder](https://www.topcoder.com/community/data-science/data-science-tutorials/algorithm-games/)
+
+##### 6.4.1.1 Nim Game
+
+> One good choice: brute force to find some pattern.
+> 
+> We will not be able to play many of the games without decomposing them to smaller parts (sub-games), pre-computing some values for them, and then obtaining the result by combining these values.
+> 
+> Positions have the following properties:
+> 
+> - All terminal positions are losing.
+> - If a player is able to move to a losing position then he is in a winning position.
+> - If a player is able to move only to the winning positions then he is in a losing position.
+> 
+> Rules of the Game of Nim: There are n piles of coins. When it is a player’s turn he chooses one pile and takes at least one coin from it. If someone is unable to move he loses (so the one who removes the last coin is the winner).
+> 
+> Let n1, n2, ..., nk, be the sizes of the piles. It is a losing position for the player whose turn it is if and only if n1 xor n2 xor ... xor nk = 0.
+
+##### 6.4.1.1 Composite Games – Sprague-Grundy Theorem and Nim Value
+
+> - Break composite game into subgames
+> - Assign grundy number to every subgame according to which size of the pile in the Game of Nim it is equivalent to.
+> - Now we have some subgames (piles), each subgame has its grundy number (size of pile)
+> - xor all subgames
+
+> - Losing position of subgame has grundy number = 0.
+> - A position has grundy number = smallest number among its next positions don't have.
+
+> If the table of grundy number is too large, we can precompute and find the pattern.
+
+```c++
+// hihocoer 1173
+const int MAXSTATE = 2e4 + 2;
+
+bool appear[MAXSTATE];
+int sg[MAXSTATE]; // Sprague-Grundy // Nim Value
+void init_sg() {
+	sg[state] = 0;
+	for (int state = 1; state < MAXSTATE; state++) { // sg(x) = mex{sg(y) | y是x的后继局面} // mex{a[i]}表示a中未出现的最小非负整数
+		fill_n(appear, MAXSTATE, false);
+		for (int nx = 0; nx < state; nx++)
+			appear[sg[nx]] = true;
+		int pile_a = 1;
+		int pile_b = state - pile_a;
+		while (pile_a <= pile_b) {
+			appear[sg[pile_a] ^ sg[pile_b]] = true;
+			pile_a++;
+			pile_b--;
+		}
+		while (appear[sg[state]])
+			sg[state]++;
+	}
+}
+
+int main() {
+
+    init_sg();
+
+	// --- start of finding pattern ---
+	// 
+    // --- end of finding pattern ---
+
+    int n;
+    cin >> n;
+    int result = 0;
+    for (int i = 0; i < n; i++) {
+    	int a;
+    	cin >> a;
+
+		// by grundy number 
+    	// result ^= sg[a];
+    	
+    	// by pattern
+    	// if (a % 4 == 0)
+    	// 	a--;
+    	// else if (a % 4 == 3)
+    	// 	a++;
+    	// result ^= a; 
+    }
+    if (result)
+    	cout << "Alice" << endl;
+    else
+    	cout << "Bob" << endl;
+}
+```
+
+
 
 ## 7. Geometry
 
