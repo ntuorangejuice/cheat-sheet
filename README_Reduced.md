@@ -442,6 +442,44 @@ void priority_queue::push(const value_type& val); // inserts a new element, init
 void priority_queue::pop(); // removes the element on top
 ```
 
+Min-Max Heap
+```c++
+struct HEAP {
+     int arr[127];
+     int size;
+};
+void insert(HEAP *h,int n){
+       int sz = h->size++;
+       while(sz>0){
+            if(n < h->arr[(sz-1)/2]){//若改成 > 则为大根堆
+                h->arr[sz] = h->arr[(sz-1)/2];
+                sz = (sz-1)/2;
+            }else{
+                h->arr[sz] = n;
+                return;
+            }
+       }
+       h->arr[0] = n;
+}
+void delete(HEAP *h){
+       h->size--;
+       h->arr[0] = h->arr[h->size];
+       h->arr[h->size] = 0;
+       int i = 1,cv = h->arr[0],tmp;
+       while(i < h->size){
+               if(i < h->size-1 && h->arr[i] > h->arr[i+1])
+                      i++;
+               if(h->arr[i] < cv){
+                      h->arr[(i-1)/2] = h->arr[i];
+                      h->arr[i] = cv;
+                      i = i*2 + 1;
+               }else{
+                      return;
+               }
+       }
+}
+```
+
 ## 2. Advanced Data Structures
 
 ### 2.2 Tree
