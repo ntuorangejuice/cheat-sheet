@@ -126,7 +126,8 @@
     - [5.5.1 Dinic](#551-dinic)
     - [5.5.2 Improved SAP + Gap Optimization](#552-improved-sap--gap-optimization)
     - [5.5.3 Minimum-Cost Maximum-Flow](#553-minimum-cost-maximum-flow)
-  - [5.6 强连通分量 图的 割点, 桥, 双连通分支 ``https://www.byvoid.com/blog/biconnect``](#56-%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F-%E5%9B%BE%E7%9A%84-%E5%89%B2%E7%82%B9-%E6%A1%A5-%E5%8F%8C%E8%BF%9E%E9%80%9A%E5%88%86%E6%94%AF-httpswwwbyvoidcomblogbiconnect)
+    - [5.5.4 More Applications and Properties](#554-more-applications-and-properties)
+  - [5.6 强连通分量 图的 割点, 桥, 双连通分支](#56-%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F-%E5%9B%BE%E7%9A%84-%E5%89%B2%E7%82%B9-%E6%A1%A5-%E5%8F%8C%E8%BF%9E%E9%80%9A%E5%88%86%E6%94%AF)
   - [5.7 Topological Sort / 拓扑排序](#57-topological-sort--%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F)
   - [5.8 Euler Cycle/Path, Hamilton Cycle/Path](#58-euler-cyclepath-hamilton-cyclepath)
   - [5.9 find negative (weight) Cycle on a graph](#59-find-negative-weight-cycle-on-a-graph)
@@ -377,10 +378,6 @@ std::iter_swap(myints + 3,myvector.begin() + 2); //   myints:  99  20  30 [99] 5
 
 #### 1.3.5 Heap
 
-// not completed
-
-// TODO add method and example to maintain the size of vector
-
 * make_heap: Rearranges the elements in the range [first,last) in such a way that they form a heap. The element with the highest value is always pointed by first.
 * pop_heap: Rearranges the elements in the heap range [first,last) in such a way that the part considered a heap is shortened by one: The element with the highest value is moved to (last-1).
 * push_heap: Given a heap in the range [first,last-1), this function extends the range considered a heap to [first,last) by placing the value in (last-1) into its corresponding location within it.
@@ -394,11 +391,6 @@ void pop_heap (RandomAccessIterator first, RandomAccessIterator last, Compare co
 void push_heap (RandomAccessIterator first, RandomAccessIterator last, Compare comp);
 void sort_heap (RandomAccessIterator first, RandomAccessIterator last); Compare comp);
 ```
-
-Self implementation of heap is available in section 2.
-
-Note: Priority queue is more recommeneded.
-
 
 #### 1.3.6 Sort
 
@@ -582,6 +574,7 @@ template < class Key,                                    // unordered_map::key_t
 #### 1.4.3 Vector
 
 ##### Constructor
+
 ```c++
 std::vector<int> second (4,100);  // four ints with value 100
 ```
@@ -642,7 +635,6 @@ const_reference& queue::front() const;
 ```C++
 #include <dequeue>
 ```
-
 
 #### 1.4.7 Stack
 
@@ -734,96 +726,6 @@ while (three_priority_queue.size() != 0) {
 ## 2. Advanced Data Structures
 
 ### 2.1 Heap
-
-TODO make it general
-
-```c++
-struct HiHeap {
-    // a max-heap
-    int _size_;
-    int _max_size_;
-    int* value;
-
-    HiHeap(int max_size) : _max_size_(max_size) {
-        _size_ = 0;
-        value = new int[_max_size_+1];
-    }
-
-    ~HiHeap() {
-        delete[] value;
-    }
-    
-    void clear() {
-        _size_ = 0;
-        _max_size_ = -1;
-        delete[] value;
-    }
-
-    int top() {
-        return value[1];
-    }
-
-    bool push(int var) {
-        if (_size_ == _max_size_)
-            return false;
-        _size_++;
-        value[_size_] = var;
-        adjust_up(_size_);
-        return true;
-    }
-
-    bool pop() {
-        if (_size_ == 0)
-            return false;
-        swap(value[1], value[_size_]);
-        _size_--;
-        adjust_down(1);
-    }
-
-    void adjust_it(int cur) {
-        adjust_up(cur);
-        adjust_down(cur);
-    }
-
-    void adjust_down(int cur) {
-        int left = cur * 2;
-        int right= cur * 2 + 1;
-
-        if (left > _size_)
-            return ;
-        if (right > _size_)
-            right = left;
-        
-        int max_one = cur;
-        if (value[max_one] < value[left])
-            max_one = left;
-        if (value[max_one] < value[right])
-            max_one = right;
-
-        if (max_one == cur)
-            return ;
-        
-        swap(value[max_one], value[cur]);
-        adjust_down(max_one);
-    }
-
-    void adjust_up(int cur) {
-        if (cur == 1)
-            return ;
-        
-        int father = cur / 2;
-        if (value[cur] <= value[father])
-            return ;
-        
-        swap(value[cur], value[father]);
-        adjust_up(father);
-    }
-
-    int size() {
-        return _size_;
-    }
-};
-```
 
 ### 2.2 Tree
 
@@ -2294,7 +2196,7 @@ int main() {
 
 > O(nlog(n))
 >
-> reference: Competitve Programming 2
+> reference: Competitve Programming
 
 ```c++
 #include <iostream>
@@ -2657,21 +2559,21 @@ int main() {
 using namespace std;
 
 struct SegmentTree {
-	struct Op {
+	struct Op { // store lazy operation
 		int h;
 	};
     struct Node {
-        int l;
-        int r;
+        int l; // [l, ]
+        int r; // [, r]
         
-        int h;
+        int h; // value
 
         bool lazy;
         Op op;
     };
     
     vector<Node> node;
-    void init(int l, int r) {
+    void init(int l, int r) { // [l, r]
         int tree_range = r - l + 1;
         if (tree_range <= 0)
             return ;
@@ -2682,7 +2584,7 @@ struct SegmentTree {
         if (__builtin_popcount(tree_range) != 1) // count number of '1' bits
             tree_size <<= 1;
 
-        node.resize(tree_size);
+        node.resize(tree_size); // (tree_range, tree_size): (001001, 100000) (001000, 010000)
 
         Node& root = node[1];
         root.l = l, root.r = r;
@@ -2691,91 +2593,91 @@ struct SegmentTree {
             Node& cur = node[i];
             cur.h = 0;
 
-            const Node& par = node[i / 2];
-            if (par.l == par.r)
-            	cur.l = cur.r = -1;
+            const Node& par = node[i / 2]; // parent node
+            if (par.l == par.r) // if parent is end node, skip
+                cur.l = cur.r = -1;
             else {
-	            int m = (par.l + par.r) / 2;
-	            if (i % 2)
-	                cur.l = m + 1, cur.r = par.r;
-	            else
-	                cur.l = par.l, cur.r = m;
+                int m = (par.l + par.r) / 2;
+                if (i % 2)
+                    cur.l = m + 1, cur.r = par.r;
+                else
+                    cur.l = par.l, cur.r = m;
             }
         }
     }
 
-	int query(int xl, int xr, int i = 1) {
-		Node& cur = node[i];
-		if (cur.l == cur.r)
-			return cur.h;
+    int query(int xl, int xr, int i = 1) { // query [xl, xr]
+        Node& cur = node[i];
+        if (cur.l == cur.r) // if end node
+            return cur.h;
 
-		if (xl <= cur.l && cur.r <= xr)
-			return cur.h;
+        if (xl <= cur.l && cur.r <= xr) // if query cover the node
+            return cur.h;
 
-		int lci = i * 2;
-		const Node& lc = node[lci];
-		int rci = lci + 1;
-		const Node& rc = node[rci];
-		if (cur.lazy) {
-			update(lc.l, lc.r, cur.op.h, lci);
-			update(rc.l, rc.r, cur.op.h, rci);
-			cur.lazy = false;
-		}
+        int lci = i * 2;
+        const Node& lc = node[lci];
+        int rci = lci + 1;
+        const Node& rc = node[rci];
+        if (cur.lazy) { // if have lazy operation, push down
+            update(lc.l, lc.r, cur.op.h, lci);
+            update(rc.l, rc.r, cur.op.h, rci);
+            cur.lazy = false;
+        }
 
-		int ret = INT_MAX;
-		if (xl <= lc.r) {
-			int temp = query(xl, xr, lci);
-			if (ret > temp)
-				ret = temp;
-		}
-		if (rc.l <= xr) {
-			int temp = query(xl, xr, rci);
-			if (ret > temp)
-				ret = temp;
-		}
-		return ret;
-	}
+        int ret = INT_MAX;
+        if (xl <= lc.r) { // if query cover left child
+            int temp = query(xl, xr, lci);
+            if (ret > temp)
+                ret = temp;
+        }
+        if (rc.l <= xr) { // if query cover right child
+            int temp = query(xl, xr, rci);
+            if (ret > temp)
+                ret = temp;
+        }
+        return ret;
+    }
 
-	void update(int xl, int xr, int xh, int i = 1) {
-		Node& cur = node[i];
-		if (cur.l == cur.r) {
-			if (cur.h < xh)
-				cur.h = xh;
-			return ;
-		}
+    void update(int xl, int xr, int xh, int i = 1) { // update [xl, xr] value xh
+        Node& cur = node[i];
+        if (cur.l == cur.r) { // if end node
+            if (cur.h < xh)
+                cur.h = xh;
+            return ;
+        }
 
-		if (xl <= cur.l && cur.r <= xr) {
-			if (cur.h < xh) {
-				cur.h = xh;
-			}
-			if (cur.lazy) {
-				if (cur.op.h < xh)
-					cur.op.h = xh;
-			}
-			else {
-				cur.op.h = xh;
-				cur.lazy = true;
-			}
-			return ;
-		}
+        if (xl <= cur.l && cur.r <= xr) { // if query cover the node
+            if (cur.h < xh) { // update node value 
+                cur.h = xh;
+            }
+            if (cur.lazy) { // update the lazy operation // slow if push down now
+                if (cur.op.h < xh)
+                    cur.op.h = xh;
+            }
+            else { // store lazy operation
+                cur.op.h = xh;
+                cur.lazy = true;
+            }
+            return ;
+        }
 
-		int lci = i * 2;
-		const Node& lc = node[lci];
-		int rci = lci + 1;
-		const Node& rc = node[rci];
-		if (cur.lazy) {
-			update(lc.l, lc.r, cur.op.h, lci);
-			update(rc.l, rc.r, cur.op.h, rci);
-			cur.lazy = false;
-		}
+        int lci = i * 2;
+        const Node& lc = node[lci];
+        int rci = lci + 1;
+        const Node& rc = node[rci];
+        if (cur.lazy) { // if have lazy operation, push down
+            update(lc.l, lc.r, cur.op.h, lci);
+            update(rc.l, rc.r, cur.op.h, rci);
+            cur.lazy = false;
+        }
 
-		if (xl <= lc.r)
-			update(xl, xr, xh, lci);
-		if (rc.l <= xr)
-			update(xl, xr, xh, rci);
+        if (xl <= lc.r) // if update cover left node
+            update(xl, xr, xh, lci);
+        if (rc.l <= xr) // if update cover right node
+            update(xl, xr, xh, rci);
 
-		cur.h = min(lc.h, rc.h);
-	}
+        cur.h = min(lc.h, rc.h); // reduce two children 
+    }
 };
 
 struct Hall {
@@ -3080,7 +2982,41 @@ void query(int left, int right, long long &sum, int u) {
 
 #### 2.7.3 Range Minimum Query RMQ
 
-> check LCA
+```c++
+struct RMQ { // not tested
+    const static int MAXLENGTH = 2 * 1e5 + 3;
+    const static int LOG_MAXLENGTH = 20;
+    int rmq[MAXLENGTH][LOG_MAXLENGTH];
+
+    void init(int* arr, int len) {
+        for (int i = 0; i < len; i++)
+            rmq[i][0] = arr[i];
+        for (int j = 1; j < LOG_MAXLENGTH; j++)
+            for (int i = 0; i < len; i++) {
+                if (i + (1 << j) > len)
+                    break;
+                rmq[i][j] = rmq[i][j - 1];
+                rmq[i][j] = min(rmq[i][j - 1], rmq[i + (1 << (j - 1))][j-1]);
+            }
+    }
+
+    int range_minimum_query(int l, int r) {
+        if (l > r)
+            swap(l, r);
+
+        int interval_len = r - l; // less 1
+
+        int first_half = 1;
+        while ((1 << first_half) <= interval_len)
+            first_half++;
+        first_half--;
+
+        int second_half = r - (1 << first_half) + 1;
+        return min(rmq[l][first_half], rmq[second_half][first_half]);
+    }
+};
+```
+
 
 ## 3. Methodology
 
@@ -3573,38 +3509,6 @@ struct Network {
 };
 ```
 
-```C++
-int n_cow, n_stall;
-bool cow_like_stall[HH][HH]; // cow_stall[cow][stall] // not adjacent matrix!!
-int stall_assigned_to[HH]; // stall_assigned_to[cow]
-
-bool visited[HH];
-bool match(int cur) {
-    for (int i = 1; i <= n_stall; i++) {
-        if (!visited[i] && cow_like_stall[cur][i]) {
-            visited[i] = true;
-            if (stall_assigned_to[i] == 0 || match(stall_assigned_to[i])) {
-                stall_assigned_to[i] = cur;
-                return true;
-            }
-        }
-    }
-    return false;
-}
-int bipartite_match() {
-    int success_match = 0;
-    for (int cow = 1; cow <= n_stall; cow++)
-        stall_assigned_to[cow] = 0;
-    for (int cow = 1; cow <= n_cow; cow++) {
-        for (int stall = 1; stall <= n_stall; stall++)
-            visited[stall] = false;
-        if (match(cow))
-            success_match++;
-    }
-    return success_match;
-}
-```
-
 ### 5.5 Maximum Flow Problem 最大流
 
 #### 5.5.1 Dinic
@@ -3717,61 +3621,10 @@ struct Network {
 };
 ```
 
-``` C++
-int graph[250][250];
-int level[250];
-int n_node;
-
-int mark_level(int start, int end) {
-    memset(level, -1, sizeof(level));
-    queue<int> to_visit;
-    
-    level[start] = 0;
-    to_visit.push(start);
-    while (!to_visit.empty()) {
-        int cur = to_visit.front();
-        to_visit.pop();
-        for (int i = 0; i < n_node; ++i) {
-            if (graph[cur][i] != 0 && level[i] == -1) {
-                level[i] = level[cur] + 1;
-                to_visit.push(i);
-            }
-        }
-    }
-
-    if (level[end] == -1)
-        return 0; // cannot reach the sink
-    return 1; // can reach the sink
-}
-
-int augment(int cur, int end, int min_flow) {
-    if (cur == end)
-        return min_flow;
-
-    int augmented_flow = 0;
-    for (int i = 0; i < n_node; ++i) {
-        if ((level[i] == level[cur] + 1 && graph[cur][i] > 0) &&
-            (augmented_flow = augment(i, end, min(graph[cur][i], min_flow)))
-        ) {
-            graph[cur][i] -= augmented_flow;
-            graph[i][cur] += augmented_flow;
-            return augmented_flow;
-        }
-    }
-    return 0;
-}
-
-int dinic(int start, int end) {
-    int ans = 0;
-    int temp = 0;
-    while (mark_level(start, end))
-        while (temp = augment(start, end, INT_MAX))
-            ans += temp;
-    return ans;
-}
-```
 
 #### 5.5.2 Improved SAP + Gap Optimization
+
+> TODO add more optimizations
 
 ```c++
 struct Network {
@@ -3970,8 +3823,13 @@ void min_cost_max_flow() {
 }
 ```
 
+#### 5.5.4 More Applications and Properties
 
-### 5.6 强连通分量 图的 割点, 桥, 双连通分支 ``https://www.byvoid.com/blog/biconnect``
+> placeholder
+
+### 5.6 强连通分量 图的 割点, 桥, 双连通分支
+
+``https://www.byvoid.com/blog/biconnect``
 
 > [点连通度与边连通度]
 > 
@@ -4211,54 +4069,6 @@ struct Graph {
 };
 ```
 
-
-``` c++
-#define NN 100000
-
-int n;
-int m;
-
-vector<int> g[NN];
-int in_degree[NN];
-
-void topological_sort() {
-    queue<int> q; // vertex pending to remove
-    for (int i = 1; i <= n; i++)
-        if (in_degree[i] == 0) // all with in-degree == 0 can be removed
-            q.push(i);
-
-    int left_to_remove = n;
-    while (q.size()) {
-        int cur = q.front(); q.pop();
-        for (int next : g[cur]) {
-            in_degree[next]--;
-            if (in_degree[next] == 0) // if in-degree == 0, can be removed
-                q.push(next);
-        }
-        left_to_remove--;
-    }
-
-    if (left_to_remove == 0)
-        cout << "Correct" << endl;
-    else
-        cout << "Wrong" << endl;
-}
-
-void init_graph() {
-    cin >> n >> m;
-    for (int i = 0; i < m; i++) {
-        int a, b;
-        cin >> a >> b;
-        g[a].push_back(b);
-        in_degree[b]++;
-    }
-}
-
-int main() {
-    init_graph();
-    topological_sort();
-}
-```
 
 ### 5.8 Euler Cycle/Path, Hamilton Cycle/Path
 
@@ -4665,7 +4475,7 @@ int main(int argc, char const *argv[]) {
 #### 6.3.8 最小公倍数
 
 ```C++
-a * b / gcd(a, b)
+a / gcd(a, b) * b
 ```
 
 #### 6.3.9 分解质因数
@@ -4726,7 +4536,9 @@ int convert_base_to_dec(const int s[], const int len, const int base) {
 ```
 
 #### 6.3.13 A / C
+
 > C(n, k) = C(n-1, k) + C(n-1, k-1)
+> 
 > C(n, k) = C(n, n-k)
 
 ```c++
@@ -4942,7 +4754,9 @@ struct point {
 #### 7.1.2 向量点乘 叉乘
 
 > a = (x1, y1)
+> 
 > b = (x2, y2)
+> 
 > i ... |i| = 1, vertical to a-b surface
 
 #### 7.1.3 dot product
@@ -4962,6 +4776,7 @@ struct point {
 > if 0: b is at right of a
 > 
 > a x b = area of 平行四边形
+> 
 > a x b x c = area of 平行六面体, c = (x3, y3)
 
 #### 7.1.5 直线公式

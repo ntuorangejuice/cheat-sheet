@@ -45,19 +45,15 @@
       - [Define operator()()](#define-operator)
   - [1.4 STL Containers](#14-stl-containers)
     - [1.4.1 Map](#141-map)
-      - [Define a Map](#define-a-map)
       - [Commonly used method](#commonly-used-method)
       - [Hash Map (Unordered Map)](#hash-map-unordered-map)
-    - [1.4.2 Pair](#142-pair)
     - [1.4.3 Vector](#143-vector)
-    - [1.4.4 List](#144-list)
     - [1.4.5 Queue](#145-queue)
     - [1.4.6 Double-ended Queue](#146-double-ended-queue)
     - [1.4.7 Stack](#147-stack)
     - [1.4.8 Priority Queue](#148-priority-queue)
 - [2. Advanced Data Structures](#2-advanced-data-structures)
   - [2.2 Tree](#22-tree)
-    - [2.2.0 Tree Traversal](#220-tree-traversal)
     - [2.2.1 Pointer Jumping](#221-pointer-jumping)
     - [2.2.2 Heavy-Light Decomposition](#222-heavy-light-decomposition)
     - [2.2.3 Lowest Common Ancestor](#223-lowest-common-ancestor)
@@ -95,7 +91,6 @@
   - [4.3 Longest palindromic substring (Manacher's algorithm)](#43-longest-palindromic-substring-manachers-algorithm)
 - [5. Graph](#5-graph)
   - [5.1 Union-find Set](#51-union-find-set)
-    - [5.1.1 Union-find Set - application](#511-union-find-set---application)
   - [5.2 Minimium Spanning Tree](#52-minimium-spanning-tree)
     - [5.2.1 Prim's](#521-prims)
     - [5.2.2 Kruskal](#522-kruskal)
@@ -110,7 +105,7 @@
     - [5.5.1 Dinic](#551-dinic)
     - [5.5.2 Improved SAP + Gap Optimization](#552-improved-sap--gap-optimization)
     - [5.5.3 Minimum-Cost Maximum-Flow](#553-minimum-cost-maximum-flow)
-  - [5.6 强连通分量 图的 割点, 桥, 双连通分支 ``https://www.byvoid.com/blog/biconnect``](#56-%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F-%E5%9B%BE%E7%9A%84-%E5%89%B2%E7%82%B9-%E6%A1%A5-%E5%8F%8C%E8%BF%9E%E9%80%9A%E5%88%86%E6%94%AF-httpswwwbyvoidcomblogbiconnect)
+  - [5.6 强连通分量 图的 割点, 桥, 双连通分支](#56-%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F-%E5%9B%BE%E7%9A%84-%E5%89%B2%E7%82%B9-%E6%A1%A5-%E5%8F%8C%E8%BF%9E%E9%80%9A%E5%88%86%E6%94%AF)
   - [5.7 Topological Sort / 拓扑排序](#57-topological-sort--%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F)
   - [5.8 Euler Cycle/Path, Hamilton Cycle/Path](#58-euler-cyclepath-hamilton-cyclepath)
   - [5.9 find negative (weight) Cycle on a graph](#59-find-negative-weight-cycle-on-a-graph)
@@ -135,7 +130,10 @@
     - [6.3.13 A / C](#6313-a--c)
     - [6.3.14 质数表](#6314-%E8%B4%A8%E6%95%B0%E8%A1%A8)
     - [6.3.15 Fast Exponention](#6315-fast-exponention)
-  - [6.4 博弈论](#64-%E5%8D%9A%E5%BC%88%E8%AE%BA)
+  - [6.4 Game Theory 博弈论](#64-game-theory-%E5%8D%9A%E5%BC%88%E8%AE%BA)
+    - [6.4.1 Impartial Combinatorial Game](#641-impartial-combinatorial-game)
+      - [6.4.1.1 Nim Game](#6411-nim-game)
+      - [6.4.1.1 Composite Games – Sprague-Grundy Theorem and Nim Value](#6411-composite-games-%E2%80%93-sprague-grundy-theorem-and-nim-value)
 - [7. Geometry](#7-geometry)
   - [7.1 2-Dimension Space](#71-2-dimension-space)
     - [7.1.1 Template of Point](#711-template-of-point)
@@ -144,8 +142,6 @@
     - [7.1.4 cross product](#714-cross-product)
     - [7.1.5 直线公式](#715-%E7%9B%B4%E7%BA%BF%E5%85%AC%E5%BC%8F)
     - [7.1.6 Convex Hull](#716-convex-hull)
-      - [Gift Wrapping](#gift-wrapping)
-      - [QuickHull](#quickhull)
       - [Graham scan](#graham-scan)
 - [8. Tricks + Miscellaneous](#8-tricks--miscellaneous)
   - [8.1 Bit Manipulation](#81-bit-manipulation)
@@ -232,10 +228,6 @@ void push_heap (RandomAccessIterator first, RandomAccessIterator last, Compare c
 void sort_heap (RandomAccessIterator first, RandomAccessIterator last); Compare comp);
 ```
 
-Self implementation of heap is available in section 2.
-
-Note: Priority queue is more recommeneded.
-
 
 #### 1.3.6 Sort
 
@@ -299,12 +291,6 @@ Used by `priority_queue `.
 #### 1.4.1 Map
 
 ```c++
-#include <map>
-```
-
-##### Define a Map
-
-```c++
 template < class Key,                                     // map::key_type
            class T,                                       // map::mapped_type
            class Compare = less<Key>,                     // map::key_compare
@@ -333,11 +319,7 @@ count() // return 1 or 0
 
 ##### Hash Map (Unordered Map)
 
-> Unordered map is implemented as a hash table.
-
 ```c++
-#include <unordered_map>
-
 template < class Key,                                    // unordered_map::key_type
            class T,                                      // unordered_map::mapped_type
            class Hash = hash<Key>,                       // unordered_map::hasher
@@ -346,8 +328,6 @@ template < class Key,                                    // unordered_map::key_t
            > class unordered_map;
 
 ```
-
-#### 1.4.2 Pair
 
 #### 1.4.3 Vector
 
@@ -361,38 +341,14 @@ std::vector<int> second (4,100);  // four ints with value 100
 * pop_back()
 ```
 
-#### 1.4.4 List
-
-```
-* begin(), end()
-* front(), back()
-* clear()
-* push_front(const value_type& val)
-* push_back(const value_type& val)
-* pop_front(): remove the first element.
-* pop_back(): remove the last element.
-* remove(const value_type& val): remove all elements of value val.
-* insert(iterator position, const value_type& val)
-* size()
-* reverse()
-* sort(), sort (Compare comp)
-* 
-* resize()
-* reserve()
-```
-
 #### 1.4.5 Queue
 
-```C++
-#include <queue>
-```
-Constructor
 ```C++
 queue<int> my_queue;
 queue<int, list<int> > my_queue (my_list);
 // use list<int> as container, copy my_list into my_queue
 ```
-Methods
+
 ```C++
 void queue::push(const value_type& val);
 void queue::pop();
@@ -410,11 +366,6 @@ const_reference& queue::front() const;
 
 #### 1.4.7 Stack
 
-``` c++
-#include <stack>
-```
-
-Constructor
 ```C++
 stack<int, vector<int> > my_stack (my_data);
 // use vector<int> as container, copy my_data into my_stack
@@ -483,8 +434,6 @@ void delete(HEAP *h){
 ## 2. Advanced Data Structures
 
 ### 2.2 Tree
-
-#### 2.2.0 Tree Traversal
 
 #### 2.2.1 Pointer Jumping
 
@@ -2047,11 +1996,7 @@ struct RMQ { // not tested
     const static int LOG_MAXLENGTH = 20;
     int rmq[MAXLENGTH][LOG_MAXLENGTH];
 
-    int* arr;
-
-    void init(int* x, int len) {
-        arr = x;
-
+    void init(int* arr, int len) {
         for (int i = 0; i < len; i++)
             rmq[i][0] = arr[i];
         for (int j = 1; j < LOG_MAXLENGTH; j++)
@@ -2242,10 +2187,6 @@ void init() {
         parent[i] = i;
 }
 ```
-#### 5.1.1 Union-find Set - application
-
-> place holder
-
 
 ### 5.2 Minimium Spanning Tree
 
@@ -2571,38 +2512,6 @@ struct Network {
 };
 ```
 
-```C++
-int n_cow, n_stall;
-bool cow_like_stall[HH][HH]; // cow_stall[cow][stall] // not adjacent matrix!!
-int stall_assigned_to[HH]; // stall_assigned_to[cow]
-
-bool visited[HH];
-bool match(int cur) {
-    for (int i = 1; i <= n_stall; i++) {
-        if (!visited[i] && cow_like_stall[cur][i]) {
-            visited[i] = true;
-            if (stall_assigned_to[i] == 0 || match(stall_assigned_to[i])) {
-                stall_assigned_to[i] = cur;
-                return true;
-            }
-        }
-    }
-    return false;
-}
-int bipartite_match() {
-    int success_match = 0;
-    for (int cow = 1; cow <= n_stall; cow++)
-        stall_assigned_to[cow] = 0;
-    for (int cow = 1; cow <= n_cow; cow++) {
-        for (int stall = 1; stall <= n_stall; stall++)
-            visited[stall] = false;
-        if (match(cow))
-            success_match++;
-    }
-    return success_match;
-}
-```
-
 ### 5.5 Maximum Flow Problem 最大流
 
 #### 5.5.1 Dinic
@@ -2713,60 +2622,6 @@ struct Network {
     // maximum flow - dinic
     // 
 };
-```
-
-``` C++
-int graph[250][250];
-int level[250];
-int n_node;
-
-int mark_level(int start, int end) {
-    memset(level, -1, sizeof(level));
-    queue<int> to_visit;
-    
-    level[start] = 0;
-    to_visit.push(start);
-    while (!to_visit.empty()) {
-        int cur = to_visit.front();
-        to_visit.pop();
-        for (int i = 0; i < n_node; ++i) {
-            if (graph[cur][i] != 0 && level[i] == -1) {
-                level[i] = level[cur] + 1;
-                to_visit.push(i);
-            }
-        }
-    }
-
-    if (level[end] == -1)
-        return 0; // cannot reach the sink
-    return 1; // can reach the sink
-}
-
-int augment(int cur, int end, int min_flow) {
-    if (cur == end)
-        return min_flow;
-
-    int augmented_flow = 0;
-    for (int i = 0; i < n_node; ++i) {
-        if ((level[i] == level[cur] + 1 && graph[cur][i] > 0) &&
-            (augmented_flow = augment(i, end, min(graph[cur][i], min_flow)))
-        ) {
-            graph[cur][i] -= augmented_flow;
-            graph[i][cur] += augmented_flow;
-            return augmented_flow;
-        }
-    }
-    return 0;
-}
-
-int dinic(int start, int end) {
-    int ans = 0;
-    int temp = 0;
-    while (mark_level(start, end))
-        while (temp = augment(start, end, INT_MAX))
-            ans += temp;
-    return ans;
-}
 ```
 
 #### 5.5.2 Improved SAP + Gap Optimization
@@ -2969,7 +2824,9 @@ void min_cost_max_flow() {
 ```
 
 
-### 5.6 强连通分量 图的 割点, 桥, 双连通分支 ``https://www.byvoid.com/blog/biconnect``
+### 5.6 强连通分量 图的 割点, 桥, 双连通分支
+
+``https://www.byvoid.com/blog/biconnect``
 
 > [点连通度与边连通度]
 > 
@@ -3020,7 +2877,7 @@ find and merge biconnected component in undirected graph
 find and merge strongly connected component in directed graph
 
 
-time complexity `O(E+V)`
+> time complexity `O(E+V)`
 
 ``` c++
 #define NN 20002
@@ -3207,55 +3064,6 @@ struct Graph {
     		printf("in_order[%d] = %d\n", i, in_order[i]);
     }
 };
-```
-
-
-``` c++
-#define NN 100000
-
-int n;
-int m;
-
-vector<int> g[NN];
-int in_degree[NN];
-
-void topological_sort() {
-    queue<int> q; // vertex pending to remove
-    for (int i = 1; i <= n; i++)
-        if (in_degree[i] == 0) // all with in-degree == 0 can be removed
-            q.push(i);
-
-    int left_to_remove = n;
-    while (q.size()) {
-        int cur = q.front(); q.pop();
-        for (int next : g[cur]) {
-            in_degree[next]--;
-            if (in_degree[next] == 0) // if in-degree == 0, can be removed
-                q.push(next);
-        }
-        left_to_remove--;
-    }
-
-    if (left_to_remove == 0)
-        cout << "Correct" << endl;
-    else
-        cout << "Wrong" << endl;
-}
-
-void init_graph() {
-    cin >> n >> m;
-    for (int i = 0; i < m; i++) {
-        int a, b;
-        cin >> a >> b;
-        g[a].push_back(b);
-        in_degree[b]++;
-    }
-}
-
-int main() {
-    init_graph();
-    topological_sort();
-}
 ```
 
 ### 5.8 Euler Cycle/Path, Hamilton Cycle/Path
@@ -3637,8 +3445,7 @@ int main(int argc, char const *argv[]) {
 
 > smallest answer is x0 % (n / gcd(a, n) + gcd(a, n)) % gcd(a, n)
 
-```C++
-```
+
 
 #### 6.3.6 求解模的逆元
 
@@ -3663,7 +3470,7 @@ int main(int argc, char const *argv[]) {
 #### 6.3.8 最小公倍数
 
 ```C++
-a * b / gcd(a, b)
+a / gcd(a, b) * b
 ```
 
 #### 6.3.9 分解质因数
@@ -3772,9 +3579,105 @@ int power_modulo(int n, int p, int M) {
 }
 ```
 
-### 6.4 博弈论
+### 6.4 Game Theory 博弈论
 
-> place holder
+#### 6.4.1 Impartial Combinatorial Game
+
+> In combinatorial game theory, an impartial game is a game in which the allowable moves depend only on the position and not on which of the two players is currently moving, and where the payoffs are symmetric. In other words, the only difference between player 1 and player 2 is that player 1 goes first.
+
+> Impartial games can be analyzed using the Sprague–Grundy theorem.
+
+> Impartial games include Nim, Sprouts, Kayles, Quarto, Cram, Chomp, and poset games. Go and chess are not impartial, as each player can only place or move pieces of their own color. Games like ZÈRTZ and Chameleon are also not impartial, since although they are played with shared pieces, the payoffs are not necessarily symmetric for any given position.
+
+> A game that is not impartial is called a partisan game.
+> 
+> [source: wiki](https://en.wikipedia.org/wiki/Impartial_game)
+> 
+> [tutorial: topcoder](https://www.topcoder.com/community/data-science/data-science-tutorials/algorithm-games/)
+
+##### 6.4.1.1 Nim Game
+
+> One good choice: brute force to find some pattern.
+> 
+> We will not be able to play many of the games without decomposing them to smaller parts (sub-games), pre-computing some values for them, and then obtaining the result by combining these values.
+> 
+> Positions have the following properties:
+> 
+> - All terminal positions are losing.
+> - If a player is able to move to a losing position then he is in a winning position.
+> - If a player is able to move only to the winning positions then he is in a losing position.
+> 
+> Rules of the Game of Nim: There are n piles of coins. When it is a player’s turn he chooses one pile and takes at least one coin from it. If someone is unable to move he loses (so the one who removes the last coin is the winner).
+> 
+> Let n1, n2, ..., nk, be the sizes of the piles. It is a losing position for the player whose turn it is if and only if n1 xor n2 xor ... xor nk = 0.
+
+##### 6.4.1.1 Composite Games – Sprague-Grundy Theorem and Nim Value
+
+> - Break composite game into subgames
+> - Assign grundy number to every subgame according to which size of the pile in the Game of Nim it is equivalent to.
+> - Now we have some subgames (piles), each subgame has its grundy number (size of pile)
+> - xor all subgames
+
+> - Losing position of subgame has grundy number = 0.
+> - A position has grundy number = smallest number among its next positions don't have.
+
+> If the table of grundy number is too large, we can precompute and find the pattern.
+
+```c++
+// hihocoer 1173
+const int MAXSTATE = 2e4 + 2;
+
+bool appear[MAXSTATE];
+int sg[MAXSTATE]; // Sprague-Grundy // Nim Value
+void init_sg() {
+	sg[state] = 0;
+	for (int state = 1; state < MAXSTATE; state++) { // sg(x) = mex{sg(y) | y是x的后继局面} // mex{a[i]}表示a中未出现的最小非负整数
+		fill_n(appear, MAXSTATE, false);
+		for (int nx = 0; nx < state; nx++)
+			appear[sg[nx]] = true;
+		int pile_a = 1;
+		int pile_b = state - pile_a;
+		while (pile_a <= pile_b) {
+			appear[sg[pile_a] ^ sg[pile_b]] = true;
+			pile_a++;
+			pile_b--;
+		}
+		while (appear[sg[state]])
+			sg[state]++;
+	}
+}
+
+int main() {
+
+    init_sg();
+
+	// --- start of finding pattern ---
+	// 
+    // --- end of finding pattern ---
+
+    int n;
+    cin >> n;
+    int result = 0;
+    for (int i = 0; i < n; i++) {
+    	int a;
+    	cin >> a;
+
+		// by grundy number 
+    	// result ^= sg[a];
+    	
+    	// by pattern
+    	// if (a % 4 == 0)
+    	// 	a--;
+    	// else if (a % 4 == 3)
+    	// 	a++;
+    	// result ^= a; 
+    }
+    if (result)
+    	cout << "Alice" << endl;
+    else
+    	cout << "Bob" << endl;
+}
+```
 
 ## 7. Geometry
 
@@ -3842,7 +3745,9 @@ struct point {
 #### 7.1.2 向量点乘 叉乘
 
 > a = (x1, y1)
+> 
 > b = (x2, y2)
+> 
 > i ... |i| = 1, vertical to a-b surface
 
 #### 7.1.3 dot product
@@ -3862,6 +3767,7 @@ struct point {
 > if 0: b is at right of a
 > 
 > a x b = area of 平行四边形
+> 
 > a x b x c = area of 平行六面体, c = (x3, y3)
 
 #### 7.1.5 直线公式
@@ -3869,14 +3775,6 @@ struct point {
 > (x, y) = (x1, y1) + k * ((x2, y2) - (x1, y1))
 
 #### 7.1.6 Convex Hull
-
-##### Gift Wrapping
-
-> place holder
-
-##### QuickHull
-
-> place holder
 
 ##### Graham scan
 
