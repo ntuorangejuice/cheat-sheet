@@ -777,64 +777,6 @@ struct Graph {
 };
 ```
 
-Another implementation, only used by ZXZ.
-
-```c++
-const int MAX_N = 1e5 + 10;
-const int MAX_LOG_N = 21;
-
-struct node {
-    int baba;
-    int k, v;
-    vector<int> children;
-};
-
-node tree[MAX_N];  // tree[0] is not used.
-
-
-int range_minimun_query(int left, int right) {
-    // calculate log(right)
-    if (left > right) swap(left, right);
-    int log_right = 1;
-    while ((1 << log_right) <= right - left) log_right ++;
-    log_right --;
-    // return the minimum from the lower level RMQ.
-    bool is_lower = (first_visit[rmq[left][log_right]] <
-                     first_visit[rmq[right - (1<<log_right) + 1][log_right]]);
-    return is_lower ? rmq[left][log_right] : rmq[right - (1<<log_right) + 1][log_right];
-}
-
-void dfs_rmq(int cur) {
-    visit_count ++;
-    visit[visit_count] = cur;
-    if (!first_visit[cur]) first_visit[cur] = visit_count;
-    for (int i = 0; i < tree[cur].children.size(); i++) {
-        int child = tree[cur].children[i];
-        if (first_visit[child]) continue;
-        level[child] = level[cur] + 1;
-        dfs_rmq(child);
-        visit_count ++;
-        visit[visit_count] = cur;
-    }
-}
-
-void init_rmq() {
-    dfs_rmq(1);
-    for (int i = 1; i <= visit_count; i++) rmq[i][0] = visit[i];
-    for (int log_level = 1; log_level < MAX_LOG_N; log_level++) {
-        for (int i = 1; i <= visit_count; i++) {
-            if (i + (1<<log_level) > visit_count) continue;
-            if (first_visit[rmq[i][log_level - 1]] <
-                first_visit[rmq[i + (1<<(log_level-1))][log_level-1]]) {
-                rmq[i][log_level] = rmq[i][log_level - 1];
-            } else {
-                rmq[i][log_level] = rmq[i + (1<<(log_level-1))][log_level-1];
-            }
-        }
-    }
-}
-```
-
 ##### 2.2.3.1 Tarjan's Off-line Algorithm
 
 > let n = number of ndoes of the tree, m = number of query
@@ -2174,107 +2116,112 @@ int main () {
 ## 5. Graph
 
 ### 5.1 Union-find Set
+
 ```C++
-int parent[HH];
-int find(int x) {
-	return x == parent[x] ? x : parent[x] = find(parent[x]);
-}
-void merge(int x, int y) {
+struct UnionFindSet {
+	vector<int> parent;
+	void init(int nn) {
+		parent.resize(nn + 1);
+		for (int i = 0; i < parent.size(); i++)
+			parent[i] = i;
+	}
+
+	void merge(int x, int y) {
 		parent[find(x)] = find(y);
-}
-void init() {
-    for (int i = 0; i < n; i++) 
-        parent[i] = i;
-}
+	}
+	int find(int x) {
+		return x == parent[x] ? x : parent[x] = find(parent[x]);
+	}
+	bool together(int x, int y) {
+		return find(x) == find(y);
+	}
+};
 ```
 
 ### 5.2 Minimium Spanning Tree
 
 #### 5.2.1 Prim's
 
-> graph[][], time complexity: O(V^2)
+> O((V + E)log(V))
 
 ```C++
-void mst_prim() {
-    int n_node, n_edge;
-    ////////////////////////////////////////
-    // read data
-    ////////////////////////////////////////
-    int graph[n_node][n_node];
-    int min_dis[n_node];
-    for (int i = 1; i <= n_node; i++)
-        min_dis[i] = INT_MAX; // initialize
-    ////////////////////////////////////////
-    // read graph[][]
-    ////////////////////////////////////////
+struct Graph {
+    struct Edge {
+    	int from;
+        int to;
+        int len;
+    };
 
-    int cur = 0; // the node just added
-    min_dis[cur] = -1; // add cur
-    for (int i = 1; i < n_node; i++) { // total need pick n-1 edges
-        int next; // the node to add
-        int next_min_dis = INT_MAX; // current distance of nearest node
-        for (int j = 1; j <= n_node; j++) // check all node
-            if (min_dis[j] != -1 && min_dis[j] < next_min_dis) { // if j node is nearer
-                next = j; // record
-                next_min_dis = min_dis[j];
+    const static int MAXNODE = 3 * 1e5 + 2;
+    vector<int> g[MAXNODE];
+    vector<Edge> edge;
+    int n;
+    void init(int nn) {
+        n = nn;
+        for (int i = 0; i <= n; i++)
+            g[i].clear();
+        edge.clear();
+    }
+
+    void add_e(int x, int y, int len) {
+        g[x].push_back(edge.size());
+        edge.push_back((Edge){x, y, len});
+        g[y].push_back(edge.size());
+        edge.push_back((Edge){y, x, len});
+    }
+
+    void show() {
+    	for (int i = 0; i <= n; i++) {
+    		printf("%d:", i);
+    		for (int ie : g[i])
+    			printf(" %d", edge[ie].to);
+    		printf("\n");
+    	}
+    	printf("\n");
+    }
+
+    // 
+    // ---- start of Minimum Spanning Tree ---
+    // 
+    vector<bool> added;
+    vector<int> mindis; // little optimization
+    void mst() {
+        vector<bool>(n + 1, false).swap(added);
+        vector<int>(n + 1, INT_MAX).swap(mindis);
+
+        auto cmp = [](const Edge& a, const Edge& b) {
+            return a.len > b.len;
+        };
+        priority_queue<Edge, vector<Edge>, decltype(cmp)> near(cmp);
+        for (int i = 0; i < g[1].size(); i++) {
+            const Edge& e = edge[g[1][i]];
+            near.push(e);
+            mindis[e.to] = e.len; // little optimization
+        }
+        added[1] = true;
+
+        while (near.size()) {
+            Edge cur = near.top(); near.pop();
+            added[cur.to] = true;
+            // add Edge cur
+            for (int ie : g[cur.to]) {
+                const Edge& nxe = edge[ie];
+                int nx = nxe.to;
+                if (!added[nx]
+                 && mindis[nx] > nxe.len) { // little optimization
+                    mindis[nx] = nxe.len; // little optimization
+                    near.push(nxe);
+                }
             }
-            
-        min_dis[next] = -1; // add edge: cur->next
-        cur = next; // next node to add
+            while (near.size() && added[near.top().to])
+                near.pop();
+        }
+        // 
     }
-}
-```
-> vector<int> graph[], time complexity: (V + E)log(V)
-
-```C++
-struct Edge {
-    int from;
-    int to;
-    int length;
-
-    bool operator< (Edge b) const {
-        return this->length > b.length;
-    }
+    // 
+    // ---- end of Minimum Spanning Tree ---
+    // 
 };
-
-void mst_prim() {
-    int n_node;
-    int n_edge;
-    ////////////////////////////////////////////
-    // cin >> n_node >> n_edge;
-    ////////////////////////////////////////////
-    vector<Edge> graph[n_node];
-    ////////////////////////////////////////////
-    // read graph
-    ////////////////////////////////////////////
-
-    priority_queue<Edge> discovered;
-    int added[n_node];
-    memset(added, 0, sizeof(added));
-
-    int to_add = n_node;
-    Edge temp = {0, 0, 0};
-    discovered.push(temp); // 0 is first node
-    while (to_add--) {
-        Edge cur = discovered.top();
-        discovered.pop();
-        while (added[cur.to] == 1) {
-            cur = discovered.top();
-            discovered.pop();
-        }
-        // cur is the edge to add
-
-        added[cur.to] = 1;
-        for (int i = 0; i < graph[cur.to].size(); i++) {
-            Edge& next = graph[cur.to][i];
-            if (to != next.to && added[next.to] == 0) {
-                discovered.push(next);
-            }
-        }
-    }
-    // should directly maintain the min distance for each node to current tree
-    // use heapfy...
-}
 ```
 
 #### 5.2.2 Kruskal
@@ -2282,47 +2229,67 @@ void mst_prim() {
 > Elog(E) + Elog(V)
 
 ```C++
-struct Edge {
-    int from;
-    int to;
-    int length;
+struct Graph {
+    struct Edge {
+    	int from;
+        int to;
+        int len;
+    };
 
-    bool operator< (Edge b) const {
-        return this->length < b.length;
+    const static int MAXNODE = 3 * 1e5 + 2;
+    vector<int> g[MAXNODE];
+    vector<Edge> edge;
+    int n;
+    void init(int nn) {
+        n = nn;
+        for (int i = 0; i <= n; i++)
+            g[i].clear();
+        edge.clear();
     }
+
+    void add_e(int x, int y, int len) {
+        g[x].push_back(edge.size());
+        edge.push_back((Edge){x, y, len});
+        g[y].push_back(edge.size());
+        edge.push_back((Edge){y, x, len});
+    }
+
+    void show() {
+    	for (int i = 0; i <= n; i++) {
+    		printf("%d:", i);
+    		for (int ie : g[i])
+    			printf(" %d", edge[ie].to);
+    		printf("\n");
+    	}
+    	printf("\n");
+    }
+
+    // 
+    // ---- start of Minimum Spanning Tree ---
+    // 
+    UnionFindSet ufs;
+    void mst() {
+    	ufs.init(n);
+    	vector<Edge> eee = edge;
+    	sort(begin(eee), end(eee), [](const Edge& a, const Edge& b) {
+    		return a.len < b.len;
+    	});
+
+    	int need = n - 1;
+    	for (const auto& e : eee) {
+    		if (!ufs.together(e.from, e.to)) {
+    			// add Edge e
+    			ufs.merge(e.from, e.to);
+    			need--;
+    			if (!need)
+    				break;
+    		}
+    	}
+    }
+    // 
+    // ---- end of Minimum Spanning Tree ---
+    // 
 };
-
-int get_father(int father[], int a) {
-    if (father[a] != a)
-        return father[a] = get_father(father, father[a]);
-    return a;
-}
-
-void solve() {
-    int n_node, n_edge;
-    /////////////////////////////////////////////////////
-    // initialize n_edge
-    /////////////////////////////////////////////////////
-    Edge e[n_edge];
-    /////////////////////////////////////////////////////
-    // initialize edge e
-    /////////////////////////////////////////////////////
-    int father[n_node];
-    for (int i = 0; i < n_node; i++)
-        father[i] = i; // initialize
-    sort(e, e + n_edge);
-
-    int to_add = n_node - 1;
-    for (int cur = 0; to_add; cur++) {
-        int fromSfather = get_father(father, e[cur].from);
-        int toSfather = get_father(father, e[cur].to);
-        if (fromSfather != toSfather) {
-            father[fromSfather] = toSfather;
-            to_add--;
-            // add edge e[cur]
-        }
-    }
-}
 ```
 
 
