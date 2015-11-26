@@ -5011,7 +5011,7 @@ int main(int argc, char const *argv[]) {
 #define CLR_BIT(n, i) ((n) & ~(1LL << ((i)-1)))
 ```
 
-### 8.1 cantor_expansion / reverse_cantor_expansion
+### 8.1 Cantor Expansion / Reverse Cantor Expansion
 
 > for hashing, or ...
 
@@ -5098,4 +5098,13 @@ void passFunc(int **a) {
     // ...
 }
 passFunc(array);
+```
+
+### 8.3 Binary Display
+
+```c++
+#include <bitset>
+void show_binary(unsigned long long x) {
+	printf("%s\n", bitset<64>(x).to_string().c_str());
+}
 ```
