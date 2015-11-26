@@ -146,8 +146,9 @@
       - [Graham scan](#graham-scan)
 - [8. Tricks + Miscellaneous](#8-tricks--miscellaneous)
   - [8.1 Bit Manipulation](#81-bit-manipulation)
-  - [8.1 cantor_expansion / reverse_cantor_expansion](#81-cantor_expansion--reverse_cantor_expansion)
+  - [8.1 Cantor Expansion / Reverse Cantor Expansion](#81-cantor-expansion--reverse-cantor-expansion)
   - [8.2 pass 2-D array](#82-pass-2-d-array)
+  - [8.3 Binary Display](#83-binary-display)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
