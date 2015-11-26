@@ -149,6 +149,7 @@
   - [8.1 Cantor Expansion / Reverse Cantor Expansion](#81-cantor-expansion--reverse-cantor-expansion)
   - [8.2 pass 2-D array](#82-pass-2-d-array)
   - [8.3 Binary Display](#83-binary-display)
+  - [8.4 Fast Log](#84-fast-log)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -4034,5 +4035,26 @@ passFunc(array);
 #include <bitset>
 void show_binary(unsigned long long x) {
 	printf("%s\n", bitset<64>(x).to_string().c_str());
+}
+```
+
+### 8.4 Fast Log
+
+> Do not use unless necessary.
+
+```c++
+int fastlog(unsigned long long x, unsigned long long base) {
+	// ERROR VALUE IF X == BASE == ULLONG_MAX
+
+	const unsigned long long HALF = 1ULL << 32;
+	unsigned long long cache[7];
+#define INIT(i) { cache[i] = base; if (base < HALF) base *= base; else base = ULLONG_MAX; }
+	INIT(0); INIT(1); INIT(2); INIT(3); INIT(4); INIT(5); INIT(6);
+#undef INIT
+
+	int ret = -(x == 0);
+#define S(i, k) if (x >= cache[i]) ret += k, x /= cache[i]; else return ret;
+	S(6, 64); S(5, 32); S(4, 16); S(3, 8); S(2, 4); S(1, 2); S(0, 1); 
+#undef S
 }
 ```
