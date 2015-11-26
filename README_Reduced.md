@@ -70,7 +70,8 @@
   - [2.6 Binary Indexed Tree](#26-binary-indexed-tree)
   - [2.7 Segment Tree](#27-segment-tree)
     - [2.7.0 Range Update + Range Query](#270-range-update--range-query)
-    - [2.7.3 Range Minimum Query RMQ](#273-range-minimum-query-rmq)
+  - [2.8 Range Minimum Query RMQ](#28-range-minimum-query-rmq)
+  - [2.9 Union-find Set](#29-union-find-set)
 - [3. Methodology](#3-methodology)
   - [3.0 Greedy](#30-greedy)
   - [3.1 Recursive](#31-recursive)
@@ -90,7 +91,7 @@
   - [4.2 Boyer-Moore](#42-boyer-moore)
   - [4.3 Longest palindromic substring (Manacher's algorithm)](#43-longest-palindromic-substring-manachers-algorithm)
 - [5. Graph](#5-graph)
-  - [5.1 Union-find Set](#51-union-find-set)
+  - [5.1 Graph Structure](#51-graph-structure)
   - [5.2 Minimium Spanning Tree](#52-minimium-spanning-tree)
     - [5.2.1 Prim's](#521-prims)
     - [5.2.2 Kruskal](#522-kruskal)
@@ -1930,7 +1931,7 @@ struct SegmentTree {
 };
 ```
 
-#### 2.7.3 Range Minimum Query RMQ
+### 2.8 Range Minimum Query RMQ
 
 ```c++
 struct RMQ { // not tested
@@ -1964,6 +1965,29 @@ struct RMQ { // not tested
         int second_half = r - (1 << first_half) + 1;
         return min(rmq[l][first_half], rmq[second_half][first_half]);
     }
+};
+```
+
+### 2.9 Union-find Set
+
+```C++
+struct UnionFindSet {
+	vector<int> parent;
+	void init(int nn) {
+		parent.resize(nn + 1);
+		for (int i = 0; i < parent.size(); i++)
+			parent[i] = i;
+	}
+
+	void merge(int x, int y) {
+		parent[find(x)] = find(y);
+	}
+	int find(int x) {
+		return x == parent[x] ? x : parent[x] = find(parent[x]);
+	}
+	bool together(int x, int y) {
+		return find(x) == find(y);
+	}
 };
 ```
 
@@ -2115,27 +2139,87 @@ int main () {
 
 ## 5. Graph
 
-### 5.1 Union-find Set
+### 5.1 Graph Structure
 
-```C++
-struct UnionFindSet {
-	vector<int> parent;
-	void init(int nn) {
-		parent.resize(nn + 1);
-		for (int i = 0; i < parent.size(); i++)
-			parent[i] = i;
-	}
+```c++
+struct Graph {
+    struct Edge {
+        int from;
+        int to;
+        int len;
+    };
 
-	void merge(int x, int y) {
-		parent[find(x)] = find(y);
-	}
-	int find(int x) {
-		return x == parent[x] ? x : parent[x] = find(parent[x]);
-	}
-	bool together(int x, int y) {
-		return find(x) == find(y);
-	}
+    const static int MAXNODE = 3 * 1e5 + 2;
+    vector<int> g[MAXNODE];
+    vector<Edge> edge;
+    int n;
+    void init(int nn) {
+        n = nn;
+        for (int i = 0; i <= n; i++)
+            g[i].clear();
+        edge.clear();
+    }
+
+    void add_e(int x, int y, int len) {
+        g[x].push_back(edge.size());
+        edge.push_back((Edge){x, y, len});
+        g[y].push_back(edge.size());
+        edge.push_back((Edge){y, x, len});
+    }
+
+    void show() {
+        for (int i = 0; i <= n; i++) {
+            printf("%d:", i);
+            for (int ie : g[i])
+                printf(" %d", edge[ie].to);
+            printf("\n");
+        }
+        printf("\n");
+    }
 };
+```
+
+```c++
+struct Network {
+    struct Edge {
+        int to;
+        int pre_edge;
+        int cap;
+        int flow;
+    };
+
+    vector<int> last;
+
+    int nv; // total number of vertex, index range: [0, nv)
+    vector<Edge> edge;
+    void init(int _nv) {
+        nv = _nv;
+        vector<Edge>().swap(edge);
+        vector<int>(nv + 1, -1).swap(last);
+    }
+
+    void add_e(int x, int y, int cap, int r_cap = 0) {
+        Edge e{y, last[x], cap, 0};
+        last[x] = edge.size();
+        edge.push_back(move(e));
+        
+        Edge r_e{x, last[y], r_cap, 0};
+        last[y] = edge.size();
+        edge.push_back(move(r_e));
+    }
+    void show_edge() {
+        for (int i = 0; i < nv; i++) {
+            printf("%d:", i);
+            for (int ie = last[i]; ie != -1; ) {
+                const Edge& e = edge[ie]; 
+                ie = e.pre_edge;
+                printf(" (%d)%d/%d", e.to, e.flow, e.cap);
+            }
+            printf("\n");
+        }
+        printf("\n");
+    }
+}
 ```
 
 ### 5.2 Minimium Spanning Tree
