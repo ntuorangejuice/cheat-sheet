@@ -711,7 +711,7 @@ struct Graph {
         if (l > r)
             swap(l, r);
 
-        int interval_len = r - l; // less 1
+        int interval_len = r - l; // (r - l + 1) - 1
 
         int first_half = 1;
         while ((1 << first_half) <= interval_len)
