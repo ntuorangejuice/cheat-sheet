@@ -72,6 +72,7 @@
     - [2.7.0 Range Update + Range Query](#270-range-update--range-query)
   - [2.8 Range Minimum Query RMQ](#28-range-minimum-query-rmq)
   - [2.9 Union-find Set](#29-union-find-set)
+  - [2.10 Bloom Filter (?) (Similar)](#210-bloom-filter--similar)
 - [3. Methodology](#3-methodology)
   - [3.0 Greedy](#30-greedy)
   - [3.1 Recursive](#31-recursive)
@@ -1999,6 +2000,60 @@ struct UnionFindSet {
 	}
 	bool together(int x, int y) {
 		return find(x) == find(y);
+	}
+};
+```
+
+### 2.10 Bloom Filter (?) (Similar)
+
+> Can calculate hash of number sequence quickly.
+> 
+> If too slow, try again:) Or remove class... Or set REPEAT smaller.
+
+
+```c++
+#include <random>
+
+struct BloomFilterSimilar {
+	static const int MAXN = 100002;
+	static const int REPEAT = 10;
+
+	unsigned long long hash_constant[REPEAT][MAXN];
+	set<unsigned long long> hash[REPEAT];
+
+	void init_hash(int max_n=MAXN) {
+	   	random_device rd;
+	    mt19937 gen(rd());
+	    uniform_int_distribution<unsigned long long> dis(1, ULLONG_MAX);
+		for (int i = 0; i < REPEAT; i++) {
+			for (int j = 0; j < max_n; j++)
+				hash_constant[i][j] = dis(gen);
+		}
+	}
+	
+	vector<unsigned long long> get_hash(int val) {
+		vector<unsigned long long> h(REPEAT);
+		for (int i = 0; i < REPEAT; i++)
+			h[i] = hash_constant[i][val];
+		return move(h);
+	}
+
+	// bool exist(int val) {
+	// 	return exist(get_hash(val));
+	// }
+	bool exist(const vector<unsigned long long>& h) {
+		for (int i = 0; i < REPEAT; i++)
+			if (hash[i].find(h[i]) == end(hash[i]))
+				return false;
+		return true; // possible False Positive
+	}
+
+	// void insert(int val) {
+	// 	insert(get_hash(val));
+	// }
+	void insert(const vector<unsigned long long>& h) {
+		for (int i = 0; i < REPEAT; i++)
+			hash[i].insert(h[i]);
 	}
 };
 ```
