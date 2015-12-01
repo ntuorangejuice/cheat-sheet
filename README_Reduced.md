@@ -1858,6 +1858,16 @@ struct SegmentTree {
         }
     }
 
+    void show() {
+        SHOW("SegmentTree NAME")
+        for (int i = 1; i < node.size(); i++) {
+            Node& cur = node[i];
+            if (cur.l == -1 && cur.r == -1)
+                continue;
+            PRINTLN("(%2d) [%2d,%2d] val: %d", i, cur.l, cur.r, cur.internal)
+        }
+    }
+    
     int query(int xl, int xr, int i = 1) { // query [xl, xr]
         Node& cur = node[i];
         if (cur.l == cur.r) // if end node
