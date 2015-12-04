@@ -128,6 +128,7 @@
     - [6.3.9 分解质因数](#639-%E5%88%86%E8%A7%A3%E8%B4%A8%E5%9B%A0%E6%95%B0)
     - [6.3.10 因数个数](#6310-%E5%9B%A0%E6%95%B0%E4%B8%AA%E6%95%B0)
     - [6.3.11 素数判定](#6311-%E7%B4%A0%E6%95%B0%E5%88%A4%E5%AE%9A)
+      - [6.3.11.1 Miller Rabin Primality Test](#63111-miller-rabin-primality-test)
     - [6.3.12 进制转换](#6312-%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2)
     - [6.3.13 A / C](#6313-a--c)
     - [6.3.14 质数表](#6314-%E8%B4%A8%E6%95%B0%E8%A1%A8)
@@ -151,6 +152,7 @@
   - [8.2 pass 2-D array](#82-pass-2-d-array)
   - [8.3 Binary Display](#83-binary-display)
   - [8.4 Fast Log](#84-fast-log)
+  - [8.5 Squre Root](#85-squre-root)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -2008,7 +2010,7 @@ struct UnionFindSet {
 
 > Can calculate hash of number sequence quickly.
 > 
-> If too slow, try again:) Or remove class... Or set REPEAT smaller.
+> If too slow, set REPEAT smaller. Or try again:)
 
 
 ```c++
@@ -3627,6 +3629,77 @@ bool is_prime(int n) {
 }
 ```
 
+##### 6.3.11.1 Miller Rabin Primality Test
+
+> O(k(logN)^3)
+
+```c++
+class MillerRabin { // O(k(logX)^3)
+    long long mulmod(long long a, long long b, long long c) {
+        if (a < b)
+        	swap(a, b);
+        long long res = 0, x = a;
+        while (b > 0) {
+            if (b & 1) {
+                res = res + x;
+                if (res >= c)
+                	res -= c;
+            }
+            x = x * 2;
+            if (x >= c)
+            	x -= c;
+            b >>= 1;
+        }
+        return res % c;
+    }
+
+    long long bigmod(long long a, long long p, long long mod) {
+        long long x = a, res = 1;
+        while (p) {
+            if (p & 1)
+            	res = mulmod(res, x, mod);
+            x = mulmod(x, x, mod);
+            p >>= 1;
+        }
+        return res;
+    }
+
+    bool witness(long long a, long long d, long long s, long long n) {
+        long long r = bigmod(a, d, n);
+        if (r == 1 || r == n - 1)
+        	return false;
+        for (int i = 0; i < s - 1; i++) {
+            r = mulmod(r, r, n);
+            if (r == 1)
+            	return true;
+            if (r == n - 1)
+            	return false;
+        }
+        return true;
+    }
+
+public:
+	const vector<long long> aaa = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}; // enough for N < 2^64
+
+    bool test(long long n) {
+        if (n <= 1)
+        	return false;
+
+        long long p = n - 1;
+        long long s = 0;
+        while (!(p & 1)) {
+            p /= 2;
+            s++;
+        }
+
+        for (int i = 0; i < aaa.size() && aaa[i] < n; i++)
+            if (witness(aaa[i], p, s, n))
+            	return false;
+        return true;
+    }
+};
+```
+
 #### 6.3.12 进制转换
 
 ```C++
@@ -4105,7 +4178,9 @@ void show_binary(unsigned long long x) {
 
 ### 8.4 Fast Log
 
-> Do not use unless necessary.
+> Built-in ``log(double)`` is not accurate for integer.
+> 
+> Should ``(int)(log(double)+0.000....001)``
 
 ```c++
 int fastlog(unsigned long long x, unsigned long long base) {
@@ -4121,5 +4196,22 @@ int fastlog(unsigned long long x, unsigned long long base) {
 #define S(i, k) if (x >= cache[i]) ret += k, x /= cache[i]; else return ret;
 	S(6, 64); S(5, 32); S(4, 16); S(3, 8); S(2, 4); S(1, 2); S(0, 1); 
 #undef S
+}
+```
+
+### 8.5 Squre Root
+
+```c++
+long long sq(long long a) {
+    long long l = 1;
+    long long r = a + 1;
+    while (l + 1 < r) {
+        long long m = (l + r) / 2;
+        if (a / m < m)
+            r = m;
+        else
+            l = m;
+    }
+    return l;
 }
 ```
