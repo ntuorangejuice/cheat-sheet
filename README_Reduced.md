@@ -101,8 +101,11 @@
     - [5.3.2 Bellman–Ford](#532-bellman%E2%80%93ford)
     - [5.3.3 SPFA](#533-spfa)
     - [5.3.4 Dijkstra](#534-dijkstra)
-  - [5.4 Bipartite Graph 二分图](#54-bipartite-graph-%E4%BA%8C%E5%88%86%E5%9B%BE)
-    - [5.4.1 Hungarian algorithm 匈牙利算法](#541-hungarian-algorithm-%E5%8C%88%E7%89%99%E5%88%A9%E7%AE%97%E6%B3%95)
+  - [5.4 Maximum Matching](#54-maximum-matching)
+    - [5.4.1 on Bipartite Graph 二分图](#541-on-bipartite-graph-%E4%BA%8C%E5%88%86%E5%9B%BE)
+      - [5.4.1.1 Hungarian algorithm 匈牙利算法](#5411-hungarian-algorithm-%E5%8C%88%E7%89%99%E5%88%A9%E7%AE%97%E6%B3%95)
+    - [5.4.2 on General Graph](#542-on-general-graph)
+      - [5.4.2.1 Blossom Algorithm](#5421-blossom-algorithm)
   - [5.5 Maximum Flow Problem 最大流](#55-maximum-flow-problem-%E6%9C%80%E5%A4%A7%E6%B5%81)
     - [5.5.1 Dinic](#551-dinic)
     - [5.5.2 Improved SAP + Gap Optimization](#552-improved-sap--gap-optimization)
@@ -2533,13 +2536,15 @@ void dijkstra(int s) {
 }
 ```
 
-### 5.4 Bipartite Graph 二分图
+### 5.4 Maximum Matching
+
+#### 5.4.1 on Bipartite Graph 二分图
 
 > 1. A graph is bipartite if and only if it does not contain an odd cycle.
 > 2. A graph is bipartite if and only if it is 2-colorable, (i.e. its chromatic number is less than or equal to 2).
 > 3. The spectrum of a graph is symmetric if and only if it's a bipartite graph.
 
-#### 5.4.1 Hungarian algorithm 匈牙利算法
+##### 5.4.1.1 Hungarian algorithm 匈牙利算法
 
 > O(E * V)
 
@@ -2630,6 +2635,137 @@ struct Network {
     // bipartite match
     // 
 };
+```
+
+#### 5.4.2 on General Graph
+
+##### 5.4.2.1 Blossom Algorithm
+
+```c++
+const int NMax = 230;
+
+int Next[NMax];
+int spouse[NMax];
+int belong[NMax];
+
+int findb(int a) {
+    return belong[a] == a ? a : belong[a] = findb(belong[a]);
+}
+
+void together(int a,int b) {
+    a = findb(a), b = findb(b);
+    if (a != b)
+    	belong[a] = b;
+}
+
+vector<int> E[NMax];
+int N;
+int Q[NMax],bot;
+int mark[NMax];
+int visited[NMax];
+
+int findLCA(int x,int y) {
+    static int t = 0;
+    t++;
+    while (1) {
+        if (x!=-1) {
+            x = findb(x);
+            if (visited[x] == t)
+            	return x;
+            visited[x] = t;
+            if (spouse[x] != -1)
+            	x = Next[spouse[x]];
+            else x = -1;
+        }
+        swap(x,y);
+    }
+}
+
+void goup(int a,int p) {
+    while (a != p) {
+        int b = spouse[a], c = Next[b];
+        if (findb(c) != p)
+        	Next[c] = b;
+        if (mark[b] == 2) 
+        	mark[Q[bot++] = b] = 1;
+        if (mark[c] == 2)
+        	mark[Q[bot++] = c] = 1;
+        together(a,b);
+        together(b,c);
+        a = c;
+    }
+}
+
+void findaugment(int s) {
+    for (int i = 0; i < N; i++)
+    	Next[i] = -1, belong[i] = i, mark[i] = 0, visited[i] = -1;
+    Q[0] = s; 
+    bot = 1; 
+    mark[s] = 1;
+    for (int head = 0; spouse[s] == -1 && head < bot; head++) {
+        int x = Q[head];
+        for (int i = 0; i < (int)E[x].size(); i++) {
+            int y = E[x][i];
+            if (spouse[x] != y && findb(x) != findb(y) && mark[y] != 2) {
+                if (mark[y] == 1) {
+                    int p = findLCA(x,y);
+                    if (findb(x) != p) 
+                    	Next[x] = y;
+                    if (findb(y) != p) 
+                    	Next[y] = x;
+                    goup(x,p);
+                    goup(y,p);
+                }
+                else if (spouse[y] == -1) {
+                    Next[y] = x;
+                    for (int j = y; j != -1; ) {
+                        int k = Next[j];
+                        int l = spouse[k];
+                        spouse[j] = k;
+                        spouse[k] = j;
+                        j = l;
+                    }
+                    break;
+                }
+                else{
+                    Next[y] = x;
+                    mark[Q[bot++] = spouse[y]] = 1;
+                    mark[y] = 2;
+                }
+            }
+        }
+    }
+}
+
+int Map[NMax][NMax];
+
+int main() {
+	memset(Map, 0, sizeof(Map));
+
+    scanf("%d",&N);
+    int x, y;
+    while (scanf("%d%d",&x,&y) != EOF) {
+        x--;
+        y--;
+        if (x != y && !Map[x][y]) {
+            Map[x][y] = Map[y][x] = 1;
+            E[x].push_back(y);
+            E[y].push_back(x);
+        }
+    }
+    memset(spouse, -1, sizeof(spouse));
+    for (int i = 0; i < N; i++)
+    	if (spouse[i] == -1)
+        	findaugment(i);
+    int ret = 0;
+    for (int i = 0; i < N; i++)
+    	if (spouse[i] != -1)
+    		ret++;
+    printf("%d\n", ret);
+    for (int i = 0; i < N; i++)
+        if (spouse[i] != -1 && spouse[i] > i)
+            printf("pair: %d %d\n", i + 1, spouse[i] + 1);
+}
 ```
 
 ### 5.5 Maximum Flow Problem 最大流
@@ -3679,7 +3815,7 @@ class MillerRabin { // O(k(logX)^3)
     }
 
 public:
-	const vector<long long> aaa = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}; // enough for N < 2^64
+	const vector<long long> aaa{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}; // enough for N < 2^64
 
     bool test(long long n) {
         if (n <= 1)
