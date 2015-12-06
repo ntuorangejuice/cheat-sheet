@@ -125,6 +125,7 @@
   - [5.4 Maximum Matching](#54-maximum-matching)
     - [5.4.1 on Bipartite Graph 二分图](#541-on-bipartite-graph-%E4%BA%8C%E5%88%86%E5%9B%BE)
       - [5.4.1.1 Hungarian algorithm 匈牙利算法](#5411-hungarian-algorithm-%E5%8C%88%E7%89%99%E5%88%A9%E7%AE%97%E6%B3%95)
+      - [5.4.1.2 Hopcroft–Karp Algorithm](#5412-hopcroft%E2%80%93karp-algorithm)
     - [5.4.2 on General Graph](#542-on-general-graph)
       - [5.4.2.1 Blossom Algorithm](#5421-blossom-algorithm)
   - [5.5 Maximum Flow Problem 最大流](#55-maximum-flow-problem-%E6%9C%80%E5%A4%A7%E6%B5%81)
@@ -3687,6 +3688,84 @@ struct Network {
     // bipartite match
     // 
 };
+```
+
+##### 5.4.1.2 Hopcroft–Karp Algorithm
+
+> O(sqrt(V)*E)
+
+```c++
+#define MAXN 1010
+#define MAXINT 0x7fffffff
+
+int n, m, top, x, y;
+int ans;
+
+int disx[MAXN], disy[MAXN], matx[MAXN], maty[MAXN];//x,y,分别为二分图的两个点集,mat为每个点在对侧集合的匹配点,如果当前没有匹配点则为-1 
+
+struct edge {
+    int to;
+    edge *next;
+}e[MAXN*MAXN], *prev[MAXN];
+
+void insert(int u,int v) {
+    e[++top].to = v;
+    e[top].next = prev[u];
+    prev[u] = &e[top];
+}
+
+bool bfs() { // 寻找最短增广路 
+    bool ret = 0;
+    queue<int> q;
+    memset(disx, 0, sizeof(disx));
+    memset(disy, 0, sizeof(disy));
+    for (int i = 1; i <= n; i++)
+        if (matx[i] == -1)
+            q.push(i); // 找到未盖点,入队 
+    while (!q.empty()) { // 在二分图另一个点集的非盖点中寻找增广路 
+        int x = q.front(); q.pop();
+        for (edge *i = prev[x]; i; i = i->next)
+            if (!disy[i->to]) {
+                disy[i->to] = disx[x] + 1;
+                if (maty[i->to]==-1)
+                    ret = 1; // 找到增广路 
+                else
+                    disx[maty[i->to]] = disy[i->to] + 1, q.push(maty[i->to]);    
+            }
+    }
+    return ret;
+}
+
+bool dfs(int x) { // 沿增广路增广 
+    for (edge *i = prev[x]; i; i = i->next) {
+        if (disy[i->to] == disx[x] + 1) {
+            disy[i->to] = 0;
+            if (maty[i->to] == -1 || dfs(maty[i->to])) {
+                matx[x] = i->to;
+                maty[i->to] = x;
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+int main() {
+    scanf("%d%d",&n,&m);
+    memset(matx, -1, sizeof(matx));
+    memset(maty, -1, sizeof(maty));
+    /*for (int i=1;i<=n;i++)
+    {
+        scanf("%d%d",&x,&y);x++;y++;
+        insert(i,x);insert(i,y);
+    }建图请自动忽略*/
+    while (bfs()) {
+        for (int i = 1; i <= m; i++)
+            if (matx[i] == -1 && dfs(i))
+                ans++;
+    }
+    cout << ans << endl;
+}
 ```
 
 #### 5.4.2 on General Graph
