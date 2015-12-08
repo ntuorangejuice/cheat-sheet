@@ -5164,6 +5164,14 @@ struct point {
     double length() {
         return sqrt(x*x + y*y);
     }
+    
+    point operator + (const point &rhs) const {
+        return (point){x + rhs.x, y + rhs.y};
+    }
+
+    point operator - (const point &rhs) const {
+        return (point){x - rhs.x, y - rhs.y};
+    }
 
     long operator* (const point& b) {
         return x*b.y - y*b.x;
@@ -5211,6 +5219,12 @@ struct point {
         point vec_ia = {x - a.x, y - a.y};
         return abs(vec_ab * vec_ia) / vec_ab.length();
     } // same meaning with v1, need test
+    
+    point rotate(const point &rhs, double angle) const {
+        point t = (*this) - rhs;
+        double c = cos(angle), s = sin(angle);
+        return (point){rhs.x + t.x * c - t.y * s, rhs.y + t.x * s + t.y * c};
+    }
 };
 ```
 
