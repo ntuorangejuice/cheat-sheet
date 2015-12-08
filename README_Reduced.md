@@ -167,12 +167,36 @@
 
 ```c++
 #include <bits/stdc++.h>
+#include <stdio.h>
+#include <iostream>
+#include <sstream>
+#include <iomanip>
+#include <cstring>
+#include <cmath>
+#include <algorithm>
+#include <climits>
+#include <vector>
+#include <stack>
+#include <queue>
+#include <set>
+#include <unordered_set>
+#include <map>
+#include <unordered_map>
+#include <cassert>
 
-#define DEBUG false
-#define OJ_DEBUG
-
-#define SHOW(x) {if (DEBUG) {cout << __LINE__ << ": "; {x} cout << endl;}}
-#define $(x) {cout << #x << " = " << x << " ";}
+#ifdef DEBUG
+#define SHOW(x) {cout << __LINE__ << ":\t"; {x} cout << endl;}
+#define $(x) {cout << #x << " = " << x << ", ";}
+#define REACH_HERE { printf("%d:\tREACH_HERE\n", __LINE__); }
+#define PRINT(s, ...) { printf("%d:\t", __LINE__); printf(s, ##__VA_ARGS__); } 
+#define PRINTLN(s, ...) { printf("%d:\t", __LINE__); printf(s, ##__VA_ARGS__); printf("\n"); }
+#else
+#define SHOW(x) {}
+#define $(x) {}
+#define REACH_HERE {}
+#define PRINT(s, ...) {} 
+#define PRINTLN(s, ...) {}
+#endif
 
 const double E = 1e-8;
 const double PI = acos(-1);
@@ -181,8 +205,23 @@ using namespace std;
 
 int main() {
     ios::sync_with_stdio(false);
-    
+
+    int a = 10, b = 10;
+    SHOW( $(a) $(b) )
+
+    PRINTLN("Hello %d", a)
+
 }
+```
+
+```
+rm main.out
+g++ -O2 -std=c++11 main.cpp -DDEBUG -o main.out
+./main.out < input.txt
+```
+
+```
+export PATH=$PATH:~/path_to_judge
 ```
 
 ### 1.2 Strings
