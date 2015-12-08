@@ -5063,6 +5063,10 @@ int power_modulo(int n, int p, int M) {
 #include <vector>
 #include <complex>
 
+#ifndef M_PI
+const double M_PI = acos(-1);
+#endif
+
 using namespace std;
 
 typedef complex<long double> Complex;
@@ -5136,10 +5140,10 @@ int main() { // multiply two number
 		vector<Complex> a;
     	vector<Complex> b;
 
-    	for (char c : sa)
-    		a.push_back(Complex(c - '0', 0)); // add [a_ * (x)^(?)]
-    	for (char c : sb)
-    		b.push_back(Complex(c - '0', 0)); // add [b_ * (x)^(?)]
+    	for (int i = 0; i < sa.length(); i++)
+    		a.push_back(Complex(sa[sa.length() - i - 1] - '0', 0)); // add [a_ * (x)^(?)]
+    	for (int i = 0; i < sb.length(); i++)
+    		b.push_back(Complex(sb[sb.length() - i - 1] - '0', 0)); // add [b_ * (x)^(?)]
 
  		// [c1 * 10^(?)] + [c2 * 10^(?)] + ... + [cn * 10^(?)]
  		// =
@@ -5151,15 +5155,18 @@ int main() { // multiply two number
     	vector<int> ans(c.size());
     	for (int i = 0; i < c.size(); i++)
     		ans[i] = c[i].real() + 0.5; // extract [c_ * (x)^(?)] // equivalent to [c_ * (x=10)^(?)]
-    	for (int i = 0; i < ans.size(); i++) { // process carry
-    		if (i == ans.size() - 1 && ans[i] > 10)
-    			ans.push_back(0);
+    	for (int i = 0; i < ans.size() - 1; i++) { // process carry
             ans[i + 1] += ans[i] / 10;
             ans[i] %= 10;
         }
 
-        for (int x : ans)
-        	cout << x;
+        bool flag = false;
+        for (int i = ans.size() - 1; i >= 0; i--) { // print from most significant digit
+            if (ans[i])
+                cout << ans[i], flag = true;
+            else if (flag || i == 0)
+                cout << 0;
+        }
         cout << endl;
 	}
 }
