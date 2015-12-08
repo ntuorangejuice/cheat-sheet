@@ -137,6 +137,7 @@
     - [6.3.13 A / C](#6313-a--c)
     - [6.3.14 质数表](#6314-%E8%B4%A8%E6%95%B0%E8%A1%A8)
     - [6.3.15 Fast Exponention](#6315-fast-exponention)
+    - [6.3.16 Fast Fourier Transform FFT](#6316-fast-fourier-transform-fft)
   - [6.4 Game Theory 博弈论](#64-game-theory-%E5%8D%9A%E5%BC%88%E8%AE%BA)
     - [6.4.1 Impartial Combinatorial Game](#641-impartial-combinatorial-game)
       - [6.4.1.1 Nim Game](#6411-nim-game)
@@ -3982,6 +3983,121 @@ int power_modulo(int n, int p, int M) {
         n = (n*n) % M;
     }
     return result;
+}
+```
+
+#### 6.3.16 Fast Fourier Transform FFT
+
+> [Reference 1](www.gatevin.moe/acm/fft算法学习笔记/)
+> 
+> [Reference 2](https://github.com/marioyc/ACM-ICPC-Library/blob/master/math/fft.cpp)
+> 
+> Example: calculate two number C = A * B
+
+```c++
+#include <iostream>
+#include <vector>
+#include <complex>
+
+using namespace std;
+
+typedef complex<long double> Complex;
+
+void FFT(vector<Complex> &A, int s) {
+    int n = A.size();
+    int p = __builtin_ctz(n);
+    
+    vector<Complex> a = A;
+    
+    for (int i = 0; i < n; ++i) {
+        int rev = 0;
+        for (int j = 0; j < p; ++j) {
+            rev <<= 1;
+            rev |= ((i >> j) & 1);
+        }
+        A[i] = a[rev];
+    }
+    
+    Complex w, wn;
+    
+    for (int i = 1; i <= p; ++i) {
+        int M = (1<<i), K = (M>>1);
+        wn = Complex(cos(s*2.0*M_PI/(double)M), sin(s*2.0*M_PI/(double)M));
+        
+        for (int j = 0; j < n; j += M) {
+            w = Complex(1.0, 0.0);
+            for (int l = j; l < K + j; ++l) {
+                Complex t = w;
+                t *= A[l + K];
+                Complex u = A[l];
+                A[l] += t;
+                u -= t;
+                A[l + K] = u;
+                w *= wn;
+            }
+        }
+    }
+    
+    if (s == -1) {
+        for (int i = 0; i < n; ++i)
+            A[i] /= (double)n;
+    }
+}
+
+vector<Complex> FFT_Multiply(vector<Complex> &P, vector<Complex> &Q) {
+    int n = P.size() + Q.size();
+
+#define lowbit(x) (((x) ^ (x-1)) & (x))
+    while (n != lowbit(n)) n += lowbit(n);
+#undef lowbit
+    
+    P.resize(n, 0);
+    Q.resize(n, 0);
+    
+    FFT(P, 1);
+    FFT(Q, 1);
+    
+    vector<Complex> R;
+    for (int i = 0; i < n; i++) R.push_back(P[i] * Q[i]);
+    
+    FFT(R, -1);
+    
+    return R;
+}
+
+int main() { // multiply two number 
+	string sa; // [a1 * 10^(?)] + [a2 * 10^(?)] + ... + [an * 10^(?)]
+	string sb; // [b1 * 10^(?)] + [b2 * 10^(?)] + ... + [bm * 10^(?)]
+	while (cin >> sa >> sb) {
+		vector<Complex> a;
+    	vector<Complex> b;
+
+    	for (char c : sa)
+    		a.push_back(Complex(c - '0', 0)); // add [a_ * (x)^(?)]
+    	for (char c : sb)
+    		b.push_back(Complex(c - '0', 0)); // add [b_ * (x)^(?)]
+
+ 		// [c1 * 10^(?)] + [c2 * 10^(?)] + ... + [cn * 10^(?)]
+ 		// =
+ 		// [a1 * 10^(?)] + [a2 * 10^(?)] + ... + [an * 10^(?)]
+ 		// *
+ 		// [b1 * 10^(?)] + [b2 * 10^(?)] + ... + [bm * 10^(?)]
+    	vector<Complex> c = FFT_Multiply(a, b);
+
+    	vector<int> ans(c.size());
+    	for (int i = 0; i < c.size(); i++)
+    		ans[i] = c[i].real() + 0.5; // extract [c_ * (x)^(?)] // equivalent to [c_ * (x=10)^(?)]
+    	for (int i = 0; i < ans.size(); i++) { // process carry
+    		if (i == ans.size() - 1 && ans[i] > 10)
+    			ans.push_back(0);
+            ans[i + 1] += ans[i] / 10;
+            ans[i] %= 10;
+        }
+
+        for (int x : ans)
+        	cout << x;
+        cout << endl;
+	}
 }
 ```
 
