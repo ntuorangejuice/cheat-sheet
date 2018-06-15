@@ -3520,9 +3520,9 @@ for (k)
 > Can be applied to situations when there is a maximun number of vertices in shortest path.
 
 ```
-for (n times of relax)
-    for (each node)
-        relax each node
+for (n times of relax)  # n = number of node
+    for (each edge)
+        relax each edge
 ```
 
 #### 5.3.3 SPFA
