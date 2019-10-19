@@ -4932,7 +4932,7 @@ bool is_prime(int n) {
     }
     int t = sqrt(n);
     int k = t / 6;
-    for(int i = 1; i< k; i++){
+    for(int i = 1; i <=k; i++){
     	if((n%(6*t - 1)==0)||(n%(6*t + 1)==0)){
 		return false;
 	}
