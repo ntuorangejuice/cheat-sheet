@@ -5123,6 +5123,7 @@ void FFT(vector<Complex> &A, int s) {
     
     Complex w, wn;
     
+    
     for (int i = 1; i <= p; ++i) {
         int M = (1<<i), K = (M>>1);
         wn = Complex(cos(s*2.0*M_PI/(double)M), sin(s*2.0*M_PI/(double)M));
