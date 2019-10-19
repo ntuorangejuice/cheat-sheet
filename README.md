@@ -232,7 +232,7 @@ int main() {
 ### 1.2 Strings
 
 #### 1.2.1 C++ String
-##### Read One Line Till First Space
+##### Read a String Till First Space
 
 cin
 
