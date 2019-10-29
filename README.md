@@ -232,8 +232,28 @@ int main() {
 ### 1.2 Strings
 
 #### 1.2.1 C++ String
+##### Read a String Till First Space
 
-##### read one line
+cin
+
+```C++
+string a;
+cin>>a
+cout << a << endl;
+```
+
+Input
+
+```
+Hello World!!!
+```
+
+Output
+
+```
+Hello
+```
+##### Read One Line With Spaces till \n or EOF
 
 getline()
 
@@ -4728,7 +4748,11 @@ int gcd(int a, int b) {
 }
 
 int lcm(int a, int b) {
-    return a / gcd(a, b) * b;
+   if(gcd(a,b)>0){ 
+   	return (a / gcd(a, b)) * b;
+   }
+   return 0;
+   
 }
 ```
 
@@ -4896,13 +4920,23 @@ total = (x1 + 1) * (x2 + 1) * ... * (xn + 1)
 > 大于 3 的质数可以被表示为 6n - 1 或 6n + 1
 
 ```C++
+// A prime number greater than 3 can be written in the form 6n - 1 or 6n + 1 
+// This is of the order O(sqrt(n))  with reduced leading constant
 bool is_prime(int n) {
-    if (n == 1 || n % 2 == 0)
-        return false;  
+    if (n == 1 || n % 2 == 0){
+     	return false;  
+    }
+       
+    if ((n == 2)||(n==3)){
+    	return true;
+    }
     int t = sqrt(n);
-    for (int i = 3; i <= t; i += 2)
-        if (n % i == 0)
-            return false;
+    int k = t / 6;
+    for(int i = 1; i <=k; i++){
+    	if((n%(6*t - 1)==0)||(n%(6*t + 1)==0)){
+		return false;
+	}
+    }
     return true;
 }
 ```
@@ -4978,7 +5012,7 @@ public:
 };
 ```
 
-#### 6.3.12 进制转换
+#### 6.3.12.1 进制转换
 
 ```C++
 void convert_dec_to_base(int n, const int base) {
@@ -4998,6 +5032,7 @@ int convert_base_to_dec(const int s[], const int len, const int base) {
     return result;
 }
 ```
+#### 6.3.12.2 
 
 #### 6.3.13 A / C
 
@@ -5087,6 +5122,7 @@ void FFT(vector<Complex> &A, int s) {
     }
     
     Complex w, wn;
+    
     
     for (int i = 1; i <= p; ++i) {
         int M = (1<<i), K = (M>>1);
