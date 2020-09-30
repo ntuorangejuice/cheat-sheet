@@ -211,9 +211,7 @@ int main() {
 
 #### 1.1.1 Optional include list
 
-> Use it when there is no `bits/stdc++.h`
-
-```c++
+#include <bits/stdc++.h>
 #include <iostream>
 #include <cstring>
 #include <cmath>
@@ -238,7 +236,7 @@ cin
 
 ```C++
 string a;
-cin>>a
+cin>>a;
 cout << a << endl;
 ```
 
