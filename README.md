@@ -29,7 +29,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [1. Basic](#1-basic)
+- [1. Basic](#1-basic)//its an amazing program .....and i think you are a brilliant programmer...Keep going man
   - [1.1 C++ Solution Template](#11-c-solution-template)
     - [1.1.1 Optional include list](#111-optional-include-list)
   - [1.2 Strings](#12-strings)
