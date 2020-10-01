@@ -1287,7 +1287,7 @@ struct Graph {
         int len;
     };
 
-    const static int MAXNODE = 1 * 1e5 + 2;
+    const static int MAXNODE = 1 * 1e5 + 2; // MAXNODE = 10^5 + 2;
 
     vector<int> g[MAXNODE];
     vector<Edge> edge;
