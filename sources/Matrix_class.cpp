@@ -2,7 +2,7 @@
 // ...
 // http://www.matrix67.com/blog/archives/276
 // ...
-
+//This is an amazing project
 #include <iostream>
 #include <cstring>
 #include <cmath>
