@@ -19,32 +19,6 @@
 
 </div>
 
-## 📖 About This Repository
-
-This cheat sheet is designed to be a quick reference guide for ACM-ICPC contestants and competitive programmers. It contains implementations of essential algorithms and data structures in C++ and Java, along with explanations and complexity analyses.
-
-### 🎯 Features
-
-- **Complete Algorithm Coverage**: From basic sorting to advanced graph algorithms
-- **Optimized Implementations**: Battle-tested code snippets ready for contests
-- **Time Complexity Analysis**: Understand the performance of each algorithm
-- **Multiple Languages**: Examples in both C++ and Java
-- **Well-Organized Structure**: Easy navigation through different topics
-
-### 🚀 Quick Start
-
-1. **For Contests**: Copy the C++ template from Section 1.1 to get started quickly
-2. **For Practice**: Browse through topics and implement algorithms yourself
-3. **For Reference**: Use the table of contents below to find specific algorithms
-
-### 📋 Prerequisites
-
-- Basic knowledge of C++ or Java
-- Understanding of time and space complexity
-- Familiarity with basic data structures (arrays, linked lists, etc.)
-
----
-
 ## 📑 Table of Contents
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -5698,37 +5672,6 @@ long long sq(long long a) {
     return l;
 }
 ```
-
----
-
-## 🤝 Contributing
-
-We welcome contributions to improve this cheat sheet! Here's how you can help:
-
-### How to Contribute
-
-1. **Fork the Repository**: Click the "Fork" button at the top of this page
-2. **Create a Branch**: `git checkout -b feature/your-improvement`
-3. **Make Your Changes**: Add new algorithms, fix bugs, or improve documentation
-4. **Test Your Code**: Ensure all code snippets compile and work correctly
-5. **Submit a Pull Request**: Describe your changes and why they're valuable
-
-### Contribution Guidelines
-
-- **Code Quality**: All code should be clean, well-commented, and follow standard conventions
-- **Complexity Analysis**: Include time and space complexity for new algorithms
-- **Examples**: Provide example usage for complex algorithms
-- **Documentation**: Update the table of contents if adding new sections
-- **Language Support**: Preferably provide implementations in both C++ and Java
-
-### Areas for Contribution
-
-- Adding new algorithms or data structures
-- Improving existing implementations for better performance
-- Adding more detailed explanations
-- Fixing typos or errors
-- Adding visualizations or diagrams
-- Translating comments to other languages
 
 ---
 
