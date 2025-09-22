@@ -1,35 +1,30 @@
-   ACM-ICPC Cheat Sheet
-==========================
+ # ACM-ICPC Competitive Programming Cheat Sheet 📚
 
-    Orange Juice 情報
+<div align="center">
 
-![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
-![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
-![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
-![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
-![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
-![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
-![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
-![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
-![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
-![balloon](https://assets-cdn.github.com/images/icons/emoji/unicode/1f388.png?v5)
+![C++](https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)
+![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![Algorithms](https://img.shields.io/badge/Algorithms-4CAF50?style=for-the-badge&logo=algolia&logoColor=white)
+![Data Structures](https://img.shields.io/badge/Data%20Structures-FF6B6B?style=for-the-badge&logo=databricks&logoColor=white)
 
-![fried_shrimp](https://assets-cdn.github.com/images/icons/emoji/unicode/1f364.png?v5)
-![sushi](https://assets-cdn.github.com/images/icons/emoji/unicode/1f363.png?v5)
-![fish_cake](https://assets-cdn.github.com/images/icons/emoji/unicode/1f365.png?v5)
-![rice_ball](https://assets-cdn.github.com/images/icons/emoji/unicode/1f359.png?v5)
-![rice_cracker](https://assets-cdn.github.com/images/icons/emoji/unicode/1f358.png?v5)
-![stew](https://assets-cdn.github.com/images/icons/emoji/unicode/1f372.png?v5)
-![oden](https://assets-cdn.github.com/images/icons/emoji/unicode/1f362.png?v5)
-![hamburger](https://assets-cdn.github.com/images/icons/emoji/unicode/1f354.png?v5)
-![doughnut](https://assets-cdn.github.com/images/icons/emoji/unicode/1f369.png?v5)
-![cookie](https://assets-cdn.github.com/images/icons/emoji/unicode/1f36a.png?v5)
+**Orange Juice 情報** 🍊
+
+🎈 🎈 🎈 🎈 🎈 🎈 🎈 🎈 🎈 🎈
+
+🍤 🍣 🍥 🍙 🍘 🍲 🍢 🍔 🍩 🍪
+
+---
+
+*A comprehensive collection of algorithms, data structures, and problem-solving techniques for competitive programming*
+
+</div>
+
+## 📑 Table of Contents
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [1. Basic](#1-basic)
+- [1. 🔧 Basic](#1--basic)
   - [1.1 C++ Solution Template](#11-c-solution-template)
     - [1.1.1 Optional include list](#111-optional-include-list)
   - [1.2 Strings](#12-strings)
@@ -68,7 +63,7 @@
     - [1.4.6 Double-ended Queue](#146-double-ended-queue)
     - [1.4.7 Stack](#147-stack)
     - [1.4.8 Priority Queue](#148-priority-queue)
-- [2. Advanced Data Structures](#2-advanced-data-structures)
+- [2. 🏗️ Advanced Data Structures](#2-️-advanced-data-structures)
   - [2.1 Heap](#21-heap)
   - [2.2 Tree](#22-tree)
     - [2.2.0 Tree Traversal](#220-tree-traversal)
@@ -94,7 +89,7 @@
   - [2.9 Union-find Set](#29-union-find-set)
     - [2.9.1 Union-find Set - application](#291-union-find-set---application)
   - [2.10 Bloom Filter (?) (Similar)](#210-bloom-filter--similar)
-- [3. Methodology](#3-methodology)
+- [3. 💡 Methodology](#3--methodology)
   - [3.0 Greedy](#30-greedy)
   - [3.1 Recursive](#31-recursive)
     - [3.1.1 Hanoi](#311-hanoi)
@@ -108,11 +103,11 @@
     - [3.4.4 迭代加深搜索 (binary increase/decrease)](#344-%E8%BF%AD%E4%BB%A3%E5%8A%A0%E6%B7%B1%E6%90%9C%E7%B4%A2-binary-increasedecrease)
   - [3.5 Brute Force](#35-brute-force)
     - [3.5.1 子集生成](#351-%E5%AD%90%E9%9B%86%E7%94%9F%E6%88%90)
-- [4. String](#4-string)
+- [4. 📝 String](#4--string)
   - [4.1 KMP](#41-kmp)
   - [4.2 Boyer-Moore](#42-boyer-moore)
   - [4.3 Longest palindromic substring (Manacher's algorithm)](#43-longest-palindromic-substring-manachers-algorithm)
-- [5. Graph](#5-graph)
+- [5. 🌐 Graph](#5--graph)
   - [5.1 Graph Structure](#51-graph-structure)
   - [5.2 Minimium Spanning Tree](#52-minimium-spanning-tree)
     - [5.2.1 Prim's](#521-prims)
@@ -137,7 +132,7 @@
   - [5.7 Topological Sort / 拓扑排序](#57-topological-sort--%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F)
   - [5.8 Euler Cycle/Path, Hamilton Cycle/Path](#58-euler-cyclepath-hamilton-cyclepath)
   - [5.9 find negative (weight) Cycle on a graph](#59-find-negative-weight-cycle-on-a-graph)
-- [6. Number + Mathematics](#6-number--mathematics)
+- [6. 🔢 Number + Mathematics](#6--number--mathematics)
   - [6.1 BigInteger + BigDecimal](#61-biginteger--bigdecimal)
     - [6.1.1 C++ Big Integer](#611-c-big-integer)
     - [6.1.2 The Java Approach](#612-the-java-approach)
@@ -164,7 +159,7 @@
     - [6.4.1 Impartial Combinatorial Game](#641-impartial-combinatorial-game)
       - [6.4.1.1 Nim Game](#6411-nim-game)
       - [6.4.1.1 Composite Games – Sprague-Grundy Theorem and Nim Value](#6411-composite-games-%E2%80%93-sprague-grundy-theorem-and-nim-value)
-- [7. Geometry](#7-geometry)
+- [7. 📐 Geometry](#7--geometry)
   - [7.1 2-Dimension Space](#71-2-dimension-space)
     - [7.1.1 Template of Point](#711-template-of-point)
     - [7.1.2 向量点乘 叉乘](#712-%E5%90%91%E9%87%8F%E7%82%B9%E4%B9%98-%E5%8F%89%E4%B9%98)
@@ -175,7 +170,7 @@
       - [Gift Wrapping](#gift-wrapping)
       - [QuickHull](#quickhull)
       - [Graham scan](#graham-scan)
-- [8. Tricks + Miscellaneous](#8-tricks--miscellaneous)
+- [8. 🎯 Tricks + Miscellaneous](#8--tricks--miscellaneous)
   - [8.1 Bit Manipulation](#81-bit-manipulation)
   - [8.1 Cantor Expansion / Reverse Cantor Expansion](#81-cantor-expansion--reverse-cantor-expansion)
   - [8.2 pass 2-D array](#82-pass-2-d-array)
@@ -185,7 +180,7 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## 1. Basic
+## 1. 🔧 Basic
 
 ### 1.1 C++ Solution Template
 
@@ -754,7 +749,7 @@ while (three_priority_queue.size() != 0) {
 // three_priority_queue.top() = 1
 ```
 
-## 2. Advanced Data Structures
+## 2. 🏗️ Advanced Data Structures
 
 ### 2.1 Heap
 
@@ -3138,7 +3133,7 @@ struct BloomFilterSimilar {
 };
 ```
 
-## 3. Methodology
+## 3. 💡 Methodology
 
 ### 3.0 Greedy
 
@@ -3194,7 +3189,7 @@ for (int i = 0; i < sequence.size(); i++) {
 
 #### 3.5.1 子集生成
 
-## 4. String
+## 4. 📝 String
 
 ### 4.1 KMP
 
@@ -3284,7 +3279,7 @@ int main () {
 }
 ```
 
-## 5. Graph
+## 5. 🌐 Graph
 
 ### 5.1 Graph Structure
 
@@ -4492,7 +4487,7 @@ struct Graph {
 > place holder
 
 
-## 6. Number + Mathematics
+## 6. 🔢 Number + Mathematics
 
 ### 6.1 BigInteger + BigDecimal
 
@@ -5310,7 +5305,7 @@ int main() {
 
 
 
-## 7. Geometry
+## 7. 📐 Geometry
 
 ### 7.1 2-Dimension Space
 
@@ -5530,7 +5525,7 @@ int main(int argc, char const *argv[]) {
 
 
 
-## 8. Tricks + Miscellaneous
+## 8. 🎯 Tricks + Miscellaneous
 
 ### 8.1 Bit Manipulation
 
