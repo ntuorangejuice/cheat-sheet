@@ -10,7 +10,7 @@
 #include <map>
 #include <list>
 #include <ext/hash_map>
-
+#include<bits/stdc++.h>
 /*
  * n: number
  * i: LSB starting from 1
@@ -31,32 +31,34 @@ using namespace std;
 
 int test = 0, pass = 0;
 
-void assert(bool result) {
+int checks(bool result) {
     test++; pass+=result;
-    cout << (result ? "PASS: " : "FAIL: ");
+    cout << (result ? "PASS " : "FAIL ")<<"\n";
+
+    return 0;
 }
 
 
 int main() {
     ios::sync_with_stdio(false);
 
-    __gnu_cxx::hash_map<string, int> months;
-  
-    months["january"] = 31;
-    months["february"] = 28;
-    months["march"] = 31;
-    months["april"] = 30;
-    months["may"] = 31;
-    months["june"] = 30;
-    months["july"] = 31;
-    months["august"] = 31;
-    months["september"] = 30;
-    months["october"] = 31;
-    months["november"] = 30;
-    months["december"] = 31;
+    map<string, int> months;
 
-    ASSERT(months["september"]==30)
-    ASSERT(months["august"]==31)
+    months["January"] = 31;
+    months["February"] = 28;
+    months["March"] = 31;
+    months["April"] = 30;
+    months["May"] = 31;
+    months["June"] = 30;
+    months["July"] = 31;
+    months["August"] = 31;
+    months["September"] = 30;
+    months["October"] = 31;
+    months["November"] = 30;
+    months["December"] = 31;
+
+    checks(months["September"]==30);
+    checks(months["August"]==31);
 
     cout << "Passed: " << pass << " (" << 100.0*pass/test << "%%)" << endl;
 

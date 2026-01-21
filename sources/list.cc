@@ -5,11 +5,12 @@ using namespace std;
 
 int main() {
     list<int> ll;
-    ll.push_back(1);
-    ll.push_back(2);
-    ll.push_back(3);
-    ll.push_back(4);
+    int n;
+    cin>>n;
+    for(int i=1;i<n;i++)
+        ll.push_back(i);
 
+        cout<<"Resulting list is as follows : \n";
     for (list<int>::iterator li = ll.begin(); li != ll.end(); li++) {
         cout << *li << endl;
     }
